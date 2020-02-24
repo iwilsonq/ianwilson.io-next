@@ -18,13 +18,30 @@ module.exports = () => {
         // Construct this file's pathname excluding the "pages" folder & its extension
         const cleanFileName = filePath
           .substr(0, filePath.lastIndexOf('.'))
-          .replace('pages/', '');
+          .replace('pages/', '')
+          .replace('src/', '')
+          .replace('index', '');
 
-        // Add this file to `fileObj`
-        fileObj[`/${cleanFileName}`] = {
-          page: `/${cleanFileName}`,
-          lastModified: fileStat.mtime,
-        };
+        if (cleanFileName.includes('blog/[slug]')) {
+          const files = fs.readdirSync('src/articles/');
+          files.forEach(file => {
+            const filePath = `src/articles/${file}`;
+            const fileStat = fs.statSync(filePath);
+            const cleanFileName = filePath
+              .substr(0, filePath.lastIndexOf('.'))
+              .replace('articles/', 'blog/')
+              .replace('src/', '');
+            fileObj[`/${cleanFileName}`] = {
+              page: `/${cleanFileName}`,
+              lastModified: fileStat.mtime,
+            };
+          });
+        } else {
+          fileObj[`/${cleanFileName}`] = {
+            page: `/${cleanFileName}`,
+            lastModified: fileStat.mtime,
+          };
+        }
       }
     });
   };

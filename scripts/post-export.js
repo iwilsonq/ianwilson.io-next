@@ -13,7 +13,7 @@ console.log('robots.txt saved!');
 
 // SITEMAP.XML
 const pathsObj = getPathsObject();
-const today = formatDate(new Date());
+console.log(pathsObj);
 const sitemapXml = `<urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
@@ -35,11 +35,5 @@ const sitemapXml = `<urlset
 fs.writeFileSync('public/sitemap.xml', sitemapXml);
 console.log('sitemap.xml saved!');
 
-// GOOGLE's VERIFY HTML
-const googleVerify = `google-site-verification: google8f5d91a719b65f09.html`;
-fs.mkdirSync('public/sitemap.xml');
-fs.writeFileSync('public/sitemap.xml/google8f5d91a719b65f09.html', googleVerify);
-console.log('google8f5d91a719b65f09.html saved!');
-
 // copy `_redirects` etc.
-fs.copySync('scripts/copy-to-build/', 'public/');
+// fs.copySync('scripts/copy-to-build/', 'public/');

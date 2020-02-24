@@ -6,19 +6,31 @@
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
   xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
-    <loc>https://ianwilson.io/src/about</loc>
+    <loc>https://ianwilson.io/about</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url><url>
-    <loc>https://ianwilson.io/src/blog/[slug]</loc>
+    <loc>https://ianwilson.io/blog/edge-with-courage-reasonml</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url><url>
-    <loc>https://ianwilson.io/src/blog/index</loc>
+    <loc>https://ianwilson.io/blog/how-types-improve-javascript</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url><url>
-    <loc>https://ianwilson.io/src/index</loc>
+    <loc>https://ianwilson.io/blog/intro-to-reasonml-variants</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url><url>
+    <loc>https://ianwilson.io/blog/reason-react-hooks-tutorial</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url><url>
+    <loc>https://ianwilson.io/blog/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url><url>
+    <loc>https://ianwilson.io/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
