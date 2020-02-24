@@ -8,7 +8,7 @@ const Card: React.FunctionComponent<Props> = props => (
     <style jsx>{`
       .card {
         background: #fff;
-        border-radius: 50px;
+        border-radius: 8px;
         box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #fff;
         padding: 16px;
       }

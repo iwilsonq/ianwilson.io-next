@@ -1,6 +1,6 @@
 import { NextPage, NextPageContext } from 'next';
 import Markdown from 'react-markdown';
-import matter, { GrayMatterFile } from 'gray-matter';
+import matter from 'gray-matter';
 import Layout from '../../components/Layout';
 
 interface Props {
@@ -8,14 +8,13 @@ interface Props {
   data: { [key: string]: any };
 }
 
-const Article: NextPage<Props> = props => {
-  const markdownBody = props.content;
-  const frontmatter = props.data;
+const Article: NextPage<Props> = ({ content, data }) => {
+  const { title } = data;
   return (
     <Layout>
       <div>
-        <h1>{frontmatter.title}</h1>
-        <Markdown source={markdownBody} />
+        <h1>{title}</h1>
+        <Markdown source={content} />
       </div>
     </Layout>
   );
@@ -23,8 +22,8 @@ const Article: NextPage<Props> = props => {
 
 Article.getInitialProps = async function(context: NextPageContext) {
   const { slug } = context.query;
-  const content = await import(`../../articles/${slug}.md`);
-  const { data } = matter(content.default);
+  const file = await import(`../../articles/${slug}.md`);
+  const { data, content } = matter(file.default);
   return { content, data };
 };
 

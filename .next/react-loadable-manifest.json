@@ -1,10 +1,18 @@
 {
+  "../../data/config.json": [
+    {
+      "id": "./src/data/config.json",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/1.js",
+      "publicPath": "static/chunks/1.js"
+    }
+  ],
   "../data/config.json": [
     {
       "id": "./src/data/config.json",
       "name": "./src/data/config.json",
-      "file": "static/chunks/5.js",
-      "publicPath": "static/chunks/5.js"
+      "file": "static/chunks/1.js",
+      "publicPath": "static/chunks/1.js"
     }
   ],
   "./dev/noop": [
@@ -19,32 +27,32 @@
     {
       "id": "./src/articles/edge-with-courage-reasonml.md",
       "name": "./src/articles/edge-with-courage-reasonml.md",
-      "file": "static/chunks/1.js",
-      "publicPath": "static/chunks/1.js"
+      "file": "static/chunks/2.js",
+      "publicPath": "static/chunks/2.js"
     }
   ],
   "./how-types-improve-javascript.md": [
     {
       "id": "./src/articles/how-types-improve-javascript.md",
       "name": "./src/articles/how-types-improve-javascript.md",
-      "file": "static/chunks/2.js",
-      "publicPath": "static/chunks/2.js"
+      "file": "static/chunks/3.js",
+      "publicPath": "static/chunks/3.js"
     }
   ],
   "./intro-to-reasonml-variants.md": [
     {
       "id": "./src/articles/intro-to-reasonml-variants.md",
       "name": "./src/articles/intro-to-reasonml-variants.md",
-      "file": "static/chunks/3.js",
-      "publicPath": "static/chunks/3.js"
+      "file": "static/chunks/4.js",
+      "publicPath": "static/chunks/4.js"
     }
   ],
   "./reason-react-hooks-tutorial.md": [
     {
       "id": "./src/articles/reason-react-hooks-tutorial.md",
       "name": "./src/articles/reason-react-hooks-tutorial.md",
-      "file": "static/chunks/4.js",
-      "publicPath": "static/chunks/4.js"
+      "file": "static/chunks/5.js",
+      "publicPath": "static/chunks/5.js"
     }
   ]
 }
