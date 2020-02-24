@@ -1,0 +1,4 @@
+User-agent: *
+Sitemap: https://ianwilson.io/sitemap.xml
+Host: https://ianwilson.io
+Disallow:
