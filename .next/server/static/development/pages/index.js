@@ -3,6 +3,12 @@ module.exports =
 /******/ 	// The module cache
 /******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
+/******/ 	// object to store loaded chunks
+/******/ 	// "0" means "already loaded"
+/******/ 	var installedChunks = {
+/******/ 		"static/development/pages/index.js": 0
+/******/ 	};
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/
@@ -33,6 +39,26 @@ module.exports =
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var promises = [];
+/******/
+/******/
+/******/ 		// require() chunk loading for javascript
+/******/
+/******/ 		// "0" is the signal for "already loaded"
+/******/ 		if(installedChunks[chunkId] !== 0) {
+/******/ 			var chunk = require("../../..//" + ({}[chunkId]||chunkId) + ".js");
+/******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
+/******/ 			for(var moduleId in moreModules) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 			for(var i = 0; i < chunkIds.length; i++)
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 		}
+/******/ 		return Promise.all(promises);
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -86,114 +112,19 @@ module.exports =
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/ 	// uncaught error handler for webpack runtime
+/******/ 	__webpack_require__.oe = function(err) {
+/******/ 		process.nextTick(function() {
+/******/ 			throw err; // catch this error by using import().catch()
+/******/ 		});
+/******/ 	};
+/******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ "./components/Header.js":
-/*!******************************!*\
-  !*** ./components/Header.js ***!
-  \******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/components/Header.js";
-
-var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-
-const linkStyle = {
-  marginRight: 15
-};
-
-const Header = () => __jsx("div", {
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 8
-  },
-  __self: undefined
-}, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
-  href: "/",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 9
-  },
-  __self: undefined
-}, __jsx("a", {
-  style: linkStyle,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 10
-  },
-  __self: undefined
-}, "Home")), __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
-  href: "/about",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 12
-  },
-  __self: undefined
-}, __jsx("a", {
-  style: linkStyle,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 13
-  },
-  __self: undefined
-}, "About")));
-
-/* harmony default export */ __webpack_exports__["default"] = (Header);
-
-/***/ }),
-
-/***/ "./components/Layout.js":
-/*!******************************!*\
-  !*** ./components/Layout.js ***!
-  \******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Header */ "./components/Header.js");
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/components/Layout.js";
-
-var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-
-const layoutStyle = {
-  margin: 20,
-  padding: 20,
-  border: '1px solid #DDD'
-};
-
-const Layout = props => __jsx("div", {
-  style: layoutStyle,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 10
-  },
-  __self: undefined
-}, __jsx(_Header__WEBPACK_IMPORTED_MODULE_1__["default"], {
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 11
-  },
-  __self: undefined
-}), props.children);
-
-/* harmony default export */ __webpack_exports__["default"] = (Layout);
-
-/***/ }),
 
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js":
 /*!*******************************************************************************!*\
@@ -2122,10 +2053,137 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./pages/index.js":
-/*!************************!*\
-  !*** ./pages/index.js ***!
-  \************************/
+/***/ "./src/articles sync recursive \\.md$":
+/*!*********************************!*\
+  !*** ./src/articles sync \.md$ ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./edge-with-courage-reasonml.md": "./src/articles/edge-with-courage-reasonml.md",
+	"./how-types-improve-javascript.md": "./src/articles/how-types-improve-javascript.md",
+	"./intro-to-reasonml-variants.md": "./src/articles/intro-to-reasonml-variants.md",
+	"./reason-react-hooks-tutorial.md": "./src/articles/reason-react-hooks-tutorial.md"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./src/articles sync recursive \\.md$";
+
+/***/ }),
+
+/***/ "./src/articles/edge-with-courage-reasonml.md":
+/*!****************************************************!*\
+  !*** ./src/articles/edge-with-courage-reasonml.md ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: The Edge, Wit, and Courage of ReasonML\ndate: 2019-03-19T21:25:04.540Z\nslug: edge-wit-courage-reasonml\ndescription: Discover the features of Reason that make it so appealing to a JavaScript developer.\ntags: reason,ocaml,javascript,fp\nhero_image: steps.jpg\n---\n\nReasonML has stolen my attention recently.\n\nIf I'm not at work or running about, I am probably digging into some ReasonML/OCaml repositories like an addict in the tenderloin.\n\nPerhaps I like it for the unparalleled incremental build speed.\n\nPerhaps I like it because its not too different from JavaScript yet it nets me a plethora of built-in advantages like type safety.\n\nPerhaps I like it because of my affinity for math in school, and the functional paradigm gives me a warm fuzzy feeling inside.\n\nThere are a few reasons, no pun intended, for my love of Reason. Just like a functional program wields function composition with immutable state to achieve its goal, Reason's composition of the best of OCaml and JavaScript make it a strong candidate for the future of programming.\n\n## The Edge of OCaml\n\nFor starters, Reason is basically a syntax upgrade to OCaml. Let me start by describing how that helps us.\n\n### Speed\n\nOCaml is a pretty damn fast language. It's incremental build times dwarf that of almost any other language. Since Reason is just a toolchain on top of OCaml, it maintains the many of the same characteristics of OCaml.\n\nFor instance take a look at this table from the docs of [fastpack](https://fastpack.sh), an alternative to Webpack or Parcel for bundling JavaScript applications.\n\n_~1100 modules / 5.3Mb / MB Pro 2017_\n\n|                  | Fastpack | Webpack | Parcel |\n| ---------------- | -------- | ------- | ------ |\n| initial build    | 0.811s   | 3.86s   | 11.07s |\n| persistent cache | 0.208s   | N/A     | 1.39s  |\n| watch mode       | 0.088s   | 0.226s  | 0.291s |\n\nFastpack is still rather new but these numbers are promising -- and the result implies we can made super-quick devtools for a vanilla JavaScript workflow.\n\n### Static Typing\n\nAnother thing Reason inherits from OCaml is a power, nearly impenetrable type system. The compiler does a solid job of making sure you exhaust all of your options in branching logic.\n\nIt also does away with silly errors like \"undefined is not a function\" or \"cannot read property 'x'\". The same could be said about adopting TypeScript or Flow, but they do not _force_ you to cover such cases.\n\n### ...with Great Inference\n\nIt's powerful type inference cleans up a lot of the verbosity associated with annotating functions and variables with types. The following function adds two integers. Not two floats or two strings, just two integers.\n\n```reason\n  /* the type system knows that the arguments and the return value are ints here */\n  let add = (a, b) => a + b;\n```\n\nIf that example is too basic, then try this one. Note how I am not annotating the types in the function signatures:\n\n```reason\n  type animal =\n    | Dog\n    | Cat\n    | Octopus;\n\n  let animalToString = animal =>\n    switch(animal) {\n    | Dog => \"dog\"\n    | Cat => \"cat\"\n    | Octopus => \"octopus\"\n    };\n\n  let getWelcomeMessage = (name, visits, animal) => {\n    \"Hello \" ++\n    name ++\n    \", you've visited this website \" ++\n    string_of_int(visits) ++\n    \" times and your favorite animal is the \" ++\n    animalToString(animal);\n  };\n```\n\nThe ReasonML/OCaml type system is capable of inferring based on our usage what the return types are, as well as each of the arguments. How neat is that?\n\n### Industry Proven\n\nOCaml is a proven language of academics and industries where safety and mission critical code is paramount. This was one of the reason's it was adopted as the base for ReasonML.\n\nAt Facebook, OCaml is used to build some of their important everyday tools, like [Flow](https://flow.org) and [Hack](https://hacklang.org). But they're also working on Reason, which in my opinion, is neat because Reason brings more joy than flow.\n\n## The Wit of JavaScript\n\nWith Reason comes a lighter, more JavaScript-like syntax. The first example I showed above would work just as well in regular JavaScript.\n\n### Syntax\n\nReason syntax is far easier to read and digest than that of OCaml, and most other functional languages for that matter.\n\n### Easy Build System\n\nIts massively more accessible to newcomers than OCaml in that you probably wont spend days trying to install your dependencies properly. When using BuckleScript its often just another npm install {package}.\n\n### JavaScript Interop\n\nIf you need training wheels when writing Reason, do not fear. You can use special directives to write JavaScript directly in your Reason code. Its not cheating, the language was designed this way to make migrating codebases easier.\n\n### NodeJS Too\n\nThe language that powers web applications can be used on the server with the help of NodeJS. The language being Reason of course. Since it transpiles to JavaScript, theres no reason you cannot simply write Reason which becomes server code.\n\nYou can write basically everything in your tech stack with JavaScript and in most cases it will be just fine. What motive would someone have to write Reason then, especially if they have built their likely profitable career on JavaScript?\n\n## The Courage of Reason\n\nOver the past few weeks, I've been exploring writing Native Reason code. I think some of the projects that are being developed show great courage in showing off the potential of ReasonML.\n\nWhile I certainly appreciate it's benefits on the frontend when transpiled to JavaScript, it would be super neat if I could write it on the server too.\n\nI want to communicate with databases, make blazing quick command line tools, and write super efficient servers, perhaps serving GraphQL.\n\nAnd I want to do it with the same language that I'm writing in for my web applications.\n\nCurrently, we can do this with JavaScript, but I think we can do better.\n\nBy further leveraging the OCaml ecosystem we can actually write incredibly robust servers and developer tools.\n\nThe [Esy](https://esy.sh) package manager allows us to install and build packages from npm or opam in a convenient package.json fashion without having to manually hack system dependencies.\n\nAs Esy further develops, Reason on the backend will become increasingly more accessible to developers looking to write stupidly fast native code.\n\nIf you're interested in what's already been made with Esy, check out the following projects:\n\n- [fnm](https://github.com/Schniz/fnm), an alternative to nvm for managing your NodeJS version. It's much faster than nvm.\n- [fastpack](https://fastpack.sh/), a ridiculously fast JavaScript bundler\n- [revery](https://www.outrunlabs.com/revery/), a desktop UI framework like electron, except without downloading a whole browser onto your users' computer.\n\nAnd there are more out there in the **Forests of Open Source**.\n\nThis certainly won't be my last post on this topic so stay tuned for more Reason evangelism on the horizon.\n");
+
+/***/ }),
+
+/***/ "./src/articles/how-types-improve-javascript.md":
+/*!******************************************************!*\
+  !*** ./src/articles/how-types-improve-javascript.md ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: How a Type System Improves your JavaScript Code\ndate: 2019-02-24T21:25:04.540Z\nslug: how-types-improve-javascript\ndescription: Discover how a type system improves your developer workflow\ntags: reason,react,javascript,typescript\n---\n\nVanilla JavaScript is untyped by nature, some will call it “smart” because it is able to figure out what is a number or a string.\n\nThis makes it easier to run JavaScript code, it simply needs to be executed in a browser or Node.js runtime. However, its vulnerable to numerous runtime errors that can spoil your user experience.\n\nIf you’ve ever experienced the following, you would benefit from adopting a type system.\n\n- After fetching a list of data you may find that a certain field doesn’t exist on one of the records, causing the app to crash unless explicitly handled.\n- An instance of a class you imported doesn’t have a method you’re trying to invoke.\n- Your IDE doesn’t know what methods and properties are available, so it cannot easily assist you with autocomplete.\n- Difficulty reasoning about code, type systems at a glance make it easier to refactor\n\n## Flow, TypeScript, or ReasonML\n\nLet's say you have an existing codebase that you wish to make bulletproof. With respect to type errors, you could try adopting Flow or TypeScript -- they have a fairly similar syntax.\n\nOn the other hand adopting one of these in a large, existing codebase is difficult. You would have a backlog crammed with tasks relating to creating types and interfaces with code that made not have been designed in a type friendly way.\n\nOn top of all of this, Flow and TypeScript do not offer 100% type safety in their code.\n\nReason accomplished perfect type safety through inference, and makes annotating variables and function signatures much more straightforward.\n\n## Simple and Clearly Contrived Examples\n\nConsider the following code:\n\n```reason\nlet add = (a, b) => a + b;\n```\n\nIn basic JavaScript these arguments can be numbers or strings. In TypeScript or Flow these arguments can be annotated like so\n\n```javascript\nlet add = (a: number, b: number) => a + b;\n```\n\nThe first code snippet knows that we are adding two int values. Not two floats nor two strings, there are different operators for those addition operations. JavaScript can hardly tell the difference between an int and a float.\n\nAllow me now to expose this gradual typing with a contrived example.\n\n```javascript\nlet add = (a: string, b: number) => a + b;\nadd('some string', 5); // outputs: \"some string5\"\n```\n\nThat function works! This is absolutely preposterous! Now how does Reason handle this?\n\n```reason\nlet add = (a, b) => a + b;\nadd(\"some string\", 5);\n/*\nThis has type:\n  string\nbut somewhere wanted:\n  int\n*/\n```\n\nThis function was flawed at the implementation level. Reason has different operators for int, float, and string addition.\n\nThe purpose of this contrived example was to show that it is still very possible to have odd type \"errors\" even though it wont _break_ the application.\n\nIn a pure Reason program, developers will not have to deal with productions bugs that have to do with types or null values.\n\n## Developer Experience\n\nOne of the neatest features of TypeScript is the enhancement you get in code editor suggestions & autocompletion.\n\nThis is one area where TypeScript has a leg up on Reason, because a TypeScript program doesn't need to compile perfectly in order to offer autocompletion. Reason makes you fix errors in syntax or types before it gives you helpful autosuggestion.\n\nThis is the case on VSCode, but I know many Reason developers use vim. I cannot answer for the level of support each editor has.\n\nEven though I am a big fan of ReasonML, I have built production applications with TypeScript or Flow and I enjoy them as well. The wave behind TypeScript makes it especially good to pick up these days, considering there is plenty of writing and community support behind it.\n\nReason on the other hand is harder to pick up because there is comparatively less writing and content behind it. Through blog posts like this, I am hoping to change that.\n\nIf you have some interest in checking out Reason, I'd start with the [docs here](https://reasonml.github.io). Also, be sure to follow people like [@jordwalke](https://twitter.com/@jordwalke), [@jaredforsyth](https://twitter.com/@jaredforsyth), and [@sgrove](https://twitter.com/@sgrove) on twitter. They are pretty knowledgable with respect to the ReasonML/OCaml ecosystem.\n\nIf you want to how ReasonML works seamlessly with GraphQL, check out this article I wrote on [ReasonML with GraphQL, the Future of Type-Safe Web Applications](https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8).\n");
+
+/***/ }),
+
+/***/ "./src/articles/intro-to-reasonml-variants.md":
+/*!****************************************************!*\
+  !*** ./src/articles/intro-to-reasonml-variants.md ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: Intro to ReasonML Variants\ndate: 2019-03-02T21:25:04.540Z\nslug: intro-to-reasonml-variants\ndescription: Learn to wield ReasonML variants to create better, typesafe web applications\ntags: reason,javascript,webdev,functional\n---\n\nReasonML is a super fast, expressive, and functional programming language. Currently, it can be compiled to optimized JavaScript for the web, WebGL/OpenGL for graphics rendering, or even native bytecode.\n\nOne of my favorite features of Reason are variant data types. These types allow us to handle enums in a sane way, forcing us to handle all possibilities for a particular scenario. We can define a variant type like this:\n\n```reason\ntype color =\n  | Red\n  | Blue\n  | White\n  | Black\n  | Grey;\n```\n\nWe see that the type `color` can be represented as this enumeration of different colors. Not too complicated, but not too enlightening either. In JavaScript, we could handle this with an object mapping:\n\n```javascript\nconst COLORS = {\n  RED: 'red',\n  BLUE: 'blue',\n  WHITE: 'white',\n  BLACK: 'black',\n  GREY: 'grey',\n};\n```\n\nI used maps like this all the time in my JavaScript projects, they help a ton when your goal is to keep constants defined in the same place. If you need to update, add, or remove a field, you only need to do so in one location.\n\nIf this were the whole story, I would probably decide that a compiled-to-js programming language like Reason is not worth the effort involved when I could just add TypeScript support. After all, so far it has only saved us a tiny amount of code.\n\nLet's take a look at an example to see how Reason would help us where ordinary JavaScript falls short.\n\n```javascript\nfunction getMonthlyPriceForCarColor(color) {\n  switch (color) {\n    case COLORS.RED:\n      return 28;\n    case COLORS.BLUE:\n      return 24;\n    case COLORS.WHITE:\n      return 20;\n  }\n}\n```\n\nThis function takes a color (from our convenient colors lookup-map) and returns to us the additional monthly price of getting a Tesla Model S. In other words, getting a red Tesla costs more because it is the best color.\n\nOne other thing you might notice is that I did not provide a default case, and as an imperfect programmer, I neglected some of the other colors. JavaScript will not yell at me for this on its own, so I will probably have to find out the hard way that I forgot some of the other cases.\n\nHopefully QA will catch this bug before my code lands in production. But even if they're really thorough, I'd still have to make changes and push/review more code. Wouldn't it be nice if our typechecker could alert us on the fly?\n\nThe same function in Reason looks like this:\n\n```reason\nlet getMonthlyPriceForCarColor = color =>\n  switch(color) {\n    | Red => 28\n    | Blue => 24\n    | White => 20\n  };\n```\n\nFirst of all there's less code, which is great, but beside the point. In practice, this function will actually have red squiggly underlines, alerting us that our switch is not exhaustive - it does not cover all of the possibilities or our `color` variant.\n\nThe error message is actually quite helpful when this happens.\n\n![Error: Non exhaustive switch statement](/images/non-exhaustive.png)\n\nFixing this issue simply requires that you cover the other possibilities.\n\n```reason\nlet getMonthlyPriceForCarColor = color =>\n  switch(color) {\n    | Red => 28\n    | Blue => 24\n    | White => 20\n    | Black => 0\n    | Grey => 0\n  };\n```\n\nReason wont let us compile our code if we don't have a case for each possibility in this function. This is a sampling of the incredibly powerful typesystem we have with Reason.\n\n## Variants as Constructors\n\nAs I've demonstrated so far, variants can be used as enumerations, but they exhibit a power that takes enumeration to a whole new level. Variants can be used as generic constructors that take arguments, allowing developers to further customize applications for their use case.\n\nFor example, we can adjust our price (arbitraily) based on the shade of grey or even go as far as to specify a totally arbitrary color somewhere in the RGB scale.\n\nUpdating our color type to the following:\n\n```reason\ntype color =\n  | Red\n  | Blue\n  | White\n  | Black\n  | Grey(float)\n  | Rgb(int, int, int);\n```\n\nNow when we run our function, we can let the customer to pick whatever color they want. To keep make the pricing more reasonable with our already hardcoded values, we'll allow grey to range from $0 to $20. depending on whatever number given between 0.0 and 1.0.\n\nThe `Rgb` constructor will be the most expensive since we have to create new paint in order to satisfy that requirement. The higher the values of red, blue, and green color, the closer to \\$36 it will be.\n\n```reason\nlet getMonthlyPriceForCarColor = color =>\n  switch(color) {\n    | Red => 28\n    | Blue => 24\n    | White => 20\n    | Black => 0\n    | Grey(pct) => int_of_float(pct *. 20.0)\n    | Rgb(red, green, blue) => {\n      /* completely random calculation. Tesla probably does not do this */\n      let sum = red + green + blue;\n      if (sum > 500) {\n        36\n      } else {\n        32\n      }\n    }\n  };\n\nJs.log(getMonthlyPriceForCarColor(Red));                /* 28 */\nJs.log(getMonthlyPriceForCarColor(Grey(0.64)));         /* 12 */\nJs.log(getMonthlyPriceForCarColor(Rgb(150, 210, 67)));  /* 32 */\nJs.log(getMonthlyPriceForCarColor(Rgb(150, 210, 167))); /* 36 */\n```\n\nThis is pretty neat huh? This example displays the expressive power of a robust type-safe language like Reason.\n\nWhen we introduce constructor arguments like this, we no longer have an ordinary switch statement that you can find in most programming languages. We call this _pattern matching_ in Reason.\n\nIn conjuction with data structures like variants, tuples, and lists, pattern matching creates a readable and concise flow of logic.\n\n## Refactor with confidence\n\nThe only thing I have yet to do to make this example stronger, is validate the constructor inputs. So to send off this post with a bang, I am going to make some helper functions.\n\n```reason\nlet validatePercentage = pct =>\n  restrictRangef(pct, 0.0, 1.0);\n\nlet validateRgb = (red, blue, green) => {\n  let red = restrictRange(red, 0, 255);\n  let green = restrictRange(green, 0, 255);\n  let blue = restrictRange(blue, 0, 255);\n  (red, blue, green);\n};\n```\n\nThese functions validate the required input to the extend that they cut off the values if they are too low or too high. Here are their corresponding `restrictRange` functions.\n\n```reason\nlet restrictRange = (number, min, max) =>\n  if (number > max) {\n    max;\n  } else if (number < min) {\n    min;\n  } else {\n    number;\n  };\n\nlet restrictRangef = (number, min, max) =>\n  if (number > max) {\n    max;\n  } else if (number < min) {\n    min;\n  } else {\n    number;\n  };\n```\n\nOne last thing to note is that we must have separate `restrictRange` functions for `int` and `float` types. By convention, when we have functions that take ints, their float variation will have the same name but with an \"f\" at the end.\n\nA little extra code here is a small price to pay here when we have superior type coverage.\n\nFinally I can update our `getMonthlyPriceForCarColor` function with our new helpers:\n\n```reason\nlet getMonthlyPriceForCarColor = color =>\n  switch (color) {\n  | Red => 28\n  | Blue => 24\n  | White => 20\n  | Black => 0\n  | Grey(pct) => int_of_float(validatePercentage(pct) *. 20.0)\n  | Rgb(red, green, blue) => {\n      let (r, g, b) = validateRgb(red, green, blue);\n      let sum = r + g + b;\n      if (sum > 500) {\n        36\n      } else {\n        32\n      };\n    }\n  };\n```\n\n# And thats a wrap\n\nWe've taken a look at variants and how we can use them with constructor arguments through pattern matching. This is a super powerful feature that you won't find in just any modern programming language.\n\nWhen you build an application with complete type safety, you begin to reap the advantages as the size of your project grows and you begin to make refactors. Knowing that your code compiles increases your confidence that you wont break critical or even basic features in production.\n");
+
+/***/ }),
+
+/***/ "./src/articles/reason-react-hooks-tutorial.md":
+/*!*****************************************************!*\
+  !*** ./src/articles/reason-react-hooks-tutorial.md ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: ReasonML with React Hooks Tutorial — Building a Pomodoro Timer\ndate: 2019-04-15T21:25:04.540Z\nslug: reason-react-hooks-tutorial\ndescription: Learn Reason React by building a Pomodoro Timer with React hooks\ntags: reason,javascript,react,tutorial\nhero_image: timer.png\n---\n\nReasonML is a programming language that combines the simplicity of JavaScript with the performance of OCaml. JavaScript programmers should give ReasonML a try. Reason's inherits OCaml's typesystem as well as the approachability of JavaScript.\n\nWith [ReasonReact](https://reasonml.github.io/reason-react/) and [BuckleScript](https://bucklescript.github.io/), we can compile Reason code to JavaScript that works like good old React.\n\nBut that's not all, things are getting even better for the Reason ecosystem. Earlier last week, ReasonReact [version 0.7.0 dropped](https://reasonml.github.io/reason-react/blog/2019/04/10/react-hooks), with support for React hooks. We can now build robust components with React hooks that:\n\n- eliminate duplicated lifecycle logic (like in componentDidMount, componentDidUpdate, and componentWillUnmount)\n- eliminate the need for complicated patterns like higher-order components or render props\n- allow _easier refactoring_ of stateful components\n\nThink for a moment about that last point, what else give us easier refactorability?\n\nA rock solid typesystem and a helpful compiler!\n\nToday, we're going to build a Pomodoro Timer [like this](https://tomato-timer.com/) using Reason and React.\n\nA pomodoro timer allows you to set a timer for say 25 or 30 minutes that lets you know when to stop working. Because sometimes taking a break is good, and you better believe I'm using one while writing this.\n\n## Initializing a Project\n\nThe first step is to install BuckleScript, a tool that will compile our Reason code to JavaScript.\n\n```sh\nnpm install -g bs-platform\n```\n\nAfter that, we can scaffold our project with the `init` command, and setting the `theme` to react-hooks.\n\n```sh\nbsb -init pomodoro-timer -theme react-hooks\ncd pomodoro-timer && npm install\n```\n\nNow that our project set up, we can mention our folder layout. Our Reason code belongs in the src directory. Where we usually have an index.js file in a JavaScript React project, we have an Index.re file. These files serve the same purpose: render the app root.\n\nSince our code will compile to JavaScript, I still like to have a bundler like Webpack to bundle those files.\n\n<blockquote>Tip: It is generally considered a best practice to keep your folder structure as flat as possible with ReasonML, using captialized file names (like Timer.re). See the [ReasonML docs](https://reasonml.github.io/docs/en/project-structure#folders) for a discussion on project structure.</blockquote>\n\n### Running the code\n\nBefore I clean up the environment, let us try running the code. This will need two or three separate terminal tabs:\n\n```sh\n# in one tab\nnpm start\n```\n\nThis runs `bsb -make-world -w` which compiles your Reason files on every change. It does this quickly, mind you.\n\n```sh\n# in another tab\nnpm run webpack\n```\n\nThis command takes our compiled JavaScript and spits out a bundle that we can then open in a browser using:\n\n```sh\nopen build/index.html\n```\n\nI prefer use a static file server like [zeit/serve](https://github.com/zeit/serve).\n\n```sh\n# install `serve` globally\nnpm i -g serve\n\n# serve it!\nserve build/\n```\n\n![initial project](./initial_project.png)\n\n### Cleaning up the Environment\n\nI want to clean up the default project structure before writing an implementation.\n\n1. Remove the Component1.re and Component2.re files, we will not be using these. You can still read them and try to making sense of how hooks are working in our new environment.\n2. Replace index.html with the following:\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Pomodoro Timer</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script src=\"Index.js\"></script>\n  </body>\n</html>\n```\n\n3. Replace Index.re with the following:\n\n```reason\nReactDOMRe.renderToElementWithId(<Timer />, \"root\");\n```\n\n4. Open up bsconfig.json and change the field \"in-source\" from true to false. This will output our compiled JavaScript into the lib/js directory. I prefer this over leaving them inside of our root src directory.\n\n5. Tell webpack to build from the new location by changing webpack.config.js to the following:\n\n```js\nmodule.exports = {\n  entry: './lib/js/src/Index.bs.js',\n  // rest of webpack config\n};\n```\n\nAnd now with all out that taken care of, we can begin the fun part, the implementation.\n\n## Building a Stateless Component\n\nAfter cleaning up, notice that we are trying to render a `Timer` component but we have not even defined one. Let us write a stateless component to render to the page.\n\n```reason\n[@react.component]\nlet make = () => {\n  <div> {ReasonReact.string(\"One day this will be a timer\")} </div>;\n};\n```\n\nI want to highlight how simple this code is. Writing a stateless React component in the previous version was more verbose:\n\n```reason\n/* DO NOT WRITE THIS */\nlet component = ReasonReact.statelessComponent(\"Timer\");\nlet make = () => {\n  ...component,\n  render: _children =>  <div> {ReasonReact.string(\"One day this will be a timer\")} </div>;\n};\n```\n\nEven compared to regular JavaScript with React, this new syntax is incredibly slick. With Reason projects, we do not need to layer imports on top of the file every time we make a new file.\n\n## The useReducer Hook\n\nNow we are going to introduce some state into this equation. We do not have any \"class\" components, we are still using functional components. But now we are going to use React hooks to compose a solution.\n\nFor our timer, we need to keep track of at least two things:\n\n1. The seconds on the clock\n2. Whether it is ticking or not\n\nWhen we consider any timer, we usually have three buttons: `Start`, `Stop`, and `Reset`. These map to directly to user interactions, but there is one more: the `Tick` itself. Even though the tick is not controlled by the user, it is still an action that should return a new state for our reducer.\n\nAt the top of Timer.re, where we will build this whole app, add the following:\n\n```reason\ntype state = {\n  seconds: int,\n  isTicking: bool\n};\n\ntype action =\n  | Start\n  | Stop\n  | Reset\n  | Tick;\n```\n\nHow easy it is, to implement an application after you have described your states needs and actions!\n\nNext we'll update our make function to use a reducer:\n\n```reason\n[@react.component]\nlet make = () => {\n  let (state, dispatch) =\n    React.useReducer(\n      (state, action) =>\n        switch (action) {\n        | Start => {...state, isTicking: true}\n        | Stop => {...state, isTicking: false}\n        | Reset => {...state, seconds: 30}\n        | Tick => {...state, seconds: state.seconds - 1}\n        },\n      {isTicking: false, seconds: 30},\n    );\n\n  <div>\n    {ReasonReact.string(\n       \"There are \" ++ string_of_int(state.seconds) ++ \" on the clock\",\n     )}\n  </div>;\n};\n```\n\nThe syntax is like that of ReactJS. The `useReducer` function returns a tuple as opposed an array. This is because JavaScript does not know what the heck a tuple is. We make sure to handle each of our action types inside this reducer, returning a whole copy of the state.\n\nThe second argument to `useReducer` is the initial state of the reducer. It would make sense for the time to receive the initial time as a prop but I'll leave it this way for now.\n\nNow we need a way to invoke these actions. Let us start with the `Tick` because it is the most complicated bit.\n\n## The useEffect hook\n\nTo update the timer every second, we need to create an effect. In the JavaScript world, this means putting a callback function within `setInterval`.\n\nLet us add this hook between the `useReducer` function and the returned JSX.\n\n```reason\nReact.useEffect0(() => {\n  let timerId = Js.Global.setInterval(() => dispatch(Tick), 1000);\n  Some(() => Js.Global.clearInterval(timerId));\n});\n```\n\nIf you recall the way `useEffect` works:\n\n- The first argument is a callback function that runs when the component mounts, updates, or unmounts.\n- Optionally, the callback function can return another function that performs cleanup. This includes unsubscribing from sockets or clearing a setInterval so it does not persist forever.\n\nIf you run the code and refresh your browser, you'll see that our timer is going to run indefinitely.\n\nIt should not do this, so lets update our reducer again to account for whether the `isTicking` flag is true or false. We will also make sure that `seconds` are greater than zero so we do not go negative.\n\n```reason\nlet (state, dispatch) =\n    React.useReducer(\n      (state, action) =>\n        switch (action) {\n        | Start => {...state, isTicking: true}\n        | Stop => {...state, isTicking: false}\n        | Reset => {...state, seconds: 30}\n        | Tick => state.isTicking && state.seconds > 0\n            ? {...state, seconds: state.seconds - 1} : state\n        },\n      {isTicking: false, seconds: 30},\n    );\n```\n\nNow you can verify this by setting `isTicking` to true and `seconds` to 3. Lovely, this app is functional now. If you wanted to actually use it, refresh your browser and watch it count down.\n\n## Interactivity with Buttons\n\nTo make this Timer even better, I am going to add buttons.\n\nLet us define a Button module in the same file as our Timer, right above the make function.\n\n```reason\nmodule Button = {\n  [@react.component]\n  let make = (~label, ~onClick) => {\n    <button onClick> {label |> ReasonReact.string} </button>;\n  };\n};\n```\n\nThis button takes a label and an onClick prop. We can add them to our Timer, at the bottom of the make function like so:\n\n```reason\n\n[@react.component]\nlet make = () => {\n  /* useReducer */\n\n  /* useEffect0 */\n\n  <div>\n      {ReasonReact.string(\n        \"There are \" ++ string_of_int(state.seconds) ++ \" seconds on the clock\",\n      )}\n      {state.isTicking\n        ? <Button label=\"STOP\" onClick={_event => dispatch(Stop)} />\n        : <>\n            <Button label=\"START\" onClick={_event => dispatch(Start)} />\n            <Button label=\"RESET\" onClick={_event => dispatch(Reset)} />\n          </>}\n    </div>;\n};\n```\n\nTry running this in your browser, you should see:\n\n![start and stop buttons](./start_stop.png)\n\nIf you click START, it will start. If you click STOP it will stop. RESET will bring the timer back up to the initial time. Pretty straightforward how it just works!\n\nAt this point, our app is **feature-complete**. Read on to make it even cooler, with style and other aesthetic details.\n\n## Aesthetic Concerns\n\nLet us add some styles and make this timer look pretty. Or at least better.\n\nUpdate the JSX in Timer to the following:\n\n```reason\n[@react.component]\nlet make = () => {\n  /* useReducer */\n\n  /* useEffect0 */\n<div\n    style={ReactDOMRe.Style.make(\n      ~border=\"1px solid black\",\n      ~borderRadius=\"8px\",\n      ~maxWidth=\"180px\",\n      ~textAlign=\"center\",\n      (),\n    )}>\n    <p\n      style={ReactDOMRe.Style.make(\n        ~color=\"#444444\",\n        ~fontSize=\"42px\",\n        ~margin=\"16px 0\",\n        (),\n      )}>\n      {state.seconds |> formatTime |> str}\n    </p>\n    {state.isTicking\n       ? <Button label=\"STOP\" onClick={_event => dispatch(Stop)} />\n       : <>\n           <Button label=\"START\" onClick={_event => dispatch(Start)} />\n           <Button label=\"RESET\" onClick={_event => dispatch(Reset)} />\n         </>}\n  </div>;\n};\n```\n\nI have introduced the default styles that come with ReasonReact. They are not my preferred style solution as I like [bs-css](https://github.com/SentiaAnalytics/bs-css) better, but for this small project, they will do fine.\n\nI also introduce a `formatTime` function. Let us implement that function so our project compiles:\n\n```reason\nlet padNumber = numString =>\n  if (numString |> int_of_string < 10) {\n    \"0\" ++ numString;\n  } else {\n    numString;\n  };\n\nlet formatTime = seconds => {\n  let mins = seconds / 60;\n  let minsString = mins |> string_of_int |> padNumber;\n  let seconds = seconds mod 60;\n  let secondsString = seconds |> string_of_int |> padNumber;\n  minsString ++ \":\" ++ secondsString;\n};\n```\n\nI included `padNumber` as well, a useful utility that pads minutes and seconds which are less than 10. This makes the timer more reader friendly.\n\nI will be honest, this timer looks pretty good right now and I have not even styled the buttons. I will leave that as a task for the reader if they are so inclined.\n\n![finished timer](./finished_timer.png)\n\n## Update the Document Title\n\nThe concept of a timer in the browser can be further improved. If we have the time remaining persist in the browser tab itself, it would be visible if the user is in another tab.\n\nAll we have to do to get that going is update our `Tick` action in the reducer. I'll even show off ReasonML's interop with JavaScript by updating the document title. Note the `%bs.raw` directive, this allows us to put on the JavaScript training wheels and use it directly.\n\n```reason\nlet updateTitle: string => unit = [%bs.raw\n  {|\n  function updateTitle(remaining) {\n    document.title = \"⏰ \" + remaining + \" ⏰\";\n  }|}\n];\n\n[@react.component]\nlet make = () => {\nlet (state, dispatch) =\n    React.useReducer(\n      (state, action) =>\n        switch (action) {\n        | Start => {...state, isTicking: true}\n        | Stop => {...state, isTicking: false}\n        | Reset => {...state, seconds: 30}\n        | Tick =>\n          state.isTicking && state.seconds > 0\n            ? {\n              updateTitle(formatTime(state.seconds - 1));\n              {...state, seconds: state.seconds - 1};\n            }\n            : state\n        },\n      {isTicking: false, seconds: 30},\n    );\n\n/* useEffect0 */\n\n\n/* JSX return */\n};\n```\n\nAnd with that, I am finished with the implementation of the timer:\n\n![finished timer with title update](./finished_timer_title.png)\n\n## Summary\n\nWith this tutorial we tackled the updated ReasonReact syntax with React hooks. when React hooks dropped late last year I could not wait to be able to use them in Reason projects. Now that they are here, we can take advantage of strong typed, composable, functional code.\n\nWe learned:\n\n- how to make a basic stateless component\n- how to use the `useReducer` hook\n- how to use the `useEffect` hook\n- how to define other React components in the same file/module.\n- how to use basic styles in ReasonReact\n- how to do interon with `%bs.raw`\n\nI hope this has been a fun or useful experience, be sure to follow me @iwilsonq on [dev.to](https://dev.to/iwilsonq), [Twitter](https://twitter.com/iwilsonq), [Medium](https://medium.com/@iwilsonq) or anywhere else I roam.\n\nIf you want to how ReasonML works seamlessly with GraphQL, check out this article I wrote on [ReasonML with GraphQL, the Future of Type-Safe Web Applications](https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8).\n\nIf you'd like to keep up with future posts, [sign up for my newsletter here](https://buttondown.email/iwilsonq)!\n");
+
+/***/ }),
+
+/***/ "./src/components/BlogList.tsx":
+/*!*************************************!*\
+  !*** ./src/components/BlogList.tsx ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _BlogListItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BlogListItem */ "./src/components/BlogListItem.tsx");
+/* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Card */ "./src/components/Card.tsx");
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogList.tsx";
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+
+
+const BlogList = props => props.articles.length === 0 ? null : __jsx(_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 11
+  },
+  __self: undefined
+}, props.articles.map(article => __jsx(_BlogListItem__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  article: article,
+  key: article.slug,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 13
+  },
+  __self: undefined
+})));
+
+/* harmony default export */ __webpack_exports__["default"] = (BlogList);
+
+/***/ }),
+
+/***/ "./src/components/BlogListItem.tsx":
+/*!*****************************************!*\
+  !*** ./src/components/BlogListItem.tsx ***!
+  \*****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2135,103 +2193,412 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/pages/index.js";
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogListItem.tsx";
+
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+
+function truncateSummary(content) {
+  const excerpt = content.slice(0, 200).trimEnd();
+
+  for (let i = excerpt.length; i > 0; i--) {
+    if (excerpt[i] === '\n') {
+      return excerpt.slice(0, i);
+    }
+  }
+
+  return excerpt + '...';
+}
+
+function reformatDate(fullDate) {
+  const date = new Date(fullDate);
+  return date.toDateString().slice(4);
+}
+
+const BlogListItem = ({
+  article
+}) => {
+  return __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    key: article.slug,
+    href: {
+      pathname: `/blog/${article.slug}`
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 26
+    },
+    __self: undefined
+  }, __jsx("a", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 27
+    },
+    __self: undefined
+  }, __jsx("div", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]) + " " + "article",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 28
+    },
+    __self: undefined
+  }, __jsx("div", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]) + " " + "article-content",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 29
+    },
+    __self: undefined
+  }, __jsx("div", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]) + " " + "article-hero",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 30
+    },
+    __self: undefined
+  }, __jsx("div", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]) + " " + "hero-text",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 31
+    },
+    __self: undefined
+  }, __jsx("h2", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 32
+    },
+    __self: undefined
+  }, article.document.data.title), __jsx("h3", {
+    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["2849298721", [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000']]]),
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 33
+    },
+    __self: undefined
+  }, " ", reformatDate(article.document.data.date)))))), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+    id: "2849298721",
+    dynamic: [article.document.data.hero_image, article.document.data.hero_image ? '#fff' : '#000'],
+    __self: undefined
+  }, `.article-link-content.__jsx-style-dynamic-selector{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.article.__jsx-style-dynamic-selector{width:100%;}.article-hero.__jsx-style-dynamic-selector{background:url(${article.document.data.hero_image}) center;color:${article.document.data.hero_image ? '#fff' : '#000'};}.article-content.__jsx-style-dynamic-selector,.hero-text.__jsx-style-dynamic-selector{padding:16px;}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0Jsb2dMaXN0SXRlbS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBcUNvQixBQUcwQixBQUdGLEFBR3lDLEFBS3ZDLFdBUGYsRUFRQSx1Q0FMcUMsc0JBTnJDLGFBT0EiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvc3JjL2NvbXBvbmVudHMvQmxvZ0xpc3RJdGVtLnRzeCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBMaW5rIGZyb20gJ25leHQvbGluayc7XG5pbXBvcnQgTWFya2Rvd24gZnJvbSAncmVhY3QtbWFya2Rvd24nO1xuaW1wb3J0IHsgQXJ0aWNsZSB9IGZyb20gJy4uL3BhZ2VzJztcblxuZnVuY3Rpb24gdHJ1bmNhdGVTdW1tYXJ5KGNvbnRlbnQ6IHN0cmluZyk6IHN0cmluZyB7XG4gIGNvbnN0IGV4Y2VycHQgPSBjb250ZW50LnNsaWNlKDAsIDIwMCkudHJpbUVuZCgpO1xuICBmb3IgKGxldCBpID0gZXhjZXJwdC5sZW5ndGg7IGkgPiAwOyBpLS0pIHtcbiAgICBpZiAoZXhjZXJwdFtpXSA9PT0gJ1xcbicpIHtcbiAgICAgIHJldHVybiBleGNlcnB0LnNsaWNlKDAsIGkpO1xuICAgIH1cbiAgfVxuICByZXR1cm4gZXhjZXJwdCArICcuLi4nO1xufVxuXG5mdW5jdGlvbiByZWZvcm1hdERhdGUoZnVsbERhdGU6IERhdGUpOiBzdHJpbmcge1xuICBjb25zdCBkYXRlID0gbmV3IERhdGUoZnVsbERhdGUpO1xuICByZXR1cm4gZGF0ZS50b0RhdGVTdHJpbmcoKS5zbGljZSg0KTtcbn1cblxuaW50ZXJmYWNlIFByb3BzIHtcbiAgYXJ0aWNsZTogQXJ0aWNsZTtcbn1cblxuY29uc3QgQmxvZ0xpc3RJdGVtOiBSZWFjdC5GdW5jdGlvbkNvbXBvbmVudDxQcm9wcz4gPSAoeyBhcnRpY2xlIH0pID0+IHtcbiAgcmV0dXJuIChcbiAgICA8TGluayBrZXk9e2FydGljbGUuc2x1Z30gaHJlZj17eyBwYXRobmFtZTogYC9ibG9nLyR7YXJ0aWNsZS5zbHVnfWAgfX0+XG4gICAgICA8YT5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhcnRpY2xlXCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhcnRpY2xlLWNvbnRlbnRcIj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYXJ0aWNsZS1oZXJvXCI+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaGVyby10ZXh0XCI+XG4gICAgICAgICAgICAgICAgPGgyPnthcnRpY2xlLmRvY3VtZW50LmRhdGEudGl0bGV9PC9oMj5cbiAgICAgICAgICAgICAgICA8aDM+IHtyZWZvcm1hdERhdGUoYXJ0aWNsZS5kb2N1bWVudC5kYXRhLmRhdGUpfTwvaDM+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8c3R5bGUganN4PntgXG4gICAgICAgICAgLmFydGljbGUtbGluay1jb250ZW50IHtcbiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgICAgfVxuICAgICAgICAgIC5hcnRpY2xlIHtcbiAgICAgICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICAgIH1cbiAgICAgICAgICAuYXJ0aWNsZS1oZXJvIHtcbiAgICAgICAgICAgIGJhY2tncm91bmQ6IHVybCgke2FydGljbGUuZG9jdW1lbnQuZGF0YS5oZXJvX2ltYWdlfSkgY2VudGVyO1xuICAgICAgICAgICAgY29sb3I6ICR7YXJ0aWNsZS5kb2N1bWVudC5kYXRhLmhlcm9faW1hZ2UgPyAnI2ZmZicgOiAnIzAwMCd9O1xuICAgICAgICAgIH1cbiAgICAgICAgICAuYXJ0aWNsZS1jb250ZW50LFxuICAgICAgICAgIC5oZXJvLXRleHQge1xuICAgICAgICAgICAgcGFkZGluZzogMTZweDtcbiAgICAgICAgICB9XG4gICAgICAgIGB9PC9zdHlsZT5cbiAgICAgIDwvYT5cbiAgICA8L0xpbms+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBCbG9nTGlzdEl0ZW07XG4iXX0= */
+/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogListItem.tsx */`)));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (BlogListItem);
+
+/***/ }),
+
+/***/ "./src/components/Card.tsx":
+/*!*********************************!*\
+  !*** ./src/components/Card.tsx ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-jsx/style */ "styled-jsx/style");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Card.tsx";
+
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+const Card = props => __jsx("div", {
+  className: "jsx-4176013727" + " " + "card",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 6
+  },
+  __self: undefined
+}, props.children, __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+  id: "4176013727",
+  __self: undefined
+}, ".card.jsx-4176013727{background:#fff;border-radius:50px;box-shadow:20px 20px 60px #d9d9d9,-20px -20px 60px #fff;padding:16px;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0NhcmQudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQU9nQixBQUd5QixnQkFDRyxtQkFDc0Msd0RBQzVDLGFBQ2YiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvc3JjL2NvbXBvbmVudHMvQ2FyZC50c3giLCJzb3VyY2VzQ29udGVudCI6WyJpbnRlcmZhY2UgUHJvcHMge1xuICBjaGlsZHJlbjogSlNYLkVsZW1lbnQgfCBKU1guRWxlbWVudFtdO1xufVxuXG5jb25zdCBDYXJkOiBSZWFjdC5GdW5jdGlvbkNvbXBvbmVudDxQcm9wcz4gPSBwcm9wcyA9PiAoXG4gIDxkaXYgY2xhc3NOYW1lPVwiY2FyZFwiPlxuICAgIHtwcm9wcy5jaGlsZHJlbn1cbiAgICA8c3R5bGUganN4PntgXG4gICAgICAuY2FyZCB7XG4gICAgICAgIGJhY2tncm91bmQ6ICNmZmY7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDUwcHg7XG4gICAgICAgIGJveC1zaGFkb3c6IDIwcHggMjBweCA2MHB4ICNkOWQ5ZDksIC0yMHB4IC0yMHB4IDYwcHggI2ZmZjtcbiAgICAgICAgcGFkZGluZzogMTZweDtcbiAgICAgIH1cbiAgICBgfTwvc3R5bGU+XG4gIDwvZGl2PlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQ2FyZDtcbiJdfQ== */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Card.tsx */"));
+
+/* harmony default export */ __webpack_exports__["default"] = (Card);
+
+/***/ }),
+
+/***/ "./src/components/Header.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Header.tsx ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Header.tsx";
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+const linkStyle = {
+  marginRight: 15
+};
+
+const Header = () => __jsx("div", {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 8
+  },
+  __self: undefined
+}, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
+  href: "/",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 9
+  },
+  __self: undefined
+}, __jsx("a", {
+  style: linkStyle,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 10
+  },
+  __self: undefined
+}, "Home")), __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
+  href: "/about",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 12
+  },
+  __self: undefined
+}, __jsx("a", {
+  style: linkStyle,
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 13
+  },
+  __self: undefined
+}, "About")));
+
+/* harmony default export */ __webpack_exports__["default"] = (Header);
+
+/***/ }),
+
+/***/ "./src/components/Layout.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Layout.tsx ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-jsx/style */ "styled-jsx/style");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/components/Header.tsx");
+/* harmony import */ var _Meta__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Meta */ "./src/components/Meta.tsx");
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx";
 
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
 
 
-function getPosts() {
-  return [{
-    id: 'hello-nextjs',
-    title: 'Hello Next.js'
-  }, {
-    id: 'learn-nextjs',
-    title: 'Learn Next.js is awesome'
-  }, {
-    id: 'deploy-nextjs',
-    title: 'Deploy apps with ZEIT'
-  }];
+const Layout = props => __jsx("div", {
+  className: "jsx-4085475369" + " " + "layout",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 11
+  },
+  __self: undefined
+}, __jsx(_Meta__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  siteTitle: props.siteTitle || '',
+  siteDescription: props.siteDescription || '',
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 12
+  },
+  __self: undefined
+}), __jsx(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 16
+  },
+  __self: undefined
+}), __jsx("div", {
+  className: "jsx-4085475369" + " " + "content",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 17
+  },
+  __self: undefined
+}, props.children), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+  id: "4085475369",
+  __self: undefined
+}, ".layout.jsx-4085475369{max-width:680px;margin:20px auto;}.layout.jsx-4085475369 a.jsx-4085475369{-webkit-text-decoration:none;text-decoration:none;color:blue;}.layout.jsx-4085475369 a.jsx-4085475369:hover{opacity:0.6;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0xheW91dC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUJnQixBQUd5QixBQUtLLEFBS1QsWUFDZCxJQVZtQixpQkFDbkIsaUJBSWEsV0FDYiIsImZpbGUiOiIvVXNlcnMvaWFud2lsc29uL3VpLXdvcmtzcGFjZS9pYW53aWxzb24uaW8tbmV4dC9zcmMvY29tcG9uZW50cy9MYXlvdXQudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEhlYWRlciBmcm9tICcuL0hlYWRlcic7XG5pbXBvcnQgTWV0YSBmcm9tICcuL01ldGEnO1xuXG5pbnRlcmZhY2UgUHJvcHMge1xuICBjaGlsZHJlbjogSlNYLkVsZW1lbnQgfCBKU1guRWxlbWVudFtdO1xuICBzaXRlRGVzY3JpcHRpb24/OiBzdHJpbmc7XG4gIHNpdGVUaXRsZT86IHN0cmluZztcbn1cblxuY29uc3QgTGF5b3V0OiBSZWFjdC5GdW5jdGlvbkNvbXBvbmVudDxQcm9wcz4gPSBwcm9wcyA9PiAoXG4gIDxkaXYgY2xhc3NOYW1lPVwibGF5b3V0XCI+XG4gICAgPE1ldGFcbiAgICAgIHNpdGVUaXRsZT17cHJvcHMuc2l0ZVRpdGxlIHx8ICcnfVxuICAgICAgc2l0ZURlc2NyaXB0aW9uPXtwcm9wcy5zaXRlRGVzY3JpcHRpb24gfHwgJyd9XG4gICAgLz5cbiAgICA8SGVhZGVyIC8+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJjb250ZW50XCI+e3Byb3BzLmNoaWxkcmVufTwvZGl2PlxuICAgIDxzdHlsZSBqc3g+e2BcbiAgICAgIC5sYXlvdXQge1xuICAgICAgICBtYXgtd2lkdGg6IDY4MHB4O1xuICAgICAgICBtYXJnaW46IDIwcHggYXV0bztcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhIHtcbiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgICAgICBjb2xvcjogYmx1ZTtcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhOmhvdmVyIHtcbiAgICAgICAgb3BhY2l0eTogMC42O1xuICAgICAgfVxuICAgIGB9PC9zdHlsZT5cbiAgPC9kaXY+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBMYXlvdXQ7XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx */"));
+
+/* harmony default export */ __webpack_exports__["default"] = (Layout);
+
+/***/ }),
+
+/***/ "./src/components/Meta.tsx":
+/*!*********************************!*\
+  !*** ./src/components/Meta.tsx ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Meta; });
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-jsx/style */ "styled-jsx/style");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/head */ "next/head");
+/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_2__);
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Meta.tsx";
+
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+function Meta(props) {
+  return __jsx(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, __jsx(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 12
+    },
+    __self: this
+  }, __jsx("meta", {
+    name: "viewport",
+    content: "width=device-width, initial-scale=1",
+    className: "jsx-3818826148",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 13
+    },
+    __self: this
+  }), __jsx("meta", {
+    charSet: "utf-8",
+    className: "jsx-3818826148",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 14
+    },
+    __self: this
+  }), __jsx("title", {
+    className: "jsx-3818826148",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 15
+    },
+    __self: this
+  }, props.siteTitle), __jsx("meta", {
+    name: "Description",
+    content: props.siteDescription,
+    className: "jsx-3818826148",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 16
+    },
+    __self: this
+  })), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+    id: "3818826148",
+    __self: this
+  }, "@import url('https://fonts.googleapis.com/css?family=Lato|Lora&display=swap');body{color:#000;font-family:'Lora',Helvetica,sans-serif;font-size:16px;margin:0;overflow-x:hidden;}h1,h2,h3{font-family:'Lato';}h1{font-size:40px;}p{font-size:21px;line-height:1.58;}a{-webkit-text-decoration:none;text-decoration:none;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL01ldGEudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQWtCUyxBQUV3RixBQUVoRSxBQVVRLEFBSUosQUFJQSxBQUtNLFdBdEJxQixJQWM1QyxBQUltQixJQVJuQixhQVNBLGtCQUlBLENBdEJpQixlQUNOLFNBQ1Msa0JBQ3BCIiwiZmlsZSI6Ii9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL01ldGEudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEhlYWQgZnJvbSAnbmV4dC9oZWFkJztcbmltcG9ydCB7IFJlYWN0Tm9kZSB9IGZyb20gJ3JlYWN0JztcblxuaW50ZXJmYWNlIFByb3BzIHtcbiAgc2l0ZURlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIHNpdGVUaXRsZTogc3RyaW5nO1xufVxuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBNZXRhKHByb3BzOiBQcm9wcyk6IEpTWC5FbGVtZW50IHtcbiAgcmV0dXJuIChcbiAgICA8PlxuICAgICAgPEhlYWQ+XG4gICAgICAgIDxtZXRhIG5hbWU9XCJ2aWV3cG9ydFwiIGNvbnRlbnQ9XCJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MVwiIC8+XG4gICAgICAgIDxtZXRhIGNoYXJTZXQ9XCJ1dGYtOFwiIC8+XG4gICAgICAgIDx0aXRsZT57cHJvcHMuc2l0ZVRpdGxlfTwvdGl0bGU+XG4gICAgICAgIDxtZXRhIG5hbWU9XCJEZXNjcmlwdGlvblwiIGNvbnRlbnQ9e3Byb3BzLnNpdGVEZXNjcmlwdGlvbn0+PC9tZXRhPlxuICAgICAgPC9IZWFkPlxuICAgICAgPHN0eWxlIGpzeCBnbG9iYWw+XG4gICAgICAgIHtgXG4gICAgICAgICAgQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzP2ZhbWlseT1MYXRvfExvcmEmZGlzcGxheT1zd2FwJyk7XG4gICAgICAgICAgYm9keSB7XG4gICAgICAgICAgICBjb2xvcjogIzAwMDtcbiAgICAgICAgICAgIGZvbnQtZmFtaWx5OiAnTG9yYScsIEhlbHZldGljYSwgc2Fucy1zZXJpZjtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBoMSxcbiAgICAgICAgICBoMixcbiAgICAgICAgICBoMyB7XG4gICAgICAgICAgICBmb250LWZhbWlseTogJ0xhdG8nO1xuICAgICAgICAgIH1cblxuICAgICAgICAgIGgxIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogNDBweDtcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBwIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMjFweDtcbiAgICAgICAgICAgIGxpbmUtaGVpZ2h0OiAxLjU4O1xuICAgICAgICAgIH1cblxuICAgICAgICAgIGEge1xuICAgICAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgICAgICAgIH1cbiAgICAgICAgYH1cbiAgICAgIDwvc3R5bGU+XG4gICAgPC8+XG4gICk7XG59XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Meta.tsx */"));
 }
 
-const PostLink = ({
-  post
-}) => __jsx("li", {
-  className: "jsx-1341333550",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 13
-  },
-  __self: undefined
-}, __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
-  href: "/p/[id]",
-  as: `/p/${post.id}`,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 14
-  },
-  __self: undefined
-}, __jsx("a", {
-  className: "jsx-1341333550",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 15
-  },
-  __self: undefined
-}, post.title)), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
-  id: "1341333550",
-  __self: undefined
-}, "li.jsx-1341333550{list-style:none;margin:5px 0;}a.jsx-1341333550{-webkit-text-decoration:none;text-decoration:none;color:blue;font-family:'Arial';}a.jsx-1341333550:hover{opacity:0.6;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3BhZ2VzL2luZGV4LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQWdCZ0IsQUFHeUIsQUFLSyxBQU1ULFlBQ2QsSUFYZSxhQUNmLHFCQUlhLFdBQ1Msb0JBQ3RCIiwiZmlsZSI6Ii9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3BhZ2VzL2luZGV4LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IExheW91dCBmcm9tICcuLi9jb21wb25lbnRzL0xheW91dCc7XG5pbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnO1xuXG5mdW5jdGlvbiBnZXRQb3N0cygpIHtcbiAgcmV0dXJuIFtcbiAgICB7IGlkOiAnaGVsbG8tbmV4dGpzJywgdGl0bGU6ICdIZWxsbyBOZXh0LmpzJyB9LFxuICAgIHsgaWQ6ICdsZWFybi1uZXh0anMnLCB0aXRsZTogJ0xlYXJuIE5leHQuanMgaXMgYXdlc29tZScgfSxcbiAgICB7IGlkOiAnZGVwbG95LW5leHRqcycsIHRpdGxlOiAnRGVwbG95IGFwcHMgd2l0aCBaRUlUJyB9LFxuICBdO1xufVxuXG5jb25zdCBQb3N0TGluayA9ICh7IHBvc3QgfSkgPT4gKFxuICA8bGk+XG4gICAgPExpbmsgaHJlZj1cIi9wL1tpZF1cIiBhcz17YC9wLyR7cG9zdC5pZH1gfT5cbiAgICAgIDxhPntwb3N0LnRpdGxlfTwvYT5cbiAgICA8L0xpbms+XG4gICAgPHN0eWxlIGpzeD57YFxuICAgICAgbGkge1xuICAgICAgICBsaXN0LXN0eWxlOiBub25lO1xuICAgICAgICBtYXJnaW46IDVweCAwO1xuICAgICAgfVxuXG4gICAgICBhIHtcbiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgICAgICBjb2xvcjogYmx1ZTtcbiAgICAgICAgZm9udC1mYW1pbHk6ICdBcmlhbCc7XG4gICAgICB9XG5cbiAgICAgIGE6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAwLjY7XG4gICAgICB9XG4gICAgYH08L3N0eWxlPlxuICA8L2xpPlxuKTtcblxuY29uc3QgSW5kZXggPSBwcm9wcyA9PiAoXG4gIDxMYXlvdXQ+XG4gICAgPGgxPk15IEJsb2c8L2gxPlxuICAgIDx1bD5cbiAgICAgIHtnZXRQb3N0cygpLm1hcChwb3N0ID0+IChcbiAgICAgICAgPFBvc3RMaW5rIGtleT17cG9zdC5pZH0gcG9zdD17cG9zdH0gLz5cbiAgICAgICkpfVxuICAgIDwvdWw+XG4gICAgPHN0eWxlIGpzeD57YFxuICAgICAgaDEsXG4gICAgICBhIHtcbiAgICAgICAgZm9udC1mYW1pbHk6ICdBcmlhbCc7XG4gICAgICB9XG5cbiAgICAgIHVsIHtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgIH1cbiAgICBgfTwvc3R5bGU+XG4gIDwvTGF5b3V0PlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgSW5kZXg7XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/pages/index.js */"));
+/***/ }),
+
+/***/ "./src/pages/index.tsx":
+/*!*****************************!*\
+  !*** ./src/pages/index.tsx ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gray-matter */ "gray-matter");
+/* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(gray_matter__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Layout */ "./src/components/Layout.tsx");
+/* harmony import */ var _components_BlogList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/BlogList */ "./src/components/BlogList.tsx");
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/index.tsx";
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
 
 const Index = props => __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_2__["default"], {
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 37
+    lineNumber: 17
   },
   __self: undefined
 }, __jsx("h1", {
-  className: "jsx-3995962543",
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 38
+    lineNumber: 18
   },
   __self: undefined
-}, "My Blog"), __jsx("ul", {
-  className: "jsx-3995962543",
+}, "The Blog"), __jsx(_components_BlogList__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  articles: props.articles,
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 39
+    lineNumber: 19
   },
   __self: undefined
-}, getPosts().map(post => __jsx(PostLink, {
-  key: post.id,
-  post: post,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 41
-  },
-  __self: undefined
-}))), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
-  id: "3995962543",
-  __self: undefined
-}, "h1.jsx-3995962543,a.jsx-3995962543{font-family:'Arial';}ul.jsx-3995962543{padding:0;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3BhZ2VzL2luZGV4LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQTJDZ0IsQUFJNkIsQUFJVixVQUNaLFVBSkEiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvcGFnZXMvaW5kZXguanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgTGF5b3V0IGZyb20gJy4uL2NvbXBvbmVudHMvTGF5b3V0JztcbmltcG9ydCBMaW5rIGZyb20gJ25leHQvbGluayc7XG5cbmZ1bmN0aW9uIGdldFBvc3RzKCkge1xuICByZXR1cm4gW1xuICAgIHsgaWQ6ICdoZWxsby1uZXh0anMnLCB0aXRsZTogJ0hlbGxvIE5leHQuanMnIH0sXG4gICAgeyBpZDogJ2xlYXJuLW5leHRqcycsIHRpdGxlOiAnTGVhcm4gTmV4dC5qcyBpcyBhd2Vzb21lJyB9LFxuICAgIHsgaWQ6ICdkZXBsb3ktbmV4dGpzJywgdGl0bGU6ICdEZXBsb3kgYXBwcyB3aXRoIFpFSVQnIH0sXG4gIF07XG59XG5cbmNvbnN0IFBvc3RMaW5rID0gKHsgcG9zdCB9KSA9PiAoXG4gIDxsaT5cbiAgICA8TGluayBocmVmPVwiL3AvW2lkXVwiIGFzPXtgL3AvJHtwb3N0LmlkfWB9PlxuICAgICAgPGE+e3Bvc3QudGl0bGV9PC9hPlxuICAgIDwvTGluaz5cbiAgICA8c3R5bGUganN4PntgXG4gICAgICBsaSB7XG4gICAgICAgIGxpc3Qtc3R5bGU6IG5vbmU7XG4gICAgICAgIG1hcmdpbjogNXB4IDA7XG4gICAgICB9XG5cbiAgICAgIGEge1xuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIGNvbG9yOiBibHVlO1xuICAgICAgICBmb250LWZhbWlseTogJ0FyaWFsJztcbiAgICAgIH1cblxuICAgICAgYTpob3ZlciB7XG4gICAgICAgIG9wYWNpdHk6IDAuNjtcbiAgICAgIH1cbiAgICBgfTwvc3R5bGU+XG4gIDwvbGk+XG4pO1xuXG5jb25zdCBJbmRleCA9IHByb3BzID0+IChcbiAgPExheW91dD5cbiAgICA8aDE+TXkgQmxvZzwvaDE+XG4gICAgPHVsPlxuICAgICAge2dldFBvc3RzKCkubWFwKHBvc3QgPT4gKFxuICAgICAgICA8UG9zdExpbmsga2V5PXtwb3N0LmlkfSBwb3N0PXtwb3N0fSAvPlxuICAgICAgKSl9XG4gICAgPC91bD5cbiAgICA8c3R5bGUganN4PntgXG4gICAgICBoMSxcbiAgICAgIGEge1xuICAgICAgICBmb250LWZhbWlseTogJ0FyaWFsJztcbiAgICAgIH1cblxuICAgICAgdWwge1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgfVxuICAgIGB9PC9zdHlsZT5cbiAgPC9MYXlvdXQ+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBJbmRleDtcbiJdfQ== */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/pages/index.js */"));
+}));
+
+Index.getInitialProps = async function () {
+  const siteConfig = await __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.t.bind(null, /*! ../data/config.json */ "./src/data/config.json", 3));
+
+  const context = __webpack_require__("./src/articles sync recursive \\.md$");
+
+  const keys = context.keys();
+  const values = keys.map(context);
+  const articles = keys.map((key, index) => {
+    const slug = key.replace(/^.*[\\\/]/, '').split('.').slice(0, -1).join('.');
+    const value = values[index];
+    const document = gray_matter__WEBPACK_IMPORTED_MODULE_1___default()(value.default);
+    return {
+      document,
+      slug
+    };
+  });
+  return _objectSpread({
+    articles
+  }, siteConfig.default);
+};
 
 /* harmony default export */ __webpack_exports__["default"] = (Index);
 
 /***/ }),
 
-/***/ 4:
-/*!******************************!*\
-  !*** multi ./pages/index.js ***!
-  \******************************/
+/***/ 5:
+/*!***********************************!*\
+  !*** multi ./src/pages/index.tsx ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/pages/index.js */"./pages/index.js");
+module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/index.tsx */"./src/pages/index.tsx");
 
 
 /***/ }),
@@ -2288,6 +2655,28 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/weak-map");
+
+/***/ }),
+
+/***/ "gray-matter":
+/*!******************************!*\
+  !*** external "gray-matter" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("gray-matter");
+
+/***/ }),
+
+/***/ "next/head":
+/*!****************************!*\
+  !*** external "next/head" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/head");
 
 /***/ }),
 
