@@ -44,7 +44,7 @@ Now that our project set up, we can mention our folder layout. Our Reason code b
 
 Since our code will compile to JavaScript, I still like to have a bundler like Webpack to bundle those files.
 
-<blockquote>Tip: It is generally considered a best practice to keep your folder structure as flat as possible with ReasonML, using captialized file names (like Timer.re). See the [ReasonML docs](https://reasonml.github.io/docs/en/project-structure#folders) for a discussion on project structure.</blockquote>
+> Tip: It is generally considered a best practice to keep your folder structure as flat as possible with ReasonML, using captialized file names (like Timer.re). See the [ReasonML docs](https://reasonml.github.io/docs/en/project-structure#folders) for a discussion on project structure.
 
 ### Running the code
 

@@ -1,3 +1,4 @@
+import sort from 'fast-sort';
 import matter, { GrayMatterFile } from 'gray-matter';
 import { NextPage } from 'next';
 
@@ -40,6 +41,9 @@ Index.getInitialProps = async function() {
       };
     }
   );
+
+  sort(articles).desc(a => a.document.data.date);
+
   return {
     articles,
     ...siteConfig.default,

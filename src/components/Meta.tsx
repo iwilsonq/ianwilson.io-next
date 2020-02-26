@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { ReactNode } from 'react';
 
 interface Props {
   siteDescription: string;
@@ -17,11 +16,12 @@ export default function Meta(props: Props): JSX.Element {
       </Head>
       <style jsx global>
         {`
-          @import url('https://fonts.googleapis.com/css?family=Lato|Lora&display=swap');
+          @import url('https://fonts.googleapis.com/css?family=Lato:400,700|Lora&display=swap');
+          html,
           body {
             color: #000;
             font-family: 'Lora', Helvetica, sans-serif;
-            font-size: 16px;
+            font-size: 10px;
             margin: 0;
             overflow-x: hidden;
           }
@@ -30,15 +30,49 @@ export default function Meta(props: Props): JSX.Element {
           h2,
           h3 {
             font-family: 'Lato';
+            font-weight: 700;
           }
 
           h1 {
-            font-size: 40px;
+            font-size: 3.4rem;
           }
 
-          p {
-            font-size: 21px;
-            line-height: 1.58;
+          p,
+          ol,
+          ul,
+          li,
+          a {
+            font-size: 2.1rem;
+          }
+
+          a {
+            color: #0070f3;
+          }
+
+          pre,
+          code,
+          code[class*='language-'],
+          pre[class*='language-'] {
+            font-size: 1.6rem;
+          }
+
+          @media (max-width: 727px) {
+            p,
+            ol,
+            ul,
+            li,
+            a {
+              font-size: 1.8rem;
+            }
+            h1 {
+              font-size: 3rem;
+            }
+            pre,
+            code,
+            code[class*='language-'],
+            pre[class*='language-'] {
+              font-size: 1.6rem;
+            }
           }
 
           a {
