@@ -1,20 +1,4 @@
 {
-  "../../data/config.json": [
-    {
-      "id": "./src/data/config.json",
-      "name": "./src/data/config.json",
-      "file": "static/chunks/5.js",
-      "publicPath": "static/chunks/5.js"
-    }
-  ],
-  "../data/config.json": [
-    {
-      "id": "./src/data/config.json",
-      "name": "./src/data/config.json",
-      "file": "static/chunks/5.js",
-      "publicPath": "static/chunks/5.js"
-    }
-  ],
   "./dev/noop": [
     {
       "id": "./node_modules/next/dist/client/dev/noop.js",

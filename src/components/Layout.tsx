@@ -19,6 +19,7 @@ const Layout: React.FunctionComponent<Props> = props => (
       .layout {
         max-width: 680px;
         margin: 20px auto;
+        padding: 24px;
       }
 
       .layout a {

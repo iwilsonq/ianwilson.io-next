@@ -36,6 +36,12 @@ export default function Meta(props: Props): JSX.Element {
           h1 {
             font-size: 3.4rem;
           }
+          h2 {
+            font-size: 3.1rem;
+          }
+          h3 {
+            font-size: 2.8rem;
+          }
 
           p,
           ol,
