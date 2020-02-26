@@ -41,7 +41,11 @@ export default function Meta(props: Props): JSX.Element {
           ol,
           ul,
           li,
-          a {
+          a,
+          blockquote,
+          b,
+          em,
+          strong {
             font-size: 2.1rem;
           }
 

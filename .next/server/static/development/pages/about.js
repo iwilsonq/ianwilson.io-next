@@ -1,13 +1,7 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
-/******/ 	var installedModules = require('../../../../ssr-module-cache.js');
-/******/
-/******/ 	// object to store loaded chunks
-/******/ 	// "0" means "already loaded"
-/******/ 	var installedChunks = {
-/******/ 		"static/development/pages/blog/[slug].js": 0
-/******/ 	};
+/******/ 	var installedModules = require('../../../ssr-module-cache.js');
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -39,26 +33,6 @@ module.exports =
 /******/ 		return module.exports;
 /******/ 	}
 /******/
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		var promises = [];
-/******/
-/******/
-/******/ 		// require() chunk loading for javascript
-/******/
-/******/ 		// "0" is the signal for "already loaded"
-/******/ 		if(installedChunks[chunkId] !== 0) {
-/******/ 			var chunk = require("../../../..//" + ({}[chunkId]||chunkId) + ".js");
-/******/ 			var moreModules = chunk.modules, chunkIds = chunk.ids;
-/******/ 			for(var moduleId in moreModules) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 			for(var i = 0; i < chunkIds.length; i++)
-/******/ 				installedChunks[chunkIds[i]] = 0;
-/******/ 		}
-/******/ 		return Promise.all(promises);
-/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -112,16 +86,9 @@ module.exports =
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/ 	// uncaught error handler for webpack runtime
-/******/ 	__webpack_require__.oe = function(err) {
-/******/ 		process.nextTick(function() {
-/******/ 			throw err; // catch this error by using import().catch()
-/******/ 		});
-/******/ 	};
-/******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2053,53 +2020,6 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./src/articles lazy recursive ^\\.\\/.*\\.md$":
-/*!*********************************************************!*\
-  !*** ./src/articles lazy ^\.\/.*\.md$ namespace object ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./edge-with-courage-reasonml.md": [
-		"./src/articles/edge-with-courage-reasonml.md",
-		0
-	],
-	"./how-types-improve-javascript.md": [
-		"./src/articles/how-types-improve-javascript.md",
-		1
-	],
-	"./intro-to-reasonml-variants.md": [
-		"./src/articles/intro-to-reasonml-variants.md",
-		2
-	],
-	"./reason-react-hooks-tutorial.md": [
-		"./src/articles/reason-react-hooks-tutorial.md",
-		3
-	]
-};
-function webpackAsyncContext(req) {
-	if(!__webpack_require__.o(map, req)) {
-		return Promise.resolve().then(function() {
-			var e = new Error("Cannot find module '" + req + "'");
-			e.code = 'MODULE_NOT_FOUND';
-			throw e;
-		});
-	}
-
-	var ids = map[req], id = ids[0];
-	return __webpack_require__.e(ids[1]).then(function() {
-		return __webpack_require__(id);
-	});
-}
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.id = "./src/articles lazy recursive ^\\.\\/.*\\.md$";
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
 /***/ "./src/components/Header.tsx":
 /*!***********************************!*\
   !*** ./src/components/Header.tsx ***!
@@ -2329,10 +2249,10 @@ function Meta(props) {
 
 /***/ }),
 
-/***/ "./src/pages/blog/[slug].tsx":
-/*!***********************************!*\
-  !*** ./src/pages/blog/[slug].tsx ***!
-  \***********************************/
+/***/ "./src/pages/about.tsx":
+/*!*****************************!*\
+  !*** ./src/pages/about.tsx ***!
+  \*****************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2340,80 +2260,89 @@ function Meta(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_markdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-markdown */ "react-markdown");
-/* harmony import */ var react_markdown__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_markdown__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gray-matter */ "gray-matter");
-/* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(gray_matter__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Layout */ "./src/components/Layout.tsx");
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/blog/[slug].tsx";
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Layout */ "./src/components/Layout.tsx");
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/about.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
-
-
-const Article = ({
-  content,
-  data
-}) => {
-  const {
-    title
-  } = data;
-  return __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_3__["default"], {
+const About = () => {
+  return __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 14
-    },
-    __self: undefined
-  }, __jsx("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 15
+      lineNumber: 6
     },
     __self: undefined
   }, __jsx("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 16
+      lineNumber: 7
     },
     __self: undefined
-  }, title), __jsx(react_markdown__WEBPACK_IMPORTED_MODULE_1___default.a, {
-    source: content,
+  }, "The About"), __jsx("p", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 17
+      lineNumber: 8
     },
     __self: undefined
-  })));
+  }, "I am Ian Wilson, a full stack developer that runs and enjoys music."), __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 9
+    },
+    __self: undefined
+  }, "I enjoy programming topics like JavaScript, Rust, ReasonML and GraphQL. I've written some articles about these which can be viewed on my profile at", __jsx("a", {
+    href: "https://dev.to/iwilsonq",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 12
+    },
+    __self: undefined
+  }, " dev.to"), " or here on this website."), __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 14
+    },
+    __self: undefined
+  }, "In the near future, I would like to get into making educational video content as well."), __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 18
+    },
+    __self: undefined
+  }, "Here's a neat exit quote."), __jsx("blockquote", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 19
+    },
+    __self: undefined
+  }, __jsx("b", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 20
+    },
+    __self: undefined
+  }, "You stay classy, San Diego"), " - ", __jsx("em", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 20
+    },
+    __self: undefined
+  }, "Ron Burgundy")));
 };
 
-Article.getInitialProps = async function (context) {
-  const {
-    slug
-  } = context.query;
-  const file = await __webpack_require__("./src/articles lazy recursive ^\\.\\/.*\\.md$")(`./${slug}.md`);
-  const {
-    data,
-    content
-  } = gray_matter__WEBPACK_IMPORTED_MODULE_2___default()(file.default);
-  return {
-    content,
-    data
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Article);
+/* harmony default export */ __webpack_exports__["default"] = (About);
 
 /***/ }),
 
-/***/ 4:
-/*!*****************************************!*\
-  !*** multi ./src/pages/blog/[slug].tsx ***!
-  \*****************************************/
+/***/ 3:
+/*!***********************************!*\
+  !*** multi ./src/pages/about.tsx ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/blog/[slug].tsx */"./src/pages/blog/[slug].tsx");
+module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/about.tsx */"./src/pages/about.tsx");
 
 
 /***/ }),
@@ -2473,17 +2402,6 @@ module.exports = require("core-js/library/fn/weak-map");
 
 /***/ }),
 
-/***/ "gray-matter":
-/*!******************************!*\
-  !*** external "gray-matter" ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("gray-matter");
-
-/***/ }),
-
 /***/ "next/head":
 /*!****************************!*\
   !*** external "next/head" ***!
@@ -2539,17 +2457,6 @@ module.exports = require("react");
 
 /***/ }),
 
-/***/ "react-markdown":
-/*!*********************************!*\
-  !*** external "react-markdown" ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("react-markdown");
-
-/***/ }),
-
 /***/ "styled-jsx/style":
 /*!***********************************!*\
   !*** external "styled-jsx/style" ***!
@@ -2573,4 +2480,4 @@ module.exports = require("url");
 /***/ })
 
 /******/ });
-//# sourceMappingURL=[slug].js.map
+//# sourceMappingURL=about.js.map

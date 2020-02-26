@@ -9,7 +9,7 @@ const About: NextPage = () => {
       <p>
         I enjoy programming topics like JavaScript, Rust, ReasonML and GraphQL. I've
         written some articles about these which can be viewed on my profile at
-        https://dev.to/iwilsonq or here on this website.
+        <a href="https://dev.to/iwilsonq"> dev.to</a> or here on this website.
       </p>
       <p>
         In the near future, I would like to get into making educational video
