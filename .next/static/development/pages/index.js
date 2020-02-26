@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/blog.js"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
 /***/ "./node_modules/@babel/runtime-corejs2/core-js/array/from.js":
 /*!*******************************************************************!*\
@@ -18997,21 +18997,21 @@ var assign=Object.assign.bind(Object);function g(){return assign;}Object.defineP
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fblog&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Fblog%2Findex.tsx!./":
-/*!*********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fblog&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Fblog%2Findex.tsx ***!
-  \*********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Findex.tsx!./":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Findex.tsx ***!
+  \**********************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-    (window.__NEXT_P=window.__NEXT_P||[]).push(["/blog", function() {
-      var mod = __webpack_require__(/*! ./src/pages/blog/index.tsx */ "./src/pages/blog/index.tsx")
+    (window.__NEXT_P=window.__NEXT_P||[]).push(["/", function() {
+      var mod = __webpack_require__(/*! ./src/pages/index.tsx */ "./src/pages/index.tsx")
       if(true) {
-        module.hot.accept(/*! ./src/pages/blog/index.tsx */ "./src/pages/blog/index.tsx", function() {
-          if(!next.router.components["/blog"]) return
-          var updatedPage = __webpack_require__(/*! ./src/pages/blog/index.tsx */ "./src/pages/blog/index.tsx")
-          next.router.update("/blog", updatedPage)
+        module.hot.accept(/*! ./src/pages/index.tsx */ "./src/pages/index.tsx", function() {
+          if(!next.router.components["/"]) return
+          var updatedPage = __webpack_require__(/*! ./src/pages/index.tsx */ "./src/pages/index.tsx")
+          next.router.update("/", updatedPage)
         })
       }
       return mod
@@ -26306,10 +26306,10 @@ function Meta(props) {
 
 /***/ }),
 
-/***/ "./src/pages/blog/index.tsx":
-/*!**********************************!*\
-  !*** ./src/pages/blog/index.tsx ***!
-  \**********************************/
+/***/ "./src/pages/index.tsx":
+/*!*****************************!*\
+  !*** ./src/pages/index.tsx ***!
+  \*****************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -26335,8 +26335,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var fast_sort__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! fast-sort */ "./node_modules/fast-sort/dist/sort.es.js");
 /* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! gray-matter */ "./node_modules/gray-matter/index.js");
 /* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(gray_matter__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/Layout */ "./src/components/Layout.tsx");
-/* harmony import */ var _components_BlogList__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/BlogList */ "./src/components/BlogList.tsx");
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../components/Layout */ "./src/components/Layout.tsx");
+/* harmony import */ var _components_BlogList__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../components/BlogList */ "./src/components/BlogList.tsx");
 
 
 
@@ -26345,7 +26345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/blog/index.tsx";
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/index.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement;
 
@@ -26362,20 +26362,20 @@ var Index = function Index(props) {
   return __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_11__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 14
+      lineNumber: 18
     },
     __self: this
   }, __jsx("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 15
+      lineNumber: 19
     },
     __self: this
   }, "The Blog"), __jsx(_components_BlogList__WEBPACK_IMPORTED_MODULE_12__["default"], {
     articles: props.articles,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 16
+      lineNumber: 20
     },
     __self: this
   }));
@@ -26388,7 +26388,7 @@ Index.getInitialProps = function _callee() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_6___default.a.awrap(__webpack_require__.e(/*! import() */ 5).then(__webpack_require__.t.bind(null, /*! ../../data/config.json */ "./src/data/config.json", 3)));
+          return _babel_runtime_corejs2_regenerator__WEBPACK_IMPORTED_MODULE_6___default.a.awrap(__webpack_require__.e(/*! import() */ 5).then(__webpack_require__.t.bind(null, /*! ../data/config.json */ "./src/data/config.json", 3)));
 
         case 2:
           siteConfig = _context.sent;
@@ -26434,14 +26434,14 @@ Index.getInitialProps = function _callee() {
 
 /***/ }),
 
-/***/ 4:
-/*!*************************************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2Fblog&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Fblog%2Findex.tsx ***!
-  \*************************************************************************************************************************************************************/
+/***/ 6:
+/*!**************************************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Findex.tsx ***!
+  \**************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2Fblog&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Fblog%2Findex.tsx! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fblog&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Fblog%2Findex.tsx!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Findex.tsx! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fianwilson%2Fui-workspace%2Fianwilson.io-next%2Fsrc%2Fpages%2Findex.tsx!./");
 
 
 /***/ }),
@@ -26457,5 +26457,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[4,"static/runtime/webpack.js"]]]);
-//# sourceMappingURL=blog.js.map
+},[[6,"static/runtime/webpack.js"]]]);
+//# sourceMappingURL=index.js.map

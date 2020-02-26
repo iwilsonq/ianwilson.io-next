@@ -6,7 +6,7 @@ module.exports =
 /******/ 	// object to store loaded chunks
 /******/ 	// "0" means "already loaded"
 /******/ 	var installedChunks = {
-/******/ 		"static/development/pages/blog.js": 0
+/******/ 		"static/development/pages/index.js": 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -121,7 +121,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2556,10 +2556,10 @@ function Meta(props) {
 
 /***/ }),
 
-/***/ "./src/pages/blog/index.tsx":
-/*!**********************************!*\
-  !*** ./src/pages/blog/index.tsx ***!
-  \**********************************/
+/***/ "./src/pages/index.tsx":
+/*!*****************************!*\
+  !*** ./src/pages/index.tsx ***!
+  \*****************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2571,9 +2571,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var fast_sort__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fast_sort__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gray-matter */ "gray-matter");
 /* harmony import */ var gray_matter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(gray_matter__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Layout */ "./src/components/Layout.tsx");
-/* harmony import */ var _components_BlogList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/BlogList */ "./src/components/BlogList.tsx");
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/blog/index.tsx";
+/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Layout */ "./src/components/Layout.tsx");
+/* harmony import */ var _components_BlogList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/BlogList */ "./src/components/BlogList.tsx");
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/index.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -2591,26 +2591,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 const Index = props => __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_3__["default"], {
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 14
+    lineNumber: 18
   },
   __self: undefined
 }, __jsx("h1", {
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 15
+    lineNumber: 19
   },
   __self: undefined
 }, "The Blog"), __jsx(_components_BlogList__WEBPACK_IMPORTED_MODULE_4__["default"], {
   articles: props.articles,
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 16
+    lineNumber: 20
   },
   __self: undefined
 }));
 
 Index.getInitialProps = async function () {
-  const siteConfig = await __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.t.bind(null, /*! ../../data/config.json */ "./src/data/config.json", 3));
+  const siteConfig = await __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.t.bind(null, /*! ../data/config.json */ "./src/data/config.json", 3));
 
   const context = __webpack_require__("./src/articles sync recursive \\.md$");
 
@@ -2635,14 +2635,14 @@ Index.getInitialProps = async function () {
 
 /***/ }),
 
-/***/ 5:
-/*!****************************************!*\
-  !*** multi ./src/pages/blog/index.tsx ***!
-  \****************************************/
+/***/ 7:
+/*!***********************************!*\
+  !*** multi ./src/pages/index.tsx ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/blog/index.tsx */"./src/pages/blog/index.tsx");
+module.exports = __webpack_require__(/*! /Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/index.tsx */"./src/pages/index.tsx");
 
 
 /***/ }),
@@ -2802,4 +2802,4 @@ module.exports = require("url");
 /***/ })
 
 /******/ });
-//# sourceMappingURL=blog.js.map
+//# sourceMappingURL=index.js.map
