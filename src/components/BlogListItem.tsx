@@ -27,11 +27,10 @@ const BlogListItem: React.FunctionComponent<Props> = ({ article }) => {
       <a>
         <div className="article">
           <div className="article-content">
-            <div className="article-hero">
-              <div className="hero-text">
-                <h2>{article.document.data.title}</h2>
-                <h3> {reformatDate(article.document.data.date)}</h3>
-              </div>
+            <div className="article-hero"></div>
+            <div className="hero-text">
+              <h2>{article.document.data.title}</h2>
+              <h3> {reformatDate(article.document.data.date)}</h3>
             </div>
           </div>
         </div>
@@ -43,12 +42,23 @@ const BlogListItem: React.FunctionComponent<Props> = ({ article }) => {
             width: 100%;
           }
           .article-hero {
+            position: relative;
             background: url(${article.document.data.hero_image}) center;
-            color: ${article.document.data.hero_image ? '#fff' : '#000'};
+            opacity: 0.3;
+            color: #000;
+            height: 200px;
           }
-          .article-content,
-          .hero-text {
+          .article-content {
+            position: relative;
             padding: 16px;
+          }
+
+          .hero-text {
+            color: #000;
+            padding: 16px;
+            position: absolute;
+            top: 0;
+            left: 16px;
           }
         `}</style>
       </a>

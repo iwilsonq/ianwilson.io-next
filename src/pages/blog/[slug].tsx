@@ -2,6 +2,7 @@ import { NextPage, NextPageContext } from 'next';
 import Markdown from 'react-markdown';
 import matter from 'gray-matter';
 import Layout from '../../components/Layout';
+import Meta from '../../components/Meta';
 
 interface Props {
   content: string;
@@ -9,9 +10,10 @@ interface Props {
 }
 
 const Article: NextPage<Props> = ({ content, data }) => {
-  const { title } = data;
+  const { title, description } = data;
   return (
     <Layout>
+      <Meta title={title} description={description} />
       <div>
         <h1>{title}</h1>
         <Markdown source={content} />

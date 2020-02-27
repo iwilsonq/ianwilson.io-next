@@ -1,9 +1,11 @@
 import { NextPage } from 'next';
 import Layout from '../components/Layout';
+import Meta from '../components/Meta';
 
 const About: NextPage = () => {
   return (
     <Layout>
+      <Meta title="The About" description="The Bio of Ian Wilson" />
       <h1>The About</h1>
       <p>I am Ian Wilson, a full stack developer that runs and enjoys music.</p>
       <p>

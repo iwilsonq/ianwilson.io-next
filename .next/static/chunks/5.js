@@ -7,7 +7,7 @@
 /*! exports provided: title, description, repositoryUrl, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"title\":\"ianwilson.io\",\"description\":\"Website of Ian Wilson\",\"repositoryUrl\":\"https://github.com/iwilsonq/ianwilson.io-next\"}");
+module.exports = JSON.parse("{\"title\":\"Ian Wilson\",\"description\":\"Learn about Rust, ReasonML, GraphQL, and other tech goodies.\",\"repositoryUrl\":\"https://github.com/iwilsonq/ianwilson.io-next\"}");
 
 /***/ })
 

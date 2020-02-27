@@ -13,7 +13,6 @@ console.log('robots.txt saved!');
 
 // SITEMAP.XML
 const pathsObj = getPathsObject();
-console.log(pathsObj);
 const sitemapXml = `<urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"

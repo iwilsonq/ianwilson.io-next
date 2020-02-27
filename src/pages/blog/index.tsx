@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 
 import Layout from '../../components/Layout';
 import BlogList from '../../components/BlogList';
+import Meta from '../../components/Meta';
 import { Article } from '..';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 const Index: NextPage<Props> = props => (
   <Layout>
+    <Meta title="The Blog" description="Learn from the written word" />
     <h1>The Blog</h1>
     <BlogList articles={props.articles} />
   </Layout>

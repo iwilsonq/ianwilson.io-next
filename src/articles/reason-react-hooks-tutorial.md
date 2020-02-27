@@ -7,6 +7,8 @@ tags: reason,javascript,react,tutorial
 hero_image: timer.png
 ---
 
+![](/timer.png)
+
 ReasonML is a programming language that combines the simplicity of JavaScript with the performance of OCaml. JavaScript programmers should give ReasonML a try. Reason's inherits OCaml's typesystem as well as the approachability of JavaScript.
 
 With [ReasonReact](https://reasonml.github.io/reason-react/) and [BuckleScript](https://bucklescript.github.io/), we can compile Reason code to JavaScript that works like good old React.

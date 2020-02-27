@@ -1,4 +1,36 @@
 {
+  "../../data/config.json": [
+    {
+      "id": "./src/data/config.json",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/5.js",
+      "publicPath": "static/chunks/5.js"
+    }
+  ],
+  "../data/config.json": [
+    {
+      "id": "./src/data/config.json",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/5.js",
+      "publicPath": "static/chunks/5.js"
+    }
+  ],
+  "./breaking-out-of-a-rut.md": [
+    {
+      "id": "./src/articles/breaking-out-of-a-rut.md",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/6.js",
+      "publicPath": "static/chunks/6.js"
+    }
+  ],
+  "./building-powerful-graphql-servers-with-rust.md": [
+    {
+      "id": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/7.js",
+      "publicPath": "static/chunks/7.js"
+    }
+  ],
   "./dev/noop": [
     {
       "id": "./node_modules/next/dist/client/dev/noop.js",
@@ -37,6 +69,14 @@
       "name": "./src/articles/reason-react-hooks-tutorial.md",
       "file": "static/chunks/4.js",
       "publicPath": "static/chunks/4.js"
+    }
+  ],
+  "./reasonml-with-graphql.md": [
+    {
+      "id": "./src/articles/reasonml-with-graphql.md",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/8.js",
+      "publicPath": "static/chunks/8.js"
     }
   ]
 }

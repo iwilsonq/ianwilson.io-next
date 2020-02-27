@@ -7,6 +7,8 @@ tags: reason,ocaml,javascript,fp
 hero_image: steps.jpg
 ---
 
+![](/steps.jpg)
+
 ReasonML has stolen my attention recently.
 
 If I'm not at work or running about, I am probably digging into some ReasonML/OCaml repositories like an addict in the tenderloin.

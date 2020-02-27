@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 
 import Layout from '../components/Layout';
 import BlogList from '../components/BlogList';
+import Meta from '../components/Meta';
 
 export interface Article {
   document: GrayMatterFile<any>;
@@ -16,6 +17,7 @@ interface Props {
 
 const Index: NextPage<Props> = props => (
   <Layout>
+    <Meta description="Ian Wilson's Personal Developer Blog & Site" />
     <h1>The Blog</h1>
     <BlogList articles={props.articles} />
   </Layout>
