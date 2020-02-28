@@ -460,4 +460,4 @@ If you want to quickly set up your own GraphQL server then check out my other ar
 
 I hope to write more articles about ReasonML and GraphQL in the future. If these interest you then by all means follow me on [Medium](https://medium.com/@iwilsonq) and on [Twitter](https://twitter.com/iwilsonq)!
 
-This article was originally published in [Open GraphQL on Medium](_https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8_).
+This article was originally published in _[Open GraphQL on Medium](https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8)_.

@@ -1,3 +1,4 @@
+import Footer from './Footer';
 import Header from './Header';
 
 interface Props {
@@ -10,6 +11,7 @@ const Layout: React.FunctionComponent<Props> = props => (
   <div className="layout">
     <Header />
     <div className="content">{props.children}</div>
+    <Footer />
     <style jsx global>
       {`
         @import url('https://fonts.googleapis.com/css?family=Lato:400,700|Lora&display=swap');

@@ -9,6 +9,10 @@ function Meta({ title, description }: Props): JSX.Element {
   const displayTitle = title ? `${title} | Ian Wilson` : 'Ian Wilson';
   return (
     <Head>
+      <script
+        src="https://kit.fontawesome.com/b7e94b07cc.js"
+        crossOrigin="anonymous"
+      ></script>
       <title>{displayTitle}</title>
       <meta name="Description" content={description}></meta>
       <meta name="viewport" content="width=device-width, initial-scale=1" />

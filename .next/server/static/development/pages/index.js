@@ -121,7 +121,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2179,7 +2179,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: ReasonML with GraphQL, the Future of Type-Safe Web Applications\ndescription: Build a small ReasonReact web application that consumes a GraphQL endpoint using reason-apollo\ntags: reason,graphql,javascript,fp\ndate: 2019-03-13T07:00:00.000Z\nslug: building-powerful-graphql-servers-with-rust\nhero_image: https://thepracticaldev.s3.amazonaws.com/i/aejew3ps1khqnw7gy0yk.png\n---\n\n![](https://thepracticaldev.s3.amazonaws.com/i/aejew3ps1khqnw7gy0yk.png)\n\n_I made this graphic myself_\n\nReasonML, also known as JavaScript-flavored OCaml, offers nearly impenetrable type safety for developing user interfaces. By adopting a static type system, you can eliminate an entire class of errors before your app is served.\n\nWe’re going to look into building a small web application that uses consumes a GraphQL endpoint using ReasonML. We’ll cover:\n\n- getting started with a ReasonReact project\n- setting up a client with reason-apollo\n- sending queries\n- mutating data\n\nIf you’re new to both GraphQL and ReasonML, I’d suggest learning one at a time. Learning more than one big thing at once is often difficult for me. If you’re experienced with JavaScript and GraphQL, but want to learn ReasonML, read on, but keep the [docs](https://reasonml.github.io) handy.\n\n## Getting Started - Establishing a ReasonReact Project\n\nIn order to get going with ReasonML, we must first install the cli, `bsb-platform` that handles bootstrapping the project. You should also get an editor plugin that helps with developing ReasonML apps. If you’re using VSCode, reason-vscode by Jared Forsyth is my preferred plugin.\n\n```bash\nnpm install -g bsb-platform\n```\n\nThis installs the BuckleScript compiler that turns our ReasonML into wonderful JavaScript which has already been type-checked and can be run in the browser.\n\nNow we can initialize our project and hop right in.\n\n```bash\nbsb -init reason-graphql-example -theme react\ncd reason-graphql-example\nnpm install\n```\n\n- The `init` argument specifies the name of the project we’re initializing.\n- The `theme` argument specifies the template we wish to use. I usually just choose the react theme.\n- We run `npm install` to install dependences just like in any other JavaScript project.\n\nWith the project scaffolded, we can try to build it. In two separate terminal panes, run:\n\n```bash\nnpm start\n# and\nnpm run webpack\n```\n\n- `npm start` tells BuckleScript (bsb) to build the project watch for changes to your .re files.\n- `npm run webpack` fires up webpack to build your main JavaScript bundle\n\n_Quick tip: you’ll notice that the webpack output is in the **build** folder but the index.html file is in the **src** folder. We can make serving the project a little bit easier by moving the index.html file to the build folder and rewriting the script tag to point at the adjacent Index.js file. _\n\nWith all that taken care of, you can serve your build folder using `http-server build` or `serve build` and check out the project.\n\n![initial screen](https://thepracticaldev.s3.amazonaws.com/i/sfcjd5lxm76wsycbrcny.png)\n\nWhen I’m developing a ReasonML project, I’m running 3 terminal tabs:\n\n1. `npm start` to transpile ReasonML to JavaScript\n2. `npm run webpack` to bundle JavaScript\n3. `serve build` to actually serve the build on a port\n\nBefore we can get to the fun stuff, we still must clear out the boilerplate and set up react-apollo.\n\nGo ahead and remove the Component1 and Component2 files, and then update Index.re to the following:\n\n```ocaml\nReactDOMRe.renderToElementWithId(<App />, \"root\");\n```\n\nUpdate index.html to:\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>ReasonML GraphQL Example</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n\n    <script src=\"./Index.js\"></script>\n  </body>\n</html>\n```\n\nFinally, create an App.re file and add the following:\n\n```ocaml\n/* App.re */\nlet str = ReasonReact.string;\nlet component = ReasonReact.statelessComponent(\"App\");\n\nlet make = _children => {\n  ...component,\n  render: _self =>\n\t<div>\n\t  <h1> {\"Hello ReasonReact\" |> str} </h1>\n\t</div>\n};\n```\n\nYou might have to re-run your terminal commands, but with all that said and done, you should have something like this appear on your screen:\n\n![hello reason react](https://thepracticaldev.s3.amazonaws.com/i/7732nf5s6g7o93r406rp.png)\n\nIt feels like a lot of effort to get started, but accepting early friction for a smoother experience later on is the tradeoff here.\n\n## Initializing Reason Apollo\n\nIn order to get set up with Apollo we’re going to run:\n\n```bash\nnpm install -S reason-apollo react-apollo apollo-client apollo-cache-inmemory apollo-link apollo-link-context apollo-link-error apollo-link-http graphql graphql-tag apollo-link-ws apollo-upload-client subscriptions-transport-ws\n```\n\nThat looks like a big install command. It is, but only the first package, reason-apollo, is consumed in our ReasonML code. However, reason-apollo is a library of binding labels depends on these other JavaScript packages.\n\nIn order to make writing GraphQL queries more friendly we’ll need one more dev dependency.\n\n```bash\nnpm install -D graphql_ppx\n```\n\nAs that installs we can open up our bsconfig.json file and update the “bs-dependencies” and “ppx-flags” keys like so:\n\n```json\n// bsconfig.json\n{\n  \"bs-dependencies\": [\"reason-react\", \"reason-apollo\"],\n  \"ppx-flags\": [\"graphql_ppx/ppx\"]\n\n  // other fields...\n}\n```\n\nThe “bs-dependencies” array tells BuckleScript to include those npm modules in the build process. The ppx flags array lets our IDE know how to handle preprocess certain directives, GraphQL in our case.\n\nCreate a file inside the src folder called Client.re. This is where we will declare our instance of the Apollo Client.\n\n```ocaml\n/* Client.re */\nlet inMemoryCache = ApolloInMemoryCache.createInMemoryCache();\n\nlet httpLink =\n  ApolloLinks.createHttpLink(~uri=\"https://video-game-api-pvibqsoxza.now.sh/graphql\", ());\n\nlet instance =\n  ReasonApollo.createApolloClient(~link=httpLink, ~cache=inMemoryCache, ());\n```\n\n> Note: If this uri, https://video-game-api-pvibqsoxza.now.sh/graphql does not work, please send me a message on twitter or here in the comments and I’ll update that as quickly as possible\n\nWhen we work with ReasonML, any variable that we create with a `let` binding is automatically exported from the module for us.\n\nWith the instance created, we can reference it in any of our other .re files. Update Index.re to the following:\n\n```ocaml\n/* Index.re */\nReactDOMRe.renderToElementWithId(\n  <ReasonApollo.Provider client=Client.instance>\n    <App />\n  </ReasonApollo.Provider>,\n  \"root\",\n);\n```\n\nIt looks a little like a standard React JS application, with a couple caveats. Notice that there are no import statements. In ReasonML, we have access to all of the namespaces built in our application. From the perspective of Index.re, We can see the `Client` and the `App` modules.\n\nWhen we create a .re file in our src folder, it becomes a module. We could also declare our modules explicitly within our files.\n\nIt is now time to consume our API.\n\n## Sending Queries and Rendering a List\n\nWhile writing this article I created a small Node GraphQL server, the code of which is available at [this repo](https://github.com/iwilsonq/video-game-api). To keep costs low, I declared an array of mock data to return on each GraphQL request rather than host a database.\n\nRather than create a todo app, I decided to create a list of video games that I played at some point long ago. Then, I could check if I finished it or not, thus remembering the games that I still haven’t beat.\n\nAs we are working with a GraphQL server, we should be able to figure out exactly how to call it by observing the schema.\n\n```Graphql\n  type VideoGame {\n    id: ID!\n    title: String!\n    developer: String!\n    completed: Boolean!\n  }\n\n  type Query {\n    videoGames: [VideoGame!]!\n  }\n\n  type Mutation {\n    completeGame(id: ID!): VideoGame!\n  }\n```\n\nCurrently, we have one query and one mutation, both of which operate around this `VideoGame` type. A GraphQL adept will notice that every return value is non-nullable, that is, these responses cannot return unset fields or null objects.\n\nSoon we’ll see why all of the !’s are particularly important for our ReasonML code.\n\nLet’s begin by defining the query in on top of App.re, just below the `component` declaration.\n\n```ocaml\n/* App.re */\n\nmodule VideoGames = [%graphql\n  {|\n  query VideoGames {\n    videoGames {\n      id\n      title\n      developer\n      completed\n    }\n  }\n|}\n];\n\nmodule VideoGamesQuery = ReasonApollo.CreateQuery(VideoGames);\n\n/* let make = ... */\n```\n\nComparing with the JavaScript in react-apollo, this code would be most analogous to:\n\n```js\nconst VideoGames = gql`\n  query VideoGames {\n    videoGames {\n      id\n      title\n      developer\n      completed\n    }\n  }\n`\n\n// later in render\nrender() {\n  return (\n    <Query query={VideoGames}> {/* ... */} </Query>\n  )\n}\n\n```\n\nNow let’s update the render function:\n\n```ocaml\n/* App.re */\nlet make = _children => {\n  ...component,\n  render: _self => {\n\tlet videoGamesQuery = VideoGames.make();\n\t<div>\n\t\t<h1> {\"ReasonML + ReasonReact + GraphQL\" |> str} </h1>\n\t\t<VideoGamesQuery variables=videoGamesQuery##variables>\n        ...{\n             ({result}) =>\n               switch (result) {\n               | Loading => <div> {\"Loading video games!\" |> str} </div>\n               | Error(error) => <div> {error##message |> str} </div>\n               | Data(data) => <VideoGameList items=data##videoGames />\n               }\n           }\n      </VideoGamesQuery>\n\t</div>;\n  }\n};\n```\n\nHere, we’re taking advantage of ReasonML’s coolest feature - [pattern matching](https://reasonml.github.io/docs/en/pattern-matching). Pattern matching combined with [variants](https://reasonml.github.io/docs/en/variant) makes the logic that you would otherwise put in branches of if-else statements more linear and easier to follow. It is also reduces branch checking to [constant rather than linear time](https://reasonml.github.io/docs/en/variant), making it more efficient.\n\nIf the ReasonML code ever seems more verbose, just remember we’re still getting perfect type safety when it compiles. We still need to build the `VideoGamesList` component as well as define the `videoGame` record type.\n\nStarting with the record type, create a new file called VideoGame.re and add the following:\n\n```ocaml\n/* VideoGame.re */\n\n[@bs.deriving jsConverter]\ntype videoGame = {\n  id: string,\n  title: string,\n  developer: string,\n  completed: bool,\n};\n```\n\nThe `videoGame` type as we have it here, has 4 fields, none of which are optional. The BuckleScript directive above it adds a pair of exported utility methods that allow us to [convert between ReasonML records and JavaScript objects](https://bucklescript.github.io/docs/en/generate-converters-accessors).\n\n> Tip: when Apollo returns a response, it returns untyped JavaScript objects. The `jsConverter` directive gives us an exported method called `videoGameFromJs` that we can use to map the Apollo query data to fully typed ReasonML.\n\nTo see this mechanic in action, create a new file called VideoGameList.re and add:\n\n```ocaml\n/* VideoGameList.re */\nopen VideoGame;\n\nlet str = ReasonReact.string;\nlet component = ReasonReact.statelessComponent(\"VideoGameList\");\n\nlet make = (~items, _children) => {\n  ...component,\n  render: _self =>\n    <ul style={ReactDOMRe.Style.make(~listStyleType=\"none\", ())}>\n      {\n        items\n        |> Array.map(videoGameFromJs)\n        |> Array.map(item =>\n             <li key={item.id}>\n             \t<input\n                  id={item.id}\n                  type_=\"checkbox\"\n                  checked={item.completed}\n                />\n                <label htmlFor={item.id}>\n                  {item.title ++ \" | \" ++ item.developer |> str}\n                </label>\n             </li>\n           )\n        |> ReasonReact.array\n      }\n    </ul>,\n};\n```\n\n1. Open the `VideoGame` module (VideoGame.re) at the top so we can use all of it’s exports in the `VideoGameList` module.\n2. Declare the component type and string rendering shorthand.\n3. Define a make function that expects one prop, `items`.\n4. Inside the render function, pipe the items to convert JS objects to ReasonML records, map records to JSX, and finally output them as an array.\n\n> Note: Piping basically reverses the order of function calls to potentially improve readability. With the `|>` operator, the `items` object is applied to each function as the _last_ argument.\n\nThough I like prefer the piping style, the following are equivalent.\n\n```ocaml\nitems\n\t|> Array.map(videoGameFromJs)\n\t|> Array.map(renderItem)\n\t|> ReasonReact.array;\n\nReasonReact.array(\n\tArray.map(\n\t\trenderItem,\n\t\tArray.map(\n\t\t\tvideoGameFromJs,\n\t\t\titems\n\t\t)\n\t)\n);\n```\n\nI think we are ready to once again compile and serve our project. If you haven’t already, run this command in your project root:\n\n```bash\nyarn send-introspection-query https://video-game-api-pvibqsoxza.now.sh/graphql\n```\n\nThis generates a `graphql_schema.json` file that Reason Apollo uses to type check your queries. If your ReasonML app asks for a field that isn’t on the schema, or if it doesn’t properly handle optional data types, it will not compile.\n\nThe strict typing serves as a wonderful sanity check for writing queries and mutations.\n\nWhen all is said and done, you should see the following.\n\n![finished screen](https://thepracticaldev.s3.amazonaws.com/i/96prj40pfw9frc23j68r.png)\n\nDon’t yell at me for not finishing the main story in Skyrim.\n\n## Mutating Data\n\nOne thing you may notice thus far is that clicking the checkboxes doesn’t do anything. This is expected, since we have not yet wired up a mutation.\n\nLet us begin by recalling our schema above, and creating a module for the mutation to mark a game completed.\n\nInside VideoGameList.re, add these modules to the top of the file just beneath the call to create a component.\n\n```ocaml\n/* VideoGameList.re */\nmodule CompleteGame = [%graphql\n  {|\n  mutation CompleteGame($id: ID!) {\n    completeGame(id: $id) {\n      id\n      completed\n    }\n  }\n|}\n];\n\nmodule CompleteGameMutation = ReasonApollo.CreateMutation(CompleteGame);\n```\n\nFor the render prop of the mutation, it’ll look pretty similar to the JavaScript version. I’ll put this code here and then walk through it, starting from inside the `<li>` tag.\n\n```ocaml\n/* VideoGameList.re */\n\n<li key={item.id}>\n  <CompleteGameMutation>\n    ...{\n        (mutate, {result}) => {\n          let loading = result == Loading;\n          <div>\n            <input\n              id={item.id}\n              type_=\"checkbox\"\n              checked={item.completed}\n              onChange={\n                _event => {\n                  let completeGame =\n                    CompleteGame.make(~id=item.id, ());\n                  mutate(~variables=completeGame##variables, ())\n                  |> ignore;\n                }\n              }\n            />\n            <label\n              htmlFor={item.id}\n              style={\n                ReactDOMRe.Style.make(\n                  ~color=loading ? \"orange\" : \"default\",\n                  (),\n                )\n              }>\n              {item.title ++ \" | \" ++ item.developer |> str}\n            </label>\n          </div>;\n        }\n      }\n  </CompleteGameMutation>\n</li>\n```\n\nLike the Apollo `VideoGamesQuery` component we used earlier, the `CompleteGameMutation` component we see here passes to its children a mutate function as well as a results object.\n\nThis particular component is not the best example to show off how you could use that results object, as I only take advantage of it when a single item is being updated. If it is, I color the text of the item label green and call that the loading state.\n\nI’m no UX guy, but I think that’ll do for today.\n\n## Wrapping Up\n\nReasonML is a pretty powerful and expressive language. If you are new to ReasonML and itching to build some type safe user interfaces, here are some resources to learn from:\n\n1. Many of the third party tools we use in JavaScript come out of the box with ReasonML. This [article by David Kopal explains how](https://medium.freecodecamp.org/psst-heres-why-reasonreact-is-the-best-way-to-write-react-5088d434d035?source=linkShare-2467058898a1-1543182271), along with some other reasons why writing ReasonML is so cool.\n2. [Jared Forsyth’s blog](https://jaredforsyth.com) has great content about ReasonML and OCaml. He is one of the most active contributors to the community.\n3. I get most of my learning done through the [ReasonML docs](reasonml.github.io) and the [BuckleScript docs](bucklescript.github.io). They are easy to follow and contain powerful insights on the design choices when implementing language features.\n\nIf you want to quickly set up your own GraphQL server then check out my other article, [Learn to Build a GraphQL Server with Minimal Effort](https://medium.freecodecamp.org/learn-to-build-a-graphql-server-with-minimal-effort-fc7fcabe8ebd).\n\nI hope to write more articles about ReasonML and GraphQL in the future. If these interest you then by all means follow me on [Medium](https://medium.com/@iwilsonq) and on [Twitter](https://twitter.com/iwilsonq)!\n\nThis article was originally published in [Open GraphQL on Medium](_https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8_).\n");
+/* harmony default export */ __webpack_exports__["default"] = ("---\ntitle: ReasonML with GraphQL, the Future of Type-Safe Web Applications\ndescription: Build a small ReasonReact web application that consumes a GraphQL endpoint using reason-apollo\ntags: reason,graphql,javascript,fp\ndate: 2019-03-13T07:00:00.000Z\nslug: building-powerful-graphql-servers-with-rust\nhero_image: https://thepracticaldev.s3.amazonaws.com/i/aejew3ps1khqnw7gy0yk.png\n---\n\n![](https://thepracticaldev.s3.amazonaws.com/i/aejew3ps1khqnw7gy0yk.png)\n\n_I made this graphic myself_\n\nReasonML, also known as JavaScript-flavored OCaml, offers nearly impenetrable type safety for developing user interfaces. By adopting a static type system, you can eliminate an entire class of errors before your app is served.\n\nWe’re going to look into building a small web application that uses consumes a GraphQL endpoint using ReasonML. We’ll cover:\n\n- getting started with a ReasonReact project\n- setting up a client with reason-apollo\n- sending queries\n- mutating data\n\nIf you’re new to both GraphQL and ReasonML, I’d suggest learning one at a time. Learning more than one big thing at once is often difficult for me. If you’re experienced with JavaScript and GraphQL, but want to learn ReasonML, read on, but keep the [docs](https://reasonml.github.io) handy.\n\n## Getting Started - Establishing a ReasonReact Project\n\nIn order to get going with ReasonML, we must first install the cli, `bsb-platform` that handles bootstrapping the project. You should also get an editor plugin that helps with developing ReasonML apps. If you’re using VSCode, reason-vscode by Jared Forsyth is my preferred plugin.\n\n```bash\nnpm install -g bsb-platform\n```\n\nThis installs the BuckleScript compiler that turns our ReasonML into wonderful JavaScript which has already been type-checked and can be run in the browser.\n\nNow we can initialize our project and hop right in.\n\n```bash\nbsb -init reason-graphql-example -theme react\ncd reason-graphql-example\nnpm install\n```\n\n- The `init` argument specifies the name of the project we’re initializing.\n- The `theme` argument specifies the template we wish to use. I usually just choose the react theme.\n- We run `npm install` to install dependences just like in any other JavaScript project.\n\nWith the project scaffolded, we can try to build it. In two separate terminal panes, run:\n\n```bash\nnpm start\n# and\nnpm run webpack\n```\n\n- `npm start` tells BuckleScript (bsb) to build the project watch for changes to your .re files.\n- `npm run webpack` fires up webpack to build your main JavaScript bundle\n\n_Quick tip: you’ll notice that the webpack output is in the **build** folder but the index.html file is in the **src** folder. We can make serving the project a little bit easier by moving the index.html file to the build folder and rewriting the script tag to point at the adjacent Index.js file. _\n\nWith all that taken care of, you can serve your build folder using `http-server build` or `serve build` and check out the project.\n\n![initial screen](https://thepracticaldev.s3.amazonaws.com/i/sfcjd5lxm76wsycbrcny.png)\n\nWhen I’m developing a ReasonML project, I’m running 3 terminal tabs:\n\n1. `npm start` to transpile ReasonML to JavaScript\n2. `npm run webpack` to bundle JavaScript\n3. `serve build` to actually serve the build on a port\n\nBefore we can get to the fun stuff, we still must clear out the boilerplate and set up react-apollo.\n\nGo ahead and remove the Component1 and Component2 files, and then update Index.re to the following:\n\n```ocaml\nReactDOMRe.renderToElementWithId(<App />, \"root\");\n```\n\nUpdate index.html to:\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>ReasonML GraphQL Example</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n\n    <script src=\"./Index.js\"></script>\n  </body>\n</html>\n```\n\nFinally, create an App.re file and add the following:\n\n```ocaml\n/* App.re */\nlet str = ReasonReact.string;\nlet component = ReasonReact.statelessComponent(\"App\");\n\nlet make = _children => {\n  ...component,\n  render: _self =>\n\t<div>\n\t  <h1> {\"Hello ReasonReact\" |> str} </h1>\n\t</div>\n};\n```\n\nYou might have to re-run your terminal commands, but with all that said and done, you should have something like this appear on your screen:\n\n![hello reason react](https://thepracticaldev.s3.amazonaws.com/i/7732nf5s6g7o93r406rp.png)\n\nIt feels like a lot of effort to get started, but accepting early friction for a smoother experience later on is the tradeoff here.\n\n## Initializing Reason Apollo\n\nIn order to get set up with Apollo we’re going to run:\n\n```bash\nnpm install -S reason-apollo react-apollo apollo-client apollo-cache-inmemory apollo-link apollo-link-context apollo-link-error apollo-link-http graphql graphql-tag apollo-link-ws apollo-upload-client subscriptions-transport-ws\n```\n\nThat looks like a big install command. It is, but only the first package, reason-apollo, is consumed in our ReasonML code. However, reason-apollo is a library of binding labels depends on these other JavaScript packages.\n\nIn order to make writing GraphQL queries more friendly we’ll need one more dev dependency.\n\n```bash\nnpm install -D graphql_ppx\n```\n\nAs that installs we can open up our bsconfig.json file and update the “bs-dependencies” and “ppx-flags” keys like so:\n\n```json\n// bsconfig.json\n{\n  \"bs-dependencies\": [\"reason-react\", \"reason-apollo\"],\n  \"ppx-flags\": [\"graphql_ppx/ppx\"]\n\n  // other fields...\n}\n```\n\nThe “bs-dependencies” array tells BuckleScript to include those npm modules in the build process. The ppx flags array lets our IDE know how to handle preprocess certain directives, GraphQL in our case.\n\nCreate a file inside the src folder called Client.re. This is where we will declare our instance of the Apollo Client.\n\n```ocaml\n/* Client.re */\nlet inMemoryCache = ApolloInMemoryCache.createInMemoryCache();\n\nlet httpLink =\n  ApolloLinks.createHttpLink(~uri=\"https://video-game-api-pvibqsoxza.now.sh/graphql\", ());\n\nlet instance =\n  ReasonApollo.createApolloClient(~link=httpLink, ~cache=inMemoryCache, ());\n```\n\n> Note: If this uri, https://video-game-api-pvibqsoxza.now.sh/graphql does not work, please send me a message on twitter or here in the comments and I’ll update that as quickly as possible\n\nWhen we work with ReasonML, any variable that we create with a `let` binding is automatically exported from the module for us.\n\nWith the instance created, we can reference it in any of our other .re files. Update Index.re to the following:\n\n```ocaml\n/* Index.re */\nReactDOMRe.renderToElementWithId(\n  <ReasonApollo.Provider client=Client.instance>\n    <App />\n  </ReasonApollo.Provider>,\n  \"root\",\n);\n```\n\nIt looks a little like a standard React JS application, with a couple caveats. Notice that there are no import statements. In ReasonML, we have access to all of the namespaces built in our application. From the perspective of Index.re, We can see the `Client` and the `App` modules.\n\nWhen we create a .re file in our src folder, it becomes a module. We could also declare our modules explicitly within our files.\n\nIt is now time to consume our API.\n\n## Sending Queries and Rendering a List\n\nWhile writing this article I created a small Node GraphQL server, the code of which is available at [this repo](https://github.com/iwilsonq/video-game-api). To keep costs low, I declared an array of mock data to return on each GraphQL request rather than host a database.\n\nRather than create a todo app, I decided to create a list of video games that I played at some point long ago. Then, I could check if I finished it or not, thus remembering the games that I still haven’t beat.\n\nAs we are working with a GraphQL server, we should be able to figure out exactly how to call it by observing the schema.\n\n```Graphql\n  type VideoGame {\n    id: ID!\n    title: String!\n    developer: String!\n    completed: Boolean!\n  }\n\n  type Query {\n    videoGames: [VideoGame!]!\n  }\n\n  type Mutation {\n    completeGame(id: ID!): VideoGame!\n  }\n```\n\nCurrently, we have one query and one mutation, both of which operate around this `VideoGame` type. A GraphQL adept will notice that every return value is non-nullable, that is, these responses cannot return unset fields or null objects.\n\nSoon we’ll see why all of the !’s are particularly important for our ReasonML code.\n\nLet’s begin by defining the query in on top of App.re, just below the `component` declaration.\n\n```ocaml\n/* App.re */\n\nmodule VideoGames = [%graphql\n  {|\n  query VideoGames {\n    videoGames {\n      id\n      title\n      developer\n      completed\n    }\n  }\n|}\n];\n\nmodule VideoGamesQuery = ReasonApollo.CreateQuery(VideoGames);\n\n/* let make = ... */\n```\n\nComparing with the JavaScript in react-apollo, this code would be most analogous to:\n\n```js\nconst VideoGames = gql`\n  query VideoGames {\n    videoGames {\n      id\n      title\n      developer\n      completed\n    }\n  }\n`\n\n// later in render\nrender() {\n  return (\n    <Query query={VideoGames}> {/* ... */} </Query>\n  )\n}\n\n```\n\nNow let’s update the render function:\n\n```ocaml\n/* App.re */\nlet make = _children => {\n  ...component,\n  render: _self => {\n\tlet videoGamesQuery = VideoGames.make();\n\t<div>\n\t\t<h1> {\"ReasonML + ReasonReact + GraphQL\" |> str} </h1>\n\t\t<VideoGamesQuery variables=videoGamesQuery##variables>\n        ...{\n             ({result}) =>\n               switch (result) {\n               | Loading => <div> {\"Loading video games!\" |> str} </div>\n               | Error(error) => <div> {error##message |> str} </div>\n               | Data(data) => <VideoGameList items=data##videoGames />\n               }\n           }\n      </VideoGamesQuery>\n\t</div>;\n  }\n};\n```\n\nHere, we’re taking advantage of ReasonML’s coolest feature - [pattern matching](https://reasonml.github.io/docs/en/pattern-matching). Pattern matching combined with [variants](https://reasonml.github.io/docs/en/variant) makes the logic that you would otherwise put in branches of if-else statements more linear and easier to follow. It is also reduces branch checking to [constant rather than linear time](https://reasonml.github.io/docs/en/variant), making it more efficient.\n\nIf the ReasonML code ever seems more verbose, just remember we’re still getting perfect type safety when it compiles. We still need to build the `VideoGamesList` component as well as define the `videoGame` record type.\n\nStarting with the record type, create a new file called VideoGame.re and add the following:\n\n```ocaml\n/* VideoGame.re */\n\n[@bs.deriving jsConverter]\ntype videoGame = {\n  id: string,\n  title: string,\n  developer: string,\n  completed: bool,\n};\n```\n\nThe `videoGame` type as we have it here, has 4 fields, none of which are optional. The BuckleScript directive above it adds a pair of exported utility methods that allow us to [convert between ReasonML records and JavaScript objects](https://bucklescript.github.io/docs/en/generate-converters-accessors).\n\n> Tip: when Apollo returns a response, it returns untyped JavaScript objects. The `jsConverter` directive gives us an exported method called `videoGameFromJs` that we can use to map the Apollo query data to fully typed ReasonML.\n\nTo see this mechanic in action, create a new file called VideoGameList.re and add:\n\n```ocaml\n/* VideoGameList.re */\nopen VideoGame;\n\nlet str = ReasonReact.string;\nlet component = ReasonReact.statelessComponent(\"VideoGameList\");\n\nlet make = (~items, _children) => {\n  ...component,\n  render: _self =>\n    <ul style={ReactDOMRe.Style.make(~listStyleType=\"none\", ())}>\n      {\n        items\n        |> Array.map(videoGameFromJs)\n        |> Array.map(item =>\n             <li key={item.id}>\n             \t<input\n                  id={item.id}\n                  type_=\"checkbox\"\n                  checked={item.completed}\n                />\n                <label htmlFor={item.id}>\n                  {item.title ++ \" | \" ++ item.developer |> str}\n                </label>\n             </li>\n           )\n        |> ReasonReact.array\n      }\n    </ul>,\n};\n```\n\n1. Open the `VideoGame` module (VideoGame.re) at the top so we can use all of it’s exports in the `VideoGameList` module.\n2. Declare the component type and string rendering shorthand.\n3. Define a make function that expects one prop, `items`.\n4. Inside the render function, pipe the items to convert JS objects to ReasonML records, map records to JSX, and finally output them as an array.\n\n> Note: Piping basically reverses the order of function calls to potentially improve readability. With the `|>` operator, the `items` object is applied to each function as the _last_ argument.\n\nThough I like prefer the piping style, the following are equivalent.\n\n```ocaml\nitems\n\t|> Array.map(videoGameFromJs)\n\t|> Array.map(renderItem)\n\t|> ReasonReact.array;\n\nReasonReact.array(\n\tArray.map(\n\t\trenderItem,\n\t\tArray.map(\n\t\t\tvideoGameFromJs,\n\t\t\titems\n\t\t)\n\t)\n);\n```\n\nI think we are ready to once again compile and serve our project. If you haven’t already, run this command in your project root:\n\n```bash\nyarn send-introspection-query https://video-game-api-pvibqsoxza.now.sh/graphql\n```\n\nThis generates a `graphql_schema.json` file that Reason Apollo uses to type check your queries. If your ReasonML app asks for a field that isn’t on the schema, or if it doesn’t properly handle optional data types, it will not compile.\n\nThe strict typing serves as a wonderful sanity check for writing queries and mutations.\n\nWhen all is said and done, you should see the following.\n\n![finished screen](https://thepracticaldev.s3.amazonaws.com/i/96prj40pfw9frc23j68r.png)\n\nDon’t yell at me for not finishing the main story in Skyrim.\n\n## Mutating Data\n\nOne thing you may notice thus far is that clicking the checkboxes doesn’t do anything. This is expected, since we have not yet wired up a mutation.\n\nLet us begin by recalling our schema above, and creating a module for the mutation to mark a game completed.\n\nInside VideoGameList.re, add these modules to the top of the file just beneath the call to create a component.\n\n```ocaml\n/* VideoGameList.re */\nmodule CompleteGame = [%graphql\n  {|\n  mutation CompleteGame($id: ID!) {\n    completeGame(id: $id) {\n      id\n      completed\n    }\n  }\n|}\n];\n\nmodule CompleteGameMutation = ReasonApollo.CreateMutation(CompleteGame);\n```\n\nFor the render prop of the mutation, it’ll look pretty similar to the JavaScript version. I’ll put this code here and then walk through it, starting from inside the `<li>` tag.\n\n```ocaml\n/* VideoGameList.re */\n\n<li key={item.id}>\n  <CompleteGameMutation>\n    ...{\n        (mutate, {result}) => {\n          let loading = result == Loading;\n          <div>\n            <input\n              id={item.id}\n              type_=\"checkbox\"\n              checked={item.completed}\n              onChange={\n                _event => {\n                  let completeGame =\n                    CompleteGame.make(~id=item.id, ());\n                  mutate(~variables=completeGame##variables, ())\n                  |> ignore;\n                }\n              }\n            />\n            <label\n              htmlFor={item.id}\n              style={\n                ReactDOMRe.Style.make(\n                  ~color=loading ? \"orange\" : \"default\",\n                  (),\n                )\n              }>\n              {item.title ++ \" | \" ++ item.developer |> str}\n            </label>\n          </div>;\n        }\n      }\n  </CompleteGameMutation>\n</li>\n```\n\nLike the Apollo `VideoGamesQuery` component we used earlier, the `CompleteGameMutation` component we see here passes to its children a mutate function as well as a results object.\n\nThis particular component is not the best example to show off how you could use that results object, as I only take advantage of it when a single item is being updated. If it is, I color the text of the item label green and call that the loading state.\n\nI’m no UX guy, but I think that’ll do for today.\n\n## Wrapping Up\n\nReasonML is a pretty powerful and expressive language. If you are new to ReasonML and itching to build some type safe user interfaces, here are some resources to learn from:\n\n1. Many of the third party tools we use in JavaScript come out of the box with ReasonML. This [article by David Kopal explains how](https://medium.freecodecamp.org/psst-heres-why-reasonreact-is-the-best-way-to-write-react-5088d434d035?source=linkShare-2467058898a1-1543182271), along with some other reasons why writing ReasonML is so cool.\n2. [Jared Forsyth’s blog](https://jaredforsyth.com) has great content about ReasonML and OCaml. He is one of the most active contributors to the community.\n3. I get most of my learning done through the [ReasonML docs](reasonml.github.io) and the [BuckleScript docs](bucklescript.github.io). They are easy to follow and contain powerful insights on the design choices when implementing language features.\n\nIf you want to quickly set up your own GraphQL server then check out my other article, [Learn to Build a GraphQL Server with Minimal Effort](https://medium.freecodecamp.org/learn-to-build-a-graphql-server-with-minimal-effort-fc7fcabe8ebd).\n\nI hope to write more articles about ReasonML and GraphQL in the future. If these interest you then by all means follow me on [Medium](https://medium.com/@iwilsonq) and on [Twitter](https://twitter.com/iwilsonq)!\n\nThis article was originally published in _[Open GraphQL on Medium](https://medium.com/open-graphql/reasonml-with-graphql-the-future-of-type-safe-web-applications-65be2e8f34c8)_.\n");
 
 /***/ }),
 
@@ -2237,10 +2237,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! date-fns */ "date-fns");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(date_fns__WEBPACK_IMPORTED_MODULE_3__);
 var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogListItem.tsx";
 
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
 
 
 function truncateSummary(content) {
@@ -2256,13 +2259,18 @@ function truncateSummary(content) {
 }
 
 function reformatDate(fullDate) {
-  const date = new Date(fullDate);
-  return date.toDateString().slice(4);
+  return Object(date_fns__WEBPACK_IMPORTED_MODULE_3__["format"])(new Date(fullDate), 'MMM d, yyyy');
 }
 
 const BlogListItem = ({
   article
 }) => {
+  const {
+    title,
+    description,
+    tags,
+    date
+  } = article.document.data;
   return __jsx(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
     key: article.slug,
     href: {
@@ -2274,61 +2282,80 @@ const BlogListItem = ({
     },
     __self: undefined
   }, __jsx("a", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]),
+    className: "jsx-1277229061",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 27
     },
     __self: undefined
   }, __jsx("div", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]) + " " + "article",
+    className: "jsx-1277229061" + " " + "article",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 28
     },
     __self: undefined
   }, __jsx("div", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]) + " " + "article-content",
+    className: "jsx-1277229061" + " " + "article-content",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 29
     },
     __self: undefined
-  }, __jsx("div", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]) + " " + "article-hero",
+  }, __jsx("h2", {
+    className: "jsx-1277229061",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 30
     },
     __self: undefined
-  }), __jsx("div", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]) + " " + "hero-text",
+  }, title), __jsx("div", {
+    className: "jsx-1277229061",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 31
     },
     __self: undefined
-  }, __jsx("h2", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]),
+  }, __jsx("span", {
+    className: "jsx-1277229061",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 32
     },
     __self: undefined
-  }, article.document.data.title), __jsx("h3", {
-    className: styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a.dynamic([["1967025871", [article.document.data.hero_image]]]),
+  }, description)), __jsx("div", {
+    className: "jsx-1277229061",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 33
+      lineNumber: 34
     },
     __self: undefined
-  }, " ", reformatDate(article.document.data.date))))), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
-    id: "1967025871",
-    dynamic: [article.document.data.hero_image],
+  }, __jsx("time", {
+    className: "jsx-1277229061",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 35
+    },
     __self: undefined
-  }, `.article-link-content.__jsx-style-dynamic-selector{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.article.__jsx-style-dynamic-selector{width:100%;}.article-hero.__jsx-style-dynamic-selector{position:relative;background:url(${article.document.data.hero_image}) center;opacity:0.3;color:#000;height:200px;}.article-content.__jsx-style-dynamic-selector{position:relative;padding:16px;}.hero-text.__jsx-style-dynamic-selector{color:#000;padding:16px;position:absolute;top:0;left:16px;}
-/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0Jsb2dMaXN0SXRlbS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBb0NvQixBQUcwQixBQUdGLEFBR08sQUFPQSxBQUtQLFdBZGIsQUFlZSxPQVp1QyxBQU92QyxNQU1LLE9BTHBCLFdBTVEsTUFDSSxVQUNaLFlBZmMsSUFQZCxRQVFhLFdBQ0UsYUFDZiIsImZpbGUiOiIvVXNlcnMvaWFud2lsc29uL3VpLXdvcmtzcGFjZS9pYW53aWxzb24uaW8tbmV4dC9zcmMvY29tcG9uZW50cy9CbG9nTGlzdEl0ZW0udHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJztcbmltcG9ydCBNYXJrZG93biBmcm9tICdyZWFjdC1tYXJrZG93bic7XG5pbXBvcnQgeyBBcnRpY2xlIH0gZnJvbSAnLi4vcGFnZXMnO1xuXG5mdW5jdGlvbiB0cnVuY2F0ZVN1bW1hcnkoY29udGVudDogc3RyaW5nKTogc3RyaW5nIHtcbiAgY29uc3QgZXhjZXJwdCA9IGNvbnRlbnQuc2xpY2UoMCwgMjAwKS50cmltRW5kKCk7XG4gIGZvciAobGV0IGkgPSBleGNlcnB0Lmxlbmd0aDsgaSA+IDA7IGktLSkge1xuICAgIGlmIChleGNlcnB0W2ldID09PSAnXFxuJykge1xuICAgICAgcmV0dXJuIGV4Y2VycHQuc2xpY2UoMCwgaSk7XG4gICAgfVxuICB9XG4gIHJldHVybiBleGNlcnB0ICsgJy4uLic7XG59XG5cbmZ1bmN0aW9uIHJlZm9ybWF0RGF0ZShmdWxsRGF0ZTogRGF0ZSk6IHN0cmluZyB7XG4gIGNvbnN0IGRhdGUgPSBuZXcgRGF0ZShmdWxsRGF0ZSk7XG4gIHJldHVybiBkYXRlLnRvRGF0ZVN0cmluZygpLnNsaWNlKDQpO1xufVxuXG5pbnRlcmZhY2UgUHJvcHMge1xuICBhcnRpY2xlOiBBcnRpY2xlO1xufVxuXG5jb25zdCBCbG9nTGlzdEl0ZW06IFJlYWN0LkZ1bmN0aW9uQ29tcG9uZW50PFByb3BzPiA9ICh7IGFydGljbGUgfSkgPT4ge1xuICByZXR1cm4gKFxuICAgIDxMaW5rIGtleT17YXJ0aWNsZS5zbHVnfSBocmVmPXt7IHBhdGhuYW1lOiBgL2Jsb2cvJHthcnRpY2xlLnNsdWd9YCB9fT5cbiAgICAgIDxhPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFydGljbGVcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFydGljbGUtY29udGVudFwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhcnRpY2xlLWhlcm9cIj48L2Rpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaGVyby10ZXh0XCI+XG4gICAgICAgICAgICAgIDxoMj57YXJ0aWNsZS5kb2N1bWVudC5kYXRhLnRpdGxlfTwvaDI+XG4gICAgICAgICAgICAgIDxoMz4ge3JlZm9ybWF0RGF0ZShhcnRpY2xlLmRvY3VtZW50LmRhdGEuZGF0ZSl9PC9oMz5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPHN0eWxlIGpzeD57YFxuICAgICAgICAgIC5hcnRpY2xlLWxpbmstY29udGVudCB7XG4gICAgICAgICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICAgIH1cbiAgICAgICAgICAuYXJ0aWNsZSB7XG4gICAgICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgICB9XG4gICAgICAgICAgLmFydGljbGUtaGVybyB7XG4gICAgICAgICAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kOiB1cmwoJHthcnRpY2xlLmRvY3VtZW50LmRhdGEuaGVyb19pbWFnZX0pIGNlbnRlcjtcbiAgICAgICAgICAgIG9wYWNpdHk6IDAuMztcbiAgICAgICAgICAgIGNvbG9yOiAjMDAwO1xuICAgICAgICAgICAgaGVpZ2h0OiAyMDBweDtcbiAgICAgICAgICB9XG4gICAgICAgICAgLmFydGljbGUtY29udGVudCB7XG4gICAgICAgICAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgICAgICAgICBwYWRkaW5nOiAxNnB4O1xuICAgICAgICAgIH1cblxuICAgICAgICAgIC5oZXJvLXRleHQge1xuICAgICAgICAgICAgY29sb3I6ICMwMDA7XG4gICAgICAgICAgICBwYWRkaW5nOiAxNnB4O1xuICAgICAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgICAgICAgdG9wOiAwO1xuICAgICAgICAgICAgbGVmdDogMTZweDtcbiAgICAgICAgICB9XG4gICAgICAgIGB9PC9zdHlsZT5cbiAgICAgIDwvYT5cbiAgICA8L0xpbms+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBCbG9nTGlzdEl0ZW07XG4iXX0= */
-/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogListItem.tsx */`)));
+  }, " ", reformatDate(date)), __jsx("span", {
+    className: "jsx-1277229061" + " " + "mid-dot-divider",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 36
+    },
+    __self: undefined
+  }), tags.split(',').map(tag => __jsx("span", {
+    key: tag,
+    className: "jsx-1277229061",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 38
+    },
+    __self: undefined
+  }, "#", tag))))), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+    id: "1277229061",
+    __self: undefined
+  }, ".article-link-content.jsx-1277229061{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}.article.jsx-1277229061{padding-bottom:16px;width:100%;}h2.jsx-1277229061{font-size:2.5rem;margin-bottom:0;}span.jsx-1277229061,time.jsx-1277229061{font-family:Lato,sans-serif;font-size:1.6rem;color:rgba(0,0,0,0.54);margin-right:4px;}span.mid-dot-divider.jsx-1277229061::after{content:'\xB7';}.article-content.jsx-1277229061{padding:0 16px;color:#000;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0Jsb2dMaXN0SXRlbS50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBMENvQixBQUcwQixBQUdPLEFBS0gsQUFNWSxBQU9qQixBQUlHLFlBSGpCLEdBSWEsRUFqQkssR0FMTCxNQXVCYixFQVptQixHQVZuQixFQUtBLFlBTTRCLHVCQUNULE1BaEJuQixXQWlCQSIsImZpbGUiOiIvVXNlcnMvaWFud2lsc29uL3VpLXdvcmtzcGFjZS9pYW53aWxzb24uaW8tbmV4dC9zcmMvY29tcG9uZW50cy9CbG9nTGlzdEl0ZW0udHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJztcbmltcG9ydCB7IEFydGljbGUgfSBmcm9tICcuLi9wYWdlcyc7XG5pbXBvcnQgeyBmb3JtYXQgfSBmcm9tICdkYXRlLWZucyc7XG5cbmZ1bmN0aW9uIHRydW5jYXRlU3VtbWFyeShjb250ZW50OiBzdHJpbmcpOiBzdHJpbmcge1xuICBjb25zdCBleGNlcnB0ID0gY29udGVudC5zbGljZSgwLCAyMDApLnRyaW1FbmQoKTtcbiAgZm9yIChsZXQgaSA9IGV4Y2VycHQubGVuZ3RoOyBpID4gMDsgaS0tKSB7XG4gICAgaWYgKGV4Y2VycHRbaV0gPT09ICdcXG4nKSB7XG4gICAgICByZXR1cm4gZXhjZXJwdC5zbGljZSgwLCBpKTtcbiAgICB9XG4gIH1cbiAgcmV0dXJuIGV4Y2VycHQgKyAnLi4uJztcbn1cblxuZnVuY3Rpb24gcmVmb3JtYXREYXRlKGZ1bGxEYXRlOiBEYXRlKTogc3RyaW5nIHtcbiAgcmV0dXJuIGZvcm1hdChuZXcgRGF0ZShmdWxsRGF0ZSksICdNTU0gZCwgeXl5eScpO1xufVxuXG5pbnRlcmZhY2UgUHJvcHMge1xuICBhcnRpY2xlOiBBcnRpY2xlO1xufVxuXG5jb25zdCBCbG9nTGlzdEl0ZW06IFJlYWN0LkZ1bmN0aW9uQ29tcG9uZW50PFByb3BzPiA9ICh7IGFydGljbGUgfSkgPT4ge1xuICBjb25zdCB7IHRpdGxlLCBkZXNjcmlwdGlvbiwgdGFncywgZGF0ZSB9ID0gYXJ0aWNsZS5kb2N1bWVudC5kYXRhO1xuICByZXR1cm4gKFxuICAgIDxMaW5rIGtleT17YXJ0aWNsZS5zbHVnfSBocmVmPXt7IHBhdGhuYW1lOiBgL2Jsb2cvJHthcnRpY2xlLnNsdWd9YCB9fT5cbiAgICAgIDxhPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFydGljbGVcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImFydGljbGUtY29udGVudFwiPlxuICAgICAgICAgICAgPGgyPnt0aXRsZX08L2gyPlxuICAgICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgICAgPHNwYW4+e2Rlc2NyaXB0aW9ufTwvc3Bhbj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgICAgPHRpbWU+IHtyZWZvcm1hdERhdGUoZGF0ZSl9PC90aW1lPlxuICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJtaWQtZG90LWRpdmlkZXJcIiAvPlxuICAgICAgICAgICAgICB7dGFncy5zcGxpdCgnLCcpLm1hcCgodGFnOiBzdHJpbmcpID0+IChcbiAgICAgICAgICAgICAgICA8c3BhbiBrZXk9e3RhZ30+I3t0YWd9PC9zcGFuPlxuICAgICAgICAgICAgICApKX1cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPHN0eWxlIGpzeD57YFxuICAgICAgICAgIC5hcnRpY2xlLWxpbmstY29udGVudCB7XG4gICAgICAgICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICAgIH1cbiAgICAgICAgICAuYXJ0aWNsZSB7XG4gICAgICAgICAgICBwYWRkaW5nLWJvdHRvbTogMTZweDtcbiAgICAgICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICAgIH1cblxuICAgICAgICAgIGgyIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMi41cmVtO1xuICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMDtcbiAgICAgICAgICB9XG5cbiAgICAgICAgICBzcGFuLFxuICAgICAgICAgIHRpbWUge1xuICAgICAgICAgICAgZm9udC1mYW1pbHk6IExhdG8sIHNhbnMtc2VyaWY7XG4gICAgICAgICAgICBmb250LXNpemU6IDEuNnJlbTtcbiAgICAgICAgICAgIGNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuNTQpO1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiA0cHg7XG4gICAgICAgICAgfVxuXG4gICAgICAgICAgc3Bhbi5taWQtZG90LWRpdmlkZXI6OmFmdGVyIHtcbiAgICAgICAgICAgIGNvbnRlbnQ6ICfCtyc7XG4gICAgICAgICAgfVxuXG4gICAgICAgICAgLmFydGljbGUtY29udGVudCB7XG4gICAgICAgICAgICBwYWRkaW5nOiAwIDE2cHg7XG4gICAgICAgICAgICBjb2xvcjogIzAwMDtcbiAgICAgICAgICB9XG4gICAgICAgIGB9PC9zdHlsZT5cbiAgICAgIDwvYT5cbiAgICA8L0xpbms+XG4gICk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBCbG9nTGlzdEl0ZW07XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/BlogListItem.tsx */")));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (BlogListItem);
@@ -2366,6 +2393,106 @@ const Card = props => __jsx("div", {
 }, ".card.jsx-355973345{background:#fff;border-radius:8px;box-shadow:20px 20px 60px #d9d9d9,-20px -20px 60px #fff;padding:16px;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0NhcmQudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQU9nQixBQUd5QixnQkFDRSxrQkFDdUMsd0RBQzVDLGFBQ2YiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvc3JjL2NvbXBvbmVudHMvQ2FyZC50c3giLCJzb3VyY2VzQ29udGVudCI6WyJpbnRlcmZhY2UgUHJvcHMge1xuICBjaGlsZHJlbjogSlNYLkVsZW1lbnQgfCBKU1guRWxlbWVudFtdO1xufVxuXG5jb25zdCBDYXJkOiBSZWFjdC5GdW5jdGlvbkNvbXBvbmVudDxQcm9wcz4gPSBwcm9wcyA9PiAoXG4gIDxkaXYgY2xhc3NOYW1lPVwiY2FyZFwiPlxuICAgIHtwcm9wcy5jaGlsZHJlbn1cbiAgICA8c3R5bGUganN4PntgXG4gICAgICAuY2FyZCB7XG4gICAgICAgIGJhY2tncm91bmQ6ICNmZmY7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDhweDtcbiAgICAgICAgYm94LXNoYWRvdzogMjBweCAyMHB4IDYwcHggI2Q5ZDlkOSwgLTIwcHggLTIwcHggNjBweCAjZmZmO1xuICAgICAgICBwYWRkaW5nOiAxNnB4O1xuICAgICAgfVxuICAgIGB9PC9zdHlsZT5cbiAgPC9kaXY+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBDYXJkO1xuIl19 */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Card.tsx */"));
 
 /* harmony default export */ __webpack_exports__["default"] = (Card);
+
+/***/ }),
+
+/***/ "./src/components/Footer.tsx":
+/*!***********************************!*\
+  !*** ./src/components/Footer.tsx ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! styled-jsx/style */ "styled-jsx/style");
+/* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Footer.tsx";
+
+
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+function Footer() {
+  return __jsx("footer", {
+    className: "jsx-175427776",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 5
+    },
+    __self: this
+  }, __jsx("a", {
+    target: "_blank",
+    href: "https://twitter.com/iwilsonq",
+    className: "jsx-175427776",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 6
+    },
+    __self: this
+  }, __jsx("i", {
+    className: "jsx-175427776" + " " + "fab fa-twitter-square",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 7
+    },
+    __self: this
+  })), __jsx("a", {
+    target: "_blank",
+    href: "https://dev.to/iwilsonq",
+    className: "jsx-175427776",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 9
+    },
+    __self: this
+  }, __jsx("i", {
+    className: "jsx-175427776" + " " + "fab fa-dev",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 10
+    },
+    __self: this
+  })), __jsx("a", {
+    target: "_blank",
+    href: "https://instagram.com/iwilsonq",
+    className: "jsx-175427776",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 12
+    },
+    __self: this
+  }, __jsx("i", {
+    className: "jsx-175427776" + " " + "fab fa-instagram-square",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 13
+    },
+    __self: this
+  })), __jsx("a", {
+    target: "_blank",
+    href: "https://medium.com/@iwilsonq",
+    className: "jsx-175427776",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 15
+    },
+    __self: this
+  }, __jsx("i", {
+    className: "jsx-175427776" + " " + "fab fa-medium",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 16
+    },
+    __self: this
+  })), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+    id: "175427776",
+    __self: this
+  }, "footer.jsx-175427776{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;padding:24px;}.fab.jsx-175427776{font-size:4rem;margin-right:24px;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0Zvb3Rlci50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUJrQixBQUd3QixBQU1FLGVBQ0csa0JBQ3BCLHlDQVBxQiw2RkFDSSxtR0FDVixhQUNmIiwiZmlsZSI6Ii9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0Zvb3Rlci50c3giLCJzb3VyY2VzQ29udGVudCI6WyJpbnRlcmZhY2UgUHJvcHMge31cblxuZnVuY3Rpb24gRm9vdGVyKCkge1xuICByZXR1cm4gKFxuICAgIDxmb290ZXI+XG4gICAgICA8YSB0YXJnZXQ9XCJfYmxhbmtcIiBocmVmPVwiaHR0cHM6Ly90d2l0dGVyLmNvbS9pd2lsc29ucVwiPlxuICAgICAgICA8aSBjbGFzc05hbWU9XCJmYWIgZmEtdHdpdHRlci1zcXVhcmVcIj48L2k+XG4gICAgICA8L2E+XG4gICAgICA8YSB0YXJnZXQ9XCJfYmxhbmtcIiBocmVmPVwiaHR0cHM6Ly9kZXYudG8vaXdpbHNvbnFcIj5cbiAgICAgICAgPGkgY2xhc3NOYW1lPVwiZmFiIGZhLWRldlwiPjwvaT5cbiAgICAgIDwvYT5cbiAgICAgIDxhIHRhcmdldD1cIl9ibGFua1wiIGhyZWY9XCJodHRwczovL2luc3RhZ3JhbS5jb20vaXdpbHNvbnFcIj5cbiAgICAgICAgPGkgY2xhc3NOYW1lPVwiZmFiIGZhLWluc3RhZ3JhbS1zcXVhcmVcIj48L2k+XG4gICAgICA8L2E+XG4gICAgICA8YSB0YXJnZXQ9XCJfYmxhbmtcIiBocmVmPVwiaHR0cHM6Ly9tZWRpdW0uY29tL0Bpd2lsc29ucVwiPlxuICAgICAgICA8aSBjbGFzc05hbWU9XCJmYWIgZmEtbWVkaXVtXCI+PC9pPlxuICAgICAgPC9hPlxuICAgICAgPHN0eWxlIGpzeD57YFxuICAgICAgICBmb290ZXIge1xuICAgICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgICBwYWRkaW5nOiAyNHB4O1xuICAgICAgICB9XG4gICAgICAgIC5mYWIge1xuICAgICAgICAgIGZvbnQtc2l6ZTogNHJlbTtcbiAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDI0cHg7XG4gICAgICAgIH1cbiAgICAgIGB9PC9zdHlsZT5cbiAgICA8L2Zvb3Rlcj5cbiAgKTtcbn1cblxuZXhwb3J0IGRlZmF1bHQgRm9vdGVyO1xuIl19 */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Footer.tsx */"));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Footer);
 
 /***/ }),
 
@@ -2483,40 +2610,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/components/Header.tsx");
+/* harmony import */ var _Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer */ "./src/components/Footer.tsx");
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./src/components/Header.tsx");
 var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx";
 
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
 
+
 const Layout = props => __jsx("div", {
   className: "jsx-4013214535" + " " + "layout",
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 10
+    lineNumber: 11
   },
   __self: undefined
-}, __jsx(_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
+}, __jsx(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 11
+    lineNumber: 12
   },
   __self: undefined
 }), __jsx("div", {
   className: "jsx-4013214535" + " " + "content",
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 12
+    lineNumber: 13
   },
   __self: undefined
-}, props.children), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+}, props.children), __jsx(_Footer__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 14
+  },
+  __self: undefined
+}), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
   id: "582380142",
   __self: undefined
-}, "@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Lora&display=swap');html,body{color:#000;font-family:'Lora',Helvetica,sans-serif;font-size:10px;margin:0;overflow-x:hidden;}h1,h2,h3{font-family:'Lato';font-weight:700;}h1{font-size:3.4rem;}h2{font-size:3.1rem;}h3{font-size:2.8rem;}p,ol,ul,li,a,blockquote,b,em,strong{font-size:2.1rem;}a{color:#0070f3;}pre,code,code[class*='language-'],pre[class*='language-']{font-size:1.6rem;}img{width:100%;}@media (max-width:727px){p,ol,ul,li,a{font-size:1.8rem;}h1{font-size:3rem;}pre,code,code[class*='language-'],pre[class*='language-']{font-size:1.6rem;}}a{-webkit-text-decoration:none;text-decoration:none;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0xheW91dC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBYU8sQUFFOEYsQUFHeEUsQUFVUSxBQUtGLEFBR0EsQUFHQSxBQVlBLEFBSUgsQUFPRyxBQUlOLEFBU1EsQUFHRixBQU1FLEFBS0UsV0F0RXFCLEFBZ0Q1QyxHQVhBLENBdUJFLEVBN0NGLEFBR0EsQUFHQSxBQVlBLEFBV0EsQUFhRSxBQVNBLEVBeERnQixnQkFDbEIsZUE0REEsQ0F0RWlCLGVBQ04sU0FDUyxrQkFDcEIiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvc3JjL2NvbXBvbmVudHMvTGF5b3V0LnRzeCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBIZWFkZXIgZnJvbSAnLi9IZWFkZXInO1xuXG5pbnRlcmZhY2UgUHJvcHMge1xuICBjaGlsZHJlbjogSlNYLkVsZW1lbnQgfCBKU1guRWxlbWVudFtdO1xuICBzaXRlRGVzY3JpcHRpb24/OiBzdHJpbmc7XG4gIHNpdGVUaXRsZT86IHN0cmluZztcbn1cblxuY29uc3QgTGF5b3V0OiBSZWFjdC5GdW5jdGlvbkNvbXBvbmVudDxQcm9wcz4gPSBwcm9wcyA9PiAoXG4gIDxkaXYgY2xhc3NOYW1lPVwibGF5b3V0XCI+XG4gICAgPEhlYWRlciAvPlxuICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udGVudFwiPntwcm9wcy5jaGlsZHJlbn08L2Rpdj5cbiAgICA8c3R5bGUganN4IGdsb2JhbD5cbiAgICAgIHtgXG4gICAgICAgIEBpbXBvcnQgdXJsKCdodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2Nzcz9mYW1pbHk9TGF0bzo0MDAsNzAwfExvcmEmZGlzcGxheT1zd2FwJyk7XG4gICAgICAgIGh0bWwsXG4gICAgICAgIGJvZHkge1xuICAgICAgICAgIGNvbG9yOiAjMDAwO1xuICAgICAgICAgIGZvbnQtZmFtaWx5OiAnTG9yYScsIEhlbHZldGljYSwgc2Fucy1zZXJpZjtcbiAgICAgICAgICBmb250LXNpemU6IDEwcHg7XG4gICAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgICAgICAgfVxuXG4gICAgICAgIGgxLFxuICAgICAgICBoMixcbiAgICAgICAgaDMge1xuICAgICAgICAgIGZvbnQtZmFtaWx5OiAnTGF0byc7XG4gICAgICAgICAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgICAgICAgfVxuXG4gICAgICAgIGgxIHtcbiAgICAgICAgICBmb250LXNpemU6IDMuNHJlbTtcbiAgICAgICAgfVxuICAgICAgICBoMiB7XG4gICAgICAgICAgZm9udC1zaXplOiAzLjFyZW07XG4gICAgICAgIH1cbiAgICAgICAgaDMge1xuICAgICAgICAgIGZvbnQtc2l6ZTogMi44cmVtO1xuICAgICAgICB9XG5cbiAgICAgICAgcCxcbiAgICAgICAgb2wsXG4gICAgICAgIHVsLFxuICAgICAgICBsaSxcbiAgICAgICAgYSxcbiAgICAgICAgYmxvY2txdW90ZSxcbiAgICAgICAgYixcbiAgICAgICAgZW0sXG4gICAgICAgIHN0cm9uZyB7XG4gICAgICAgICAgZm9udC1zaXplOiAyLjFyZW07XG4gICAgICAgIH1cblxuICAgICAgICBhIHtcbiAgICAgICAgICBjb2xvcjogIzAwNzBmMztcbiAgICAgICAgfVxuXG4gICAgICAgIHByZSxcbiAgICAgICAgY29kZSxcbiAgICAgICAgY29kZVtjbGFzcyo9J2xhbmd1YWdlLSddLFxuICAgICAgICBwcmVbY2xhc3MqPSdsYW5ndWFnZS0nXSB7XG4gICAgICAgICAgZm9udC1zaXplOiAxLjZyZW07XG4gICAgICAgIH1cblxuICAgICAgICBpbWcge1xuICAgICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICB9XG5cbiAgICAgICAgQG1lZGlhIChtYXgtd2lkdGg6IDcyN3B4KSB7XG4gICAgICAgICAgcCxcbiAgICAgICAgICBvbCxcbiAgICAgICAgICB1bCxcbiAgICAgICAgICBsaSxcbiAgICAgICAgICBhIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMS44cmVtO1xuICAgICAgICAgIH1cbiAgICAgICAgICBoMSB7XG4gICAgICAgICAgICBmb250LXNpemU6IDNyZW07XG4gICAgICAgICAgfVxuICAgICAgICAgIHByZSxcbiAgICAgICAgICBjb2RlLFxuICAgICAgICAgIGNvZGVbY2xhc3MqPSdsYW5ndWFnZS0nXSxcbiAgICAgICAgICBwcmVbY2xhc3MqPSdsYW5ndWFnZS0nXSB7XG4gICAgICAgICAgICBmb250LXNpemU6IDEuNnJlbTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cblxuICAgICAgICBhIHtcbiAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIH1cbiAgICAgIGB9XG4gICAgPC9zdHlsZT5cbiAgICA8c3R5bGUganN4PntgXG4gICAgICAubGF5b3V0IHtcbiAgICAgICAgbWF4LXdpZHRoOiA2ODBweDtcbiAgICAgICAgbWFyZ2luOiAyMHB4IGF1dG87XG4gICAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICAgICAgcGFkZGluZzogMjRweDtcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhIHtcbiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgICAgICBjb2xvcjogYmx1ZTtcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhOmhvdmVyIHtcbiAgICAgICAgb3BhY2l0eTogMC42O1xuICAgICAgfVxuICAgIGB9PC9zdHlsZT5cbiAgPC9kaXY+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBMYXlvdXQ7XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx */"), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
+}, "@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Lora&display=swap');html,body{color:#000;font-family:'Lora',Helvetica,sans-serif;font-size:10px;margin:0;overflow-x:hidden;}h1,h2,h3{font-family:'Lato';font-weight:700;}h1{font-size:3.4rem;}h2{font-size:3.1rem;}h3{font-size:2.8rem;}p,ol,ul,li,a,blockquote,b,em,strong{font-size:2.1rem;}a{color:#0070f3;}pre,code,code[class*='language-'],pre[class*='language-']{font-size:1.6rem;}img{width:100%;}@media (max-width:727px){p,ol,ul,li,a{font-size:1.8rem;}h1{font-size:3rem;}pre,code,code[class*='language-'],pre[class*='language-']{font-size:1.6rem;}}a{-webkit-text-decoration:none;text-decoration:none;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0xheW91dC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBZU8sQUFFOEYsQUFHeEUsQUFVUSxBQUtGLEFBR0EsQUFHQSxBQVlBLEFBSUgsQUFPRyxBQUlOLEFBU1EsQUFHRixBQU1FLEFBS0UsV0F0RXFCLEFBZ0Q1QyxHQVhBLENBdUJFLEVBN0NGLEFBR0EsQUFHQSxBQVlBLEFBV0EsQUFhRSxBQVNBLEVBeERnQixnQkFDbEIsZUE0REEsQ0F0RWlCLGVBQ04sU0FDUyxrQkFDcEIiLCJmaWxlIjoiL1VzZXJzL2lhbndpbHNvbi91aS13b3Jrc3BhY2UvaWFud2lsc29uLmlvLW5leHQvc3JjL2NvbXBvbmVudHMvTGF5b3V0LnRzeCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBGb290ZXIgZnJvbSAnLi9Gb290ZXInO1xuaW1wb3J0IEhlYWRlciBmcm9tICcuL0hlYWRlcic7XG5cbmludGVyZmFjZSBQcm9wcyB7XG4gIGNoaWxkcmVuOiBKU1guRWxlbWVudCB8IEpTWC5FbGVtZW50W107XG4gIHNpdGVEZXNjcmlwdGlvbj86IHN0cmluZztcbiAgc2l0ZVRpdGxlPzogc3RyaW5nO1xufVxuXG5jb25zdCBMYXlvdXQ6IFJlYWN0LkZ1bmN0aW9uQ29tcG9uZW50PFByb3BzPiA9IHByb3BzID0+IChcbiAgPGRpdiBjbGFzc05hbWU9XCJsYXlvdXRcIj5cbiAgICA8SGVhZGVyIC8+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJjb250ZW50XCI+e3Byb3BzLmNoaWxkcmVufTwvZGl2PlxuICAgIDxGb290ZXIgLz5cbiAgICA8c3R5bGUganN4IGdsb2JhbD5cbiAgICAgIHtgXG4gICAgICAgIEBpbXBvcnQgdXJsKCdodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2Nzcz9mYW1pbHk9TGF0bzo0MDAsNzAwfExvcmEmZGlzcGxheT1zd2FwJyk7XG4gICAgICAgIGh0bWwsXG4gICAgICAgIGJvZHkge1xuICAgICAgICAgIGNvbG9yOiAjMDAwO1xuICAgICAgICAgIGZvbnQtZmFtaWx5OiAnTG9yYScsIEhlbHZldGljYSwgc2Fucy1zZXJpZjtcbiAgICAgICAgICBmb250LXNpemU6IDEwcHg7XG4gICAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgICAgICAgfVxuXG4gICAgICAgIGgxLFxuICAgICAgICBoMixcbiAgICAgICAgaDMge1xuICAgICAgICAgIGZvbnQtZmFtaWx5OiAnTGF0byc7XG4gICAgICAgICAgZm9udC13ZWlnaHQ6IDcwMDtcbiAgICAgICAgfVxuXG4gICAgICAgIGgxIHtcbiAgICAgICAgICBmb250LXNpemU6IDMuNHJlbTtcbiAgICAgICAgfVxuICAgICAgICBoMiB7XG4gICAgICAgICAgZm9udC1zaXplOiAzLjFyZW07XG4gICAgICAgIH1cbiAgICAgICAgaDMge1xuICAgICAgICAgIGZvbnQtc2l6ZTogMi44cmVtO1xuICAgICAgICB9XG5cbiAgICAgICAgcCxcbiAgICAgICAgb2wsXG4gICAgICAgIHVsLFxuICAgICAgICBsaSxcbiAgICAgICAgYSxcbiAgICAgICAgYmxvY2txdW90ZSxcbiAgICAgICAgYixcbiAgICAgICAgZW0sXG4gICAgICAgIHN0cm9uZyB7XG4gICAgICAgICAgZm9udC1zaXplOiAyLjFyZW07XG4gICAgICAgIH1cblxuICAgICAgICBhIHtcbiAgICAgICAgICBjb2xvcjogIzAwNzBmMztcbiAgICAgICAgfVxuXG4gICAgICAgIHByZSxcbiAgICAgICAgY29kZSxcbiAgICAgICAgY29kZVtjbGFzcyo9J2xhbmd1YWdlLSddLFxuICAgICAgICBwcmVbY2xhc3MqPSdsYW5ndWFnZS0nXSB7XG4gICAgICAgICAgZm9udC1zaXplOiAxLjZyZW07XG4gICAgICAgIH1cblxuICAgICAgICBpbWcge1xuICAgICAgICAgIHdpZHRoOiAxMDAlO1xuICAgICAgICB9XG5cbiAgICAgICAgQG1lZGlhIChtYXgtd2lkdGg6IDcyN3B4KSB7XG4gICAgICAgICAgcCxcbiAgICAgICAgICBvbCxcbiAgICAgICAgICB1bCxcbiAgICAgICAgICBsaSxcbiAgICAgICAgICBhIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMS44cmVtO1xuICAgICAgICAgIH1cbiAgICAgICAgICBoMSB7XG4gICAgICAgICAgICBmb250LXNpemU6IDNyZW07XG4gICAgICAgICAgfVxuICAgICAgICAgIHByZSxcbiAgICAgICAgICBjb2RlLFxuICAgICAgICAgIGNvZGVbY2xhc3MqPSdsYW5ndWFnZS0nXSxcbiAgICAgICAgICBwcmVbY2xhc3MqPSdsYW5ndWFnZS0nXSB7XG4gICAgICAgICAgICBmb250LXNpemU6IDEuNnJlbTtcbiAgICAgICAgICB9XG4gICAgICAgIH1cblxuICAgICAgICBhIHtcbiAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIH1cbiAgICAgIGB9XG4gICAgPC9zdHlsZT5cbiAgICA8c3R5bGUganN4PntgXG4gICAgICAubGF5b3V0IHtcbiAgICAgICAgbWF4LXdpZHRoOiA2ODBweDtcbiAgICAgICAgbWFyZ2luOiAyMHB4IGF1dG87XG4gICAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICAgICAgcGFkZGluZzogMjRweDtcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhIHtcbiAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiBub25lO1xuICAgICAgICBjb2xvcjogYmx1ZTtcbiAgICAgIH1cblxuICAgICAgLmxheW91dCBhOmhvdmVyIHtcbiAgICAgICAgb3BhY2l0eTogMC42O1xuICAgICAgfVxuICAgIGB9PC9zdHlsZT5cbiAgPC9kaXY+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBMYXlvdXQ7XG4iXX0= */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx */"), __jsx(styled_jsx_style__WEBPACK_IMPORTED_MODULE_0___default.a, {
   id: "4284651136",
   __self: undefined
-}, ".layout.jsx-4013214535{max-width:680px;margin:20px auto;position:relative;padding:24px;}.layout.jsx-4013214535 a.jsx-4013214535{-webkit-text-decoration:none;text-decoration:none;color:blue;}.layout.jsx-4013214535 a.jsx-4013214535:hover{opacity:0.6;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0xheW91dC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBNEZnQixBQUd5QixBQU9LLEFBS1QsWUFDZCxJQVptQixpQkFDQyxpQkFNUCxDQUxFLFVBTWYsR0FMQSIsImZpbGUiOiIvVXNlcnMvaWFud2lsc29uL3VpLXdvcmtzcGFjZS9pYW53aWxzb24uaW8tbmV4dC9zcmMvY29tcG9uZW50cy9MYXlvdXQudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEhlYWRlciBmcm9tICcuL0hlYWRlcic7XG5cbmludGVyZmFjZSBQcm9wcyB7XG4gIGNoaWxkcmVuOiBKU1guRWxlbWVudCB8IEpTWC5FbGVtZW50W107XG4gIHNpdGVEZXNjcmlwdGlvbj86IHN0cmluZztcbiAgc2l0ZVRpdGxlPzogc3RyaW5nO1xufVxuXG5jb25zdCBMYXlvdXQ6IFJlYWN0LkZ1bmN0aW9uQ29tcG9uZW50PFByb3BzPiA9IHByb3BzID0+IChcbiAgPGRpdiBjbGFzc05hbWU9XCJsYXlvdXRcIj5cbiAgICA8SGVhZGVyIC8+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJjb250ZW50XCI+e3Byb3BzLmNoaWxkcmVufTwvZGl2PlxuICAgIDxzdHlsZSBqc3ggZ2xvYmFsPlxuICAgICAge2BcbiAgICAgICAgQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzP2ZhbWlseT1MYXRvOjQwMCw3MDB8TG9yYSZkaXNwbGF5PXN3YXAnKTtcbiAgICAgICAgaHRtbCxcbiAgICAgICAgYm9keSB7XG4gICAgICAgICAgY29sb3I6ICMwMDA7XG4gICAgICAgICAgZm9udC1mYW1pbHk6ICdMb3JhJywgSGVsdmV0aWNhLCBzYW5zLXNlcmlmO1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTBweDtcbiAgICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgICAgb3ZlcmZsb3cteDogaGlkZGVuO1xuICAgICAgICB9XG5cbiAgICAgICAgaDEsXG4gICAgICAgIGgyLFxuICAgICAgICBoMyB7XG4gICAgICAgICAgZm9udC1mYW1pbHk6ICdMYXRvJztcbiAgICAgICAgICBmb250LXdlaWdodDogNzAwO1xuICAgICAgICB9XG5cbiAgICAgICAgaDEge1xuICAgICAgICAgIGZvbnQtc2l6ZTogMy40cmVtO1xuICAgICAgICB9XG4gICAgICAgIGgyIHtcbiAgICAgICAgICBmb250LXNpemU6IDMuMXJlbTtcbiAgICAgICAgfVxuICAgICAgICBoMyB7XG4gICAgICAgICAgZm9udC1zaXplOiAyLjhyZW07XG4gICAgICAgIH1cblxuICAgICAgICBwLFxuICAgICAgICBvbCxcbiAgICAgICAgdWwsXG4gICAgICAgIGxpLFxuICAgICAgICBhLFxuICAgICAgICBibG9ja3F1b3RlLFxuICAgICAgICBiLFxuICAgICAgICBlbSxcbiAgICAgICAgc3Ryb25nIHtcbiAgICAgICAgICBmb250LXNpemU6IDIuMXJlbTtcbiAgICAgICAgfVxuXG4gICAgICAgIGEge1xuICAgICAgICAgIGNvbG9yOiAjMDA3MGYzO1xuICAgICAgICB9XG5cbiAgICAgICAgcHJlLFxuICAgICAgICBjb2RlLFxuICAgICAgICBjb2RlW2NsYXNzKj0nbGFuZ3VhZ2UtJ10sXG4gICAgICAgIHByZVtjbGFzcyo9J2xhbmd1YWdlLSddIHtcbiAgICAgICAgICBmb250LXNpemU6IDEuNnJlbTtcbiAgICAgICAgfVxuXG4gICAgICAgIGltZyB7XG4gICAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIH1cblxuICAgICAgICBAbWVkaWEgKG1heC13aWR0aDogNzI3cHgpIHtcbiAgICAgICAgICBwLFxuICAgICAgICAgIG9sLFxuICAgICAgICAgIHVsLFxuICAgICAgICAgIGxpLFxuICAgICAgICAgIGEge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxLjhyZW07XG4gICAgICAgICAgfVxuICAgICAgICAgIGgxIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogM3JlbTtcbiAgICAgICAgICB9XG4gICAgICAgICAgcHJlLFxuICAgICAgICAgIGNvZGUsXG4gICAgICAgICAgY29kZVtjbGFzcyo9J2xhbmd1YWdlLSddLFxuICAgICAgICAgIHByZVtjbGFzcyo9J2xhbmd1YWdlLSddIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMS42cmVtO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuXG4gICAgICAgIGEge1xuICAgICAgICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcbiAgICAgICAgfVxuICAgICAgYH1cbiAgICA8L3N0eWxlPlxuICAgIDxzdHlsZSBqc3g+e2BcbiAgICAgIC5sYXlvdXQge1xuICAgICAgICBtYXgtd2lkdGg6IDY4MHB4O1xuICAgICAgICBtYXJnaW46IDIwcHggYXV0bztcbiAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICBwYWRkaW5nOiAyNHB4O1xuICAgICAgfVxuXG4gICAgICAubGF5b3V0IGEge1xuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIGNvbG9yOiBibHVlO1xuICAgICAgfVxuXG4gICAgICAubGF5b3V0IGE6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAwLjY7XG4gICAgICB9XG4gICAgYH08L3N0eWxlPlxuICA8L2Rpdj5cbik7XG5cbmV4cG9ydCBkZWZhdWx0IExheW91dDtcbiJdfQ== */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx */"));
+}, ".layout.jsx-4013214535{max-width:680px;margin:20px auto;position:relative;padding:24px;}.layout.jsx-4013214535 a.jsx-4013214535{-webkit-text-decoration:none;text-decoration:none;color:blue;}.layout.jsx-4013214535 a.jsx-4013214535:hover{opacity:0.6;}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9pYW53aWxzb24vdWktd29ya3NwYWNlL2lhbndpbHNvbi5pby1uZXh0L3NyYy9jb21wb25lbnRzL0xheW91dC50c3giXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBOEZnQixBQUd5QixBQU9LLEFBS1QsWUFDZCxJQVptQixpQkFDQyxpQkFNUCxDQUxFLFVBTWYsR0FMQSIsImZpbGUiOiIvVXNlcnMvaWFud2lsc29uL3VpLXdvcmtzcGFjZS9pYW53aWxzb24uaW8tbmV4dC9zcmMvY29tcG9uZW50cy9MYXlvdXQudHN4Iiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEZvb3RlciBmcm9tICcuL0Zvb3Rlcic7XG5pbXBvcnQgSGVhZGVyIGZyb20gJy4vSGVhZGVyJztcblxuaW50ZXJmYWNlIFByb3BzIHtcbiAgY2hpbGRyZW46IEpTWC5FbGVtZW50IHwgSlNYLkVsZW1lbnRbXTtcbiAgc2l0ZURlc2NyaXB0aW9uPzogc3RyaW5nO1xuICBzaXRlVGl0bGU/OiBzdHJpbmc7XG59XG5cbmNvbnN0IExheW91dDogUmVhY3QuRnVuY3Rpb25Db21wb25lbnQ8UHJvcHM+ID0gcHJvcHMgPT4gKFxuICA8ZGl2IGNsYXNzTmFtZT1cImxheW91dFwiPlxuICAgIDxIZWFkZXIgLz5cbiAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbnRlbnRcIj57cHJvcHMuY2hpbGRyZW59PC9kaXY+XG4gICAgPEZvb3RlciAvPlxuICAgIDxzdHlsZSBqc3ggZ2xvYmFsPlxuICAgICAge2BcbiAgICAgICAgQGltcG9ydCB1cmwoJ2h0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzP2ZhbWlseT1MYXRvOjQwMCw3MDB8TG9yYSZkaXNwbGF5PXN3YXAnKTtcbiAgICAgICAgaHRtbCxcbiAgICAgICAgYm9keSB7XG4gICAgICAgICAgY29sb3I6ICMwMDA7XG4gICAgICAgICAgZm9udC1mYW1pbHk6ICdMb3JhJywgSGVsdmV0aWNhLCBzYW5zLXNlcmlmO1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTBweDtcbiAgICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgICAgb3ZlcmZsb3cteDogaGlkZGVuO1xuICAgICAgICB9XG5cbiAgICAgICAgaDEsXG4gICAgICAgIGgyLFxuICAgICAgICBoMyB7XG4gICAgICAgICAgZm9udC1mYW1pbHk6ICdMYXRvJztcbiAgICAgICAgICBmb250LXdlaWdodDogNzAwO1xuICAgICAgICB9XG5cbiAgICAgICAgaDEge1xuICAgICAgICAgIGZvbnQtc2l6ZTogMy40cmVtO1xuICAgICAgICB9XG4gICAgICAgIGgyIHtcbiAgICAgICAgICBmb250LXNpemU6IDMuMXJlbTtcbiAgICAgICAgfVxuICAgICAgICBoMyB7XG4gICAgICAgICAgZm9udC1zaXplOiAyLjhyZW07XG4gICAgICAgIH1cblxuICAgICAgICBwLFxuICAgICAgICBvbCxcbiAgICAgICAgdWwsXG4gICAgICAgIGxpLFxuICAgICAgICBhLFxuICAgICAgICBibG9ja3F1b3RlLFxuICAgICAgICBiLFxuICAgICAgICBlbSxcbiAgICAgICAgc3Ryb25nIHtcbiAgICAgICAgICBmb250LXNpemU6IDIuMXJlbTtcbiAgICAgICAgfVxuXG4gICAgICAgIGEge1xuICAgICAgICAgIGNvbG9yOiAjMDA3MGYzO1xuICAgICAgICB9XG5cbiAgICAgICAgcHJlLFxuICAgICAgICBjb2RlLFxuICAgICAgICBjb2RlW2NsYXNzKj0nbGFuZ3VhZ2UtJ10sXG4gICAgICAgIHByZVtjbGFzcyo9J2xhbmd1YWdlLSddIHtcbiAgICAgICAgICBmb250LXNpemU6IDEuNnJlbTtcbiAgICAgICAgfVxuXG4gICAgICAgIGltZyB7XG4gICAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIH1cblxuICAgICAgICBAbWVkaWEgKG1heC13aWR0aDogNzI3cHgpIHtcbiAgICAgICAgICBwLFxuICAgICAgICAgIG9sLFxuICAgICAgICAgIHVsLFxuICAgICAgICAgIGxpLFxuICAgICAgICAgIGEge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxLjhyZW07XG4gICAgICAgICAgfVxuICAgICAgICAgIGgxIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogM3JlbTtcbiAgICAgICAgICB9XG4gICAgICAgICAgcHJlLFxuICAgICAgICAgIGNvZGUsXG4gICAgICAgICAgY29kZVtjbGFzcyo9J2xhbmd1YWdlLSddLFxuICAgICAgICAgIHByZVtjbGFzcyo9J2xhbmd1YWdlLSddIHtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMS42cmVtO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuXG4gICAgICAgIGEge1xuICAgICAgICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcbiAgICAgICAgfVxuICAgICAgYH1cbiAgICA8L3N0eWxlPlxuICAgIDxzdHlsZSBqc3g+e2BcbiAgICAgIC5sYXlvdXQge1xuICAgICAgICBtYXgtd2lkdGg6IDY4MHB4O1xuICAgICAgICBtYXJnaW46IDIwcHggYXV0bztcbiAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICBwYWRkaW5nOiAyNHB4O1xuICAgICAgfVxuXG4gICAgICAubGF5b3V0IGEge1xuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIGNvbG9yOiBibHVlO1xuICAgICAgfVxuXG4gICAgICAubGF5b3V0IGE6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAwLjY7XG4gICAgICB9XG4gICAgYH08L3N0eWxlPlxuICA8L2Rpdj5cbik7XG5cbmV4cG9ydCBkZWZhdWx0IExheW91dDtcbiJdfQ== */\n/*@ sourceURL=/Users/ianwilson/ui-workspace/ianwilson.io-next/src/components/Layout.tsx */"));
 
 /* harmony default export */ __webpack_exports__["default"] = (Layout);
 
@@ -2551,10 +2686,18 @@ function Meta({
       lineNumber: 11
     },
     __self: this
-  }, __jsx("title", {
+  }, __jsx("script", {
+    src: "https://kit.fontawesome.com/b7e94b07cc.js",
+    crossOrigin: "anonymous",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 12
+    },
+    __self: this
+  }), __jsx("title", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 16
     },
     __self: this
   }, displayTitle), __jsx("meta", {
@@ -2562,7 +2705,7 @@ function Meta({
     content: description,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 13
+      lineNumber: 17
     },
     __self: this
   }), __jsx("meta", {
@@ -2570,7 +2713,7 @@ function Meta({
     content: "width=device-width, initial-scale=1",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 14
+      lineNumber: 18
     },
     __self: this
   }), __jsx("meta", {
@@ -2578,7 +2721,7 @@ function Meta({
     content: "Software Engineer,Rust,JavaScript,ReasonML,GraphQL",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 15
+      lineNumber: 19
     },
     __self: this
   }), __jsx("link", {
@@ -2587,7 +2730,7 @@ function Meta({
     href: "/apple-icon-57x57.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 19
+      lineNumber: 23
     },
     __self: this
   }), __jsx("link", {
@@ -2596,7 +2739,7 @@ function Meta({
     href: "/apple-icon-60x60.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20
+      lineNumber: 24
     },
     __self: this
   }), __jsx("link", {
@@ -2605,7 +2748,7 @@ function Meta({
     href: "/apple-icon-72x72.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21
+      lineNumber: 25
     },
     __self: this
   }), __jsx("link", {
@@ -2614,7 +2757,7 @@ function Meta({
     href: "/apple-icon-76x76.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 22
+      lineNumber: 26
     },
     __self: this
   }), __jsx("link", {
@@ -2623,7 +2766,7 @@ function Meta({
     href: "/apple-icon-114x114.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23
+      lineNumber: 27
     },
     __self: this
   }), __jsx("link", {
@@ -2632,7 +2775,7 @@ function Meta({
     href: "/apple-icon-120x120.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24
+      lineNumber: 28
     },
     __self: this
   }), __jsx("link", {
@@ -2641,7 +2784,7 @@ function Meta({
     href: "/apple-icon-144x144.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25
+      lineNumber: 29
     },
     __self: this
   }), __jsx("link", {
@@ -2650,7 +2793,7 @@ function Meta({
     href: "/apple-icon-152x152.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26
+      lineNumber: 30
     },
     __self: this
   }), __jsx("link", {
@@ -2659,7 +2802,7 @@ function Meta({
     href: "/apple-icon-180x180.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27
+      lineNumber: 31
     },
     __self: this
   }), __jsx("link", {
@@ -2669,7 +2812,7 @@ function Meta({
     href: "/android-icon-192x192.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28
+      lineNumber: 32
     },
     __self: this
   }), __jsx("link", {
@@ -2679,7 +2822,7 @@ function Meta({
     href: "/favicon-32x32.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 34
+      lineNumber: 38
     },
     __self: this
   }), __jsx("link", {
@@ -2689,7 +2832,7 @@ function Meta({
     href: "/favicon-96x96.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 35
+      lineNumber: 39
     },
     __self: this
   }), __jsx("link", {
@@ -2699,7 +2842,7 @@ function Meta({
     href: "/favicon-16x16.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 36
+      lineNumber: 40
     },
     __self: this
   }), __jsx("link", {
@@ -2707,7 +2850,7 @@ function Meta({
     href: "/manifest.json",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 37
+      lineNumber: 41
     },
     __self: this
   }), __jsx("meta", {
@@ -2715,7 +2858,7 @@ function Meta({
     content: "#ffffff",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38
+      lineNumber: 42
     },
     __self: this
   }), __jsx("meta", {
@@ -2723,7 +2866,7 @@ function Meta({
     content: "/ms-icon-144x144.png",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 39
+      lineNumber: 43
     },
     __self: this
   }), __jsx("meta", {
@@ -2731,14 +2874,14 @@ function Meta({
     content: "#ffffff",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 40
+      lineNumber: 44
     },
     __self: this
   }), __jsx("meta", {
     charSet: "utf-8",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 41
+      lineNumber: 45
     },
     __self: this
   }));
@@ -2811,7 +2954,7 @@ const Index = props => __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_3__["de
 }));
 
 Index.getInitialProps = async function () {
-  const siteConfig = await __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.t.bind(null, /*! ../data/config.json */ "./src/data/config.json", 3));
+  const siteConfig = await __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.t.bind(null, /*! ../data/config.json */ "./src/data/config.json", 3));
 
   const context = __webpack_require__("./src/articles sync recursive \\.md$");
 
@@ -2836,7 +2979,7 @@ Index.getInitialProps = async function () {
 
 /***/ }),
 
-/***/ 7:
+/***/ 3:
 /*!***********************************!*\
   !*** multi ./src/pages/index.tsx ***!
   \***********************************/
@@ -2900,6 +3043,17 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/weak-map");
+
+/***/ }),
+
+/***/ "date-fns":
+/*!***************************!*\
+  !*** external "date-fns" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("date-fns");
 
 /***/ }),
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Markdown from 'react-markdown';
 import { Article } from '../pages';
+import { format } from 'date-fns';
 
 function truncateSummary(content: string): string {
   const excerpt = content.slice(0, 200).trimEnd();
@@ -13,8 +13,7 @@ function truncateSummary(content: string): string {
 }
 
 function reformatDate(fullDate: Date): string {
-  const date = new Date(fullDate);
-  return date.toDateString().slice(4);
+  return format(new Date(fullDate), 'MMM d, yyyy');
 }
 
 interface Props {
@@ -22,15 +21,22 @@ interface Props {
 }
 
 const BlogListItem: React.FunctionComponent<Props> = ({ article }) => {
+  const { title, description, tags, date } = article.document.data;
   return (
     <Link key={article.slug} href={{ pathname: `/blog/${article.slug}` }}>
       <a>
         <div className="article">
           <div className="article-content">
-            <div className="article-hero"></div>
-            <div className="hero-text">
-              <h2>{article.document.data.title}</h2>
-              <h3> {reformatDate(article.document.data.date)}</h3>
+            <h2>{title}</h2>
+            <div>
+              <span>{description}</span>
+            </div>
+            <div>
+              <time> {reformatDate(date)}</time>
+              <span className="mid-dot-divider" />
+              {tags.split(',').map((tag: string) => (
+                <span key={tag}>#{tag}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -39,26 +45,30 @@ const BlogListItem: React.FunctionComponent<Props> = ({ article }) => {
             display: flex;
           }
           .article {
+            padding-bottom: 16px;
             width: 100%;
           }
-          .article-hero {
-            position: relative;
-            background: url(${article.document.data.hero_image}) center;
-            opacity: 0.3;
-            color: #000;
-            height: 200px;
-          }
-          .article-content {
-            position: relative;
-            padding: 16px;
+
+          h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0;
           }
 
-          .hero-text {
+          span,
+          time {
+            font-family: Lato, sans-serif;
+            font-size: 1.6rem;
+            color: rgba(0, 0, 0, 0.54);
+            margin-right: 4px;
+          }
+
+          span.mid-dot-divider::after {
+            content: '·';
+          }
+
+          .article-content {
+            padding: 0 16px;
             color: #000;
-            padding: 16px;
-            position: absolute;
-            top: 0;
-            left: 16px;
           }
         `}</style>
       </a>
