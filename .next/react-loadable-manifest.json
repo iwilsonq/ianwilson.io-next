@@ -1,4 +1,12 @@
 {
+  "../../data/config.json": [
+    {
+      "id": "./src/data/config.json",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/1.js",
+      "publicPath": "static/chunks/1.js"
+    }
+  ],
   "../data/config.json": [
     {
       "id": "./src/data/config.json",

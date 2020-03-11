@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/ianwilson/.fnm/node-versions/v12.0.0/installation/bin/node /Users/ianwilson/.yarn/bin/yarn.js add @types/fast-sort
+  /Users/ianwilson/.fnm/node-versions/v12.0.0/installation/bin/node /Users/ianwilson/.yarn/bin/yarn.js add -D @types/gtag
 
 PATH: 
-  /Users/ianwilson/.opam/4.07.1+spacetime/bin:/var/folders/7z/msh6qtrx31x_sh4x3b74s6_m0000gn/T/fnm-shell-7414468/bin:/Users/ianwilson/.fnm:/Users/ianwilson/.yarn/bin:/Users/ianwilson/.config/yarn/global/node_modules/.bin:/Users/ianwilson/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Users/ianwilson/.opam/4.07.1+spacetime/bin:/var/folders/7z/msh6qtrx31x_sh4x3b74s6_m0000gn/T/fnm-shell-7128205/bin:/Users/ianwilson/.fnm:/Users/ianwilson/.yarn/bin:/Users/ianwilson/.config/yarn/global/node_modules/.bin:/Users/ianwilson/.cargo/bin
+  /Users/ianwilson/.opam/4.07.1+spacetime/bin:/var/folders/7z/msh6qtrx31x_sh4x3b74s6_m0000gn/T/fnm-shell-5097266/bin:/Users/ianwilson/.fnm:/Users/ianwilson/.yarn/bin:/Users/ianwilson/.config/yarn/global/node_modules/.bin:/Users/ianwilson/.nvm/versions/node/v10.12.0/bin:/Users/ianwilson/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin
 
 Yarn version: 
   1.16.0
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2ffast-sort: Not found
+  Error: https://registry.yarnpkg.com/@types%2fgtag: Not found
       at Request.params.callback [as _callback] (/Users/ianwilson/.yarn/lib/cli.js:66091:18)
       at Request.self.callback (/Users/ianwilson/.yarn/lib/cli.js:129590:22)
       at Request.emit (events.js:196:13)
@@ -44,6 +44,7 @@ npm manifest:
       "postexport": "node scripts/post-export.js"
     },
     "dependencies": {
+      "date-fns": "^2.10.0",
       "fast-sort": "^2.1.1",
       "gray-matter": "^4.0.2",
       "isomorphic-unfetch": "^3.0.0",
@@ -2210,6 +2211,11 @@ Lockfile:
     dependencies:
       es5-ext "^0.10.50"
       type "^1.0.1"
+  
+  date-fns@^2.10.0:
+    version "2.10.0"
+    resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.10.0.tgz#abd10604d8bafb0bcbd2ba2e9b0563b922ae4b6b"
+    integrity sha512-EhfEKevYGWhWlZbNeplfhIU/+N+x0iCIx7VzKlXma2EdQyznVlZhCptXUY+BegNpPW2kjdx15Rvq503YcXXrcA==
   
   debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
     version "2.6.9"

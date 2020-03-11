@@ -104,6 +104,41 @@ module.exports =
 
 /***/ }),
 
+/***/ "./src/data/gtag.ts":
+/*!**************************!*\
+  !*** ./src/data/gtag.ts ***!
+  \**************************/
+/*! exports provided: GA_TRACKING_ID, pageview, event */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GA_TRACKING_ID", function() { return GA_TRACKING_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pageview", function() { return pageview; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "event", function() { return event; });
+const GA_TRACKING_ID = 'UA-114857932-1'; // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
+
+const pageview = url => {
+  window.gtag('config', GA_TRACKING_ID, {
+    page_path: url
+  });
+}; // https://developers.google.com/analytics/devguides/collection/gtagjs/events
+
+const event = ({
+  action,
+  category,
+  label,
+  value
+}) => {
+  window.gtag('event', action, {
+    event_category: category,
+    event_label: label,
+    value: value
+  });
+};
+
+/***/ }),
+
 /***/ "./src/pages/_app.tsx":
 /*!****************************!*\
   !*** ./src/pages/_app.tsx ***!
@@ -135,9 +170,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prismjs_components_prism_rust__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(prismjs_components_prism_rust__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var prismjs_components_prism_bash__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prismjs/components/prism-bash */ "prismjs/components/prism-bash");
 /* harmony import */ var prismjs_components_prism_bash__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prismjs_components_prism_bash__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! prismjs/themes/prism-tomorrow.css */ "./node_modules/prismjs/themes/prism-tomorrow.css");
-/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_11__);
-var _jsxFileName = "/Users/ianwilson/ui-workspace/ianwilson.io-next/src/pages/_app.tsx";
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "next/router");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! prismjs/themes/prism-tomorrow.css */ "./node_modules/prismjs/themes/prism-tomorrow.css");
+/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
+var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_app.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -155,6 +193,9 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+
+next_router__WEBPACK_IMPORTED_MODULE_11___default.a.events.on('routeChangeComplete', url => _data_gtag__WEBPACK_IMPORTED_MODULE_13__["pageview"](url));
+
 const App = ({
   Component,
   pageProps
@@ -164,7 +205,7 @@ const App = ({
   return __jsx(Component, _extends({}, pageProps, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 9
+      lineNumber: 13
     },
     __self: undefined
   }));
@@ -183,6 +224,17 @@ const App = ({
 
 module.exports = __webpack_require__(/*! private-next-pages/_app.tsx */"./src/pages/_app.tsx");
 
+
+/***/ }),
+
+/***/ "next/router":
+/*!******************************!*\
+  !*** external "next/router" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("next/router");
 
 /***/ }),
 
