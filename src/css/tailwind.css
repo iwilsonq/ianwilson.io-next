@@ -4,3 +4,9 @@
 
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* custom styles */
+code[class*='language-'],
+pre[class*='language-'] {
+  font-size: 0.9em;
+}

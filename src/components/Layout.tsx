@@ -8,9 +8,11 @@ interface Props {
 }
 
 const Layout: React.FunctionComponent<Props> = props => (
-  <div className="container mx-auto max-w-screen-md">
-    <Header />
-    <div className="content">{props.children}</div>
+  <div className="container mx-auto max-w-screen-sm flex flex-col justify-between min-h-screen px-3">
+    <div className="min-h-full">
+      <Header />
+      <div>{props.children}</div>
+    </div>
     <Footer />
   </div>
 );

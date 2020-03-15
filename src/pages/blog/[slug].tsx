@@ -30,9 +30,7 @@ const Article: NextPage<Props> = ({ content, data }) => {
                 {children}
               </a>
             ),
-            list: ({ children }) => (
-              <ul className="list-inside list-disc mb-4">{children}</ul>
-            ),
+            list: ({ children }) => <ul className="list-disc mb-4">{children}</ul>,
             listItem: ({ children }) => <li className="mb-2">{children}</li>,
             paragraph: ({ children }) => <p className="mb-4">{children}</p>,
             thematicBreak: () => <hr className="my-8" />,
