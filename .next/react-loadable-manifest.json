@@ -1,18 +1,326 @@
 {
-  "../data/config.json": [
+  "../../data/config.json": [
     {
-      "id": "./src/data/config.json",
+      "id": "J77C",
       "name": "./src/data/config.json",
-      "file": "static/chunks/1.js",
-      "publicPath": "static/chunks/1.js"
+      "file": "static/chunks/7.98004f42e51cdf59181b.js",
+      "publicPath": "static/chunks/7.98004f42e51cdf59181b.js"
     }
   ],
-  "./dev/noop": [
+  "../data/config.json": [
     {
-      "id": "./node_modules/next/dist/client/dev/noop.js",
-      "name": "./node_modules/next/dist/client/dev/noop.js",
-      "file": "static/chunks/0.js",
-      "publicPath": "static/chunks/0.js"
+      "id": "J77C",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/7.98004f42e51cdf59181b.js",
+      "publicPath": "static/chunks/7.98004f42e51cdf59181b.js"
+    }
+  ],
+  "./breaking-out-of-a-rut.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./building-powerful-graphql-servers-with-rust.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./edge-with-courage-reasonml.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./how-types-improve-javascript.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./intro-to-reasonml-variants.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./reason-react-hooks-tutorial.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    }
+  ],
+  "./reasonml-with-graphql.md": [
+    {
+      "id": "PMLw",
+      "name": "./src/articles/edge-with-courage-reasonml.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "SBzQ",
+      "name": "./src/articles/reason-react-hooks-tutorial.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "iJVj",
+      "name": "./src/articles/breaking-out-of-a-rut.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "jang",
+      "name": "./src/articles/how-types-improve-javascript.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "no+l",
+      "name": "./src/articles/intro-to-reasonml-variants.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "r4MT",
+      "name": "./src/articles/reasonml-with-graphql.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
+    },
+    {
+      "id": "sdk8",
+      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
+      "file": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js",
+      "publicPath": "static/chunks/00fc17a0353d1fedd7097c91fc5bbfc56f54ac89.7c2bacfd4dbe5084e127.js"
     }
   ]
 }
