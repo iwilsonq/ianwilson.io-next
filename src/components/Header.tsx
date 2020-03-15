@@ -1,48 +1,23 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Link from './Link';
 
 const Header: React.FunctionComponent = () => {
   const { pathname } = useRouter();
-
   return (
-    <header className="header">
-      <nav>
-        <Link href="/">
-          <a>Ian Wilson</a>
+    <header className="flex font-sans text-xl h-20">
+      <nav className="flex w-full justify-between">
+        <Link href="/" slim={false}>
+          Ian Wilson
         </Link>
-        <div>
-          <Link href="/blog">
-            <a className={pathname.match(/\/blog/) ? 'active' : ''}>Blog</a>
+        <div className="flex align-center">
+          <Link href="/blog" isActive={pathname === '/blog'} slim={false}>
+            Blog
           </Link>
-          <Link href="/about">
-            <a className={pathname.match(/\/about/) ? 'active' : ''}>About</a>
+          <Link href="/contact" isActive={pathname === '/contact'} slim={false}>
+            Contact
           </Link>
         </div>
       </nav>
-      <style jsx>
-        {`
-          nav {
-            display: flex;
-            justify-content: space-between;
-          }
-
-          header {
-            font-family: 'Lato', sans-serif;
-          }
-
-          a {
-            color: '#000';
-            margin-right: 21px;
-            padding: 8px 10px;
-            text-decoration: none;
-          }
-
-          a.active {
-            background-color: rgba(40, 28, 77, 0.3);
-            border-radius: 4px;
-          }
-        `}
-      </style>
     </header>
   );
 };

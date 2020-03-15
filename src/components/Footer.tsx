@@ -1,32 +1,18 @@
-interface Props {}
-
 function Footer() {
   return (
-    <footer>
+    <footer className="flex align-center justify-center p-4">
       <a target="_blank" href="https://twitter.com/iwilsonq">
-        <i className="fab fa-twitter-square"></i>
+        <i className="text-blue-500 hover:text-blue-800 text-4xl mr-4 fab fa-twitter-square"></i>
       </a>
       <a target="_blank" href="https://dev.to/iwilsonq">
-        <i className="fab fa-dev"></i>
+        <i className="text-blue-500 hover:text-blue-800 text-4xl mr-4 fab fa-dev"></i>
       </a>
       <a target="_blank" href="https://instagram.com/iwilsonq">
-        <i className="fab fa-instagram-square"></i>
+        <i className="text-blue-500 hover:text-blue-800 text-4xl mr-4 fab fa-instagram-square"></i>
       </a>
       <a target="_blank" href="https://medium.com/@iwilsonq">
-        <i className="fab fa-medium"></i>
+        <i className="text-blue-500 hover:text-blue-800 text-4xl mr-4 fab fa-medium"></i>
       </a>
-      <style jsx>{`
-        footer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        }
-        .fab {
-          font-size: 4rem;
-          margin-right: 24px;
-        }
-      `}</style>
     </footer>
   );
 }

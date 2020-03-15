@@ -5,7 +5,7 @@ interface Props {
   title?: string;
 }
 
-function Meta({ title, description }: Props): JSX.Element {
+const Meta: React.FunctionComponent<Props> = ({ title, description }) => {
   const displayTitle = title ? `${title} | Ian Wilson` : 'Ian Wilson';
   return (
     <Head>
@@ -45,6 +45,6 @@ function Meta({ title, description }: Props): JSX.Element {
       <meta charSet="utf-8" />
     </Head>
   );
-}
+};
 
 export default Meta;

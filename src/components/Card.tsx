@@ -3,17 +3,7 @@ interface Props {
 }
 
 const Card: React.FunctionComponent<Props> = props => (
-  <div className="card">
-    {props.children}
-    <style jsx>{`
-      .card {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #fff;
-        padding: 16px;
-      }
-    `}</style>
-  </div>
+  <div className="p-4 shadow-xl rounded">{props.children}</div>
 );
 
 export default Card;

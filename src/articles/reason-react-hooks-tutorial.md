@@ -103,15 +103,15 @@ I want to clean up the default project structure before writing an implementatio
 </html>
 ```
 
-3. Replace Index.re with the following:
+Replace Index.re with the following:
 
 ```reason
 ReactDOMRe.renderToElementWithId(<Timer />, "root");
 ```
 
-4. Open up bsconfig.json and change the field "in-source" from true to false. This will output our compiled JavaScript into the lib/js directory. I prefer this over leaving them inside of our root src directory.
+Open up bsconfig.json and change the field "in-source" from true to false. This will output our compiled JavaScript into the lib/js directory. I prefer this over leaving them inside of our root src directory.
 
-5. Tell webpack to build from the new location by changing webpack.config.js to the following:
+Tell webpack to build from the new location by changing webpack.config.js to the following:
 
 ```js
 module.exports = {

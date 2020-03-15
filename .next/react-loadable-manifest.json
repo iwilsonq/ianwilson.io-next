@@ -1,20 +1,4 @@
 {
-  "../../data/config.json": [
-    {
-      "id": "./src/data/config.json",
-      "name": "./src/data/config.json",
-      "file": "static/chunks/1.js",
-      "publicPath": "static/chunks/1.js"
-    }
-  ],
-  "../data/config.json": [
-    {
-      "id": "./src/data/config.json",
-      "name": "./src/data/config.json",
-      "file": "static/chunks/1.js",
-      "publicPath": "static/chunks/1.js"
-    }
-  ],
   "./breaking-out-of-a-rut.md": [
     {
       "id": "./src/articles/breaking-out-of-a-rut.md",

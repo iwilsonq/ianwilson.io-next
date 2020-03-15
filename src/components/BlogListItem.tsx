@@ -25,50 +25,27 @@ const BlogListItem: React.FunctionComponent<Props> = ({ article }) => {
   return (
     <Link key={article.slug} href={{ pathname: `/blog/${article.slug}` }}>
       <a>
-        <div className="article">
-          <div className="article-content">
-            <h2>{title}</h2>
+        <div className="pb-4 w-full">
+          <div className="px-4">
+            <h2 className="text-2xl font-semibold">{title}</h2>
             <div>
               <span>{description}</span>
             </div>
             <div>
-              <time> {reformatDate(date)}</time>
-              <span className="mid-dot-divider" />
+              <time className="text-gray-500 mr-1"> {reformatDate(date)}</time>
+              <span className="text-gray-500 mr-1 mid-dot-divider" />
               {tags.split(',').map((tag: string) => (
-                <span key={tag}>#{tag}</span>
+                <span className="text-gray-500 mr-1" key={tag}>
+                  #{tag}
+                </span>
               ))}
             </div>
           </div>
         </div>
         <style jsx>{`
-          .article-link-content {
-            display: flex;
-          }
-          .article {
-            padding-bottom: 16px;
-            width: 100%;
-          }
-
-          h2 {
-            font-size: 2.5rem;
-            margin-bottom: 0;
-          }
-
-          span,
-          time {
-            font-family: Lato, sans-serif;
-            font-size: 1.6rem;
-            color: rgba(0, 0, 0, 0.54);
-            margin-right: 4px;
-          }
-
           span.mid-dot-divider::after {
+            font-size: 2rem;
             content: '·';
-          }
-
-          .article-content {
-            padding: 0 16px;
-            color: #000;
           }
         `}</style>
       </a>
