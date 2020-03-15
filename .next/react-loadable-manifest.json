@@ -1,18 +1,10 @@
 {
-  "./breaking-out-of-a-rut.md": [
+  "../data/config.json": [
     {
-      "id": "./src/articles/breaking-out-of-a-rut.md",
-      "name": "./src/articles/breaking-out-of-a-rut.md",
-      "file": "static/chunks/2.js",
-      "publicPath": "static/chunks/2.js"
-    }
-  ],
-  "./building-powerful-graphql-servers-with-rust.md": [
-    {
-      "id": "./src/articles/building-powerful-graphql-servers-with-rust.md",
-      "name": "./src/articles/building-powerful-graphql-servers-with-rust.md",
-      "file": "static/chunks/3.js",
-      "publicPath": "static/chunks/3.js"
+      "id": "./src/data/config.json",
+      "name": "./src/data/config.json",
+      "file": "static/chunks/1.js",
+      "publicPath": "static/chunks/1.js"
     }
   ],
   "./dev/noop": [
@@ -21,46 +13,6 @@
       "name": "./node_modules/next/dist/client/dev/noop.js",
       "file": "static/chunks/0.js",
       "publicPath": "static/chunks/0.js"
-    }
-  ],
-  "./edge-with-courage-reasonml.md": [
-    {
-      "id": "./src/articles/edge-with-courage-reasonml.md",
-      "name": "./src/articles/edge-with-courage-reasonml.md",
-      "file": "static/chunks/4.js",
-      "publicPath": "static/chunks/4.js"
-    }
-  ],
-  "./how-types-improve-javascript.md": [
-    {
-      "id": "./src/articles/how-types-improve-javascript.md",
-      "name": "./src/articles/how-types-improve-javascript.md",
-      "file": "static/chunks/5.js",
-      "publicPath": "static/chunks/5.js"
-    }
-  ],
-  "./intro-to-reasonml-variants.md": [
-    {
-      "id": "./src/articles/intro-to-reasonml-variants.md",
-      "name": "./src/articles/intro-to-reasonml-variants.md",
-      "file": "static/chunks/6.js",
-      "publicPath": "static/chunks/6.js"
-    }
-  ],
-  "./reason-react-hooks-tutorial.md": [
-    {
-      "id": "./src/articles/reason-react-hooks-tutorial.md",
-      "name": "./src/articles/reason-react-hooks-tutorial.md",
-      "file": "static/chunks/7.js",
-      "publicPath": "static/chunks/7.js"
-    }
-  ],
-  "./reasonml-with-graphql.md": [
-    {
-      "id": "./src/articles/reasonml-with-graphql.md",
-      "name": "./src/articles/reasonml-with-graphql.md",
-      "file": "static/chunks/8.js",
-      "publicPath": "static/chunks/8.js"
     }
   ]
 }
