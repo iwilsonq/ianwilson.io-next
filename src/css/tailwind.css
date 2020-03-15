@@ -5,8 +5,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
 /* custom styles */
 code[class*='language-'],
 pre[class*='language-'] {
+  font-family: 'Roboto Mono', monospace;
   font-size: 0.9em;
 }
