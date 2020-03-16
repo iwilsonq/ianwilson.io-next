@@ -9,8 +9,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 
 /* custom styles */
-code[class*='language-'],
-pre[class*='language-'] {
+.code-block {
   font-family: 'Roboto Mono', monospace;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }

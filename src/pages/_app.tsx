@@ -1,9 +1,8 @@
 import { AppProps } from 'next/app';
 import Prism from 'prismjs';
 import Router from 'next/router';
-import 'prismjs/themes/prism-tomorrow.css';
-import '../css/tailwind.css';
 import * as gtag from '../data/gtag';
+import '../css/tailwind.css';
 
 Router.events.on('routeChangeComplete', url => gtag.pageview(url));
 

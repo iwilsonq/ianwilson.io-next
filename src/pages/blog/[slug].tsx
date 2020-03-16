@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
 import Heading from '../../components/Heading';
+import CodeBlock from '../../components/CodeBlock';
 
 interface Props {
   content: string;
@@ -19,6 +20,7 @@ const Article: NextPage<Props> = ({ content, data }) => {
         <Heading>{title}</Heading>
         <Markdown
           renderers={{
+            code: CodeBlock,
             heading: ({ children }) => (
               <h2 className="text-2xl font-semibold mb-4">{children}</h2>
             ),
@@ -30,7 +32,9 @@ const Article: NextPage<Props> = ({ content, data }) => {
                 {children}
               </a>
             ),
-            list: ({ children }) => <ul className="list-disc mb-4">{children}</ul>,
+            list: ({ children }) => (
+              <ul className="list-disc mb-4 ml-4">{children}</ul>
+            ),
             listItem: ({ children }) => <li className="mb-2">{children}</li>,
             paragraph: ({ children }) => <p className="mb-4">{children}</p>,
             thematicBreak: () => <hr className="my-8" />,
