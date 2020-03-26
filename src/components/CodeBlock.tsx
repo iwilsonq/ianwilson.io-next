@@ -8,7 +8,7 @@ interface Props {
 
 const CodeBlock: React.FunctionComponent<Props> = ({ language, value }) => {
   return (
-    <div className="code-block">
+    <div className="code-block my-8">
       <SyntaxHighlighter language={language} style={dark}>
         {value}
       </SyntaxHighlighter>

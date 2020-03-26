@@ -93,17 +93,6 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/prismjs/themes/prism-tomorrow.css":
-/*!********************************************************!*\
-  !*** ./node_modules/prismjs/themes/prism-tomorrow.css ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
 /***/ "./src/css/tailwind.css":
 /*!******************************!*\
   !*** ./src/css/tailwind.css ***!
@@ -183,11 +172,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prismjs_components_prism_bash__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prismjs_components_prism_bash__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "next/router");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! prismjs/themes/prism-tomorrow.css */ "./node_modules/prismjs/themes/prism-tomorrow.css");
-/* harmony import */ var prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(prismjs_themes_prism_tomorrow_css__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../css/tailwind.css */ "./src/css/tailwind.css");
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_css_tailwind_css__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
 var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_app.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
@@ -207,8 +194,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-
-next_router__WEBPACK_IMPORTED_MODULE_11___default.a.events.on('routeChangeComplete', url => _data_gtag__WEBPACK_IMPORTED_MODULE_14__["pageview"](url));
+next_router__WEBPACK_IMPORTED_MODULE_11___default.a.events.on('routeChangeComplete', url => _data_gtag__WEBPACK_IMPORTED_MODULE_12__["pageview"](url));
 
 const App = ({
   Component,
@@ -219,7 +205,7 @@ const App = ({
   return __jsx(Component, _extends({}, pageProps, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 14
+      lineNumber: 13
     },
     __self: undefined
   }));

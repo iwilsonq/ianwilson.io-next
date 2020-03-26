@@ -17,15 +17,20 @@ const Article: NextPage<Props> = ({ content, data }) => {
     <Layout>
       <Meta title={title} description={description} />
       <div>
-        <Heading>{title}</Heading>
+        <Heading className="mb-4">{title}</Heading>
         <Markdown
           renderers={{
+            blockquote: ({ children }) => (
+              <blockquote className="text-lg italic px-4 pt-4 pb-1 mb-4 bg-gray-300">
+                {children}
+              </blockquote>
+            ),
             code: CodeBlock,
             heading: ({ children }) => (
-              <h2 className="text-2xl font-semibold mb-4">{children}</h2>
+              <h2 className="text-2xl font-semibold my-4">{children}</h2>
             ),
             inlineCode: ({ children }) => (
-              <code className="bg-gray-400 px-1 rounded">{children}</code>
+              <code className="bg-gray-300 px-1 rounded">{children}</code>
             ),
             link: ({ children, href }) => (
               <a className="text-blue-500 hover:text-blue-800" href={href}>

@@ -50,6 +50,8 @@ const Index: NextPage<Props> = props => (
         @iwilsonq
       </a>
     </p>
+    <img className="" src="/rubens_wedding.jpg" alt="ruben's wedding" />
+
     <hr className="my-8" />
     <h2 className="text-2xl font-bold">Sign Up for the Newsletter</h2>
     <p className="mb-4">
