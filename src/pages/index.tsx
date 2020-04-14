@@ -20,10 +20,6 @@ interface Props {
 
 const Index: NextPage<Props> = props => (
   <Layout>
-    <Head>
-      <script type="text/javascript" src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
-      <script type="text/javascript" src="/static/onesignal.js" />
-    </Head>
     <Meta description="Ian Wilson's Personal Developer Blog & Site" />
     <Heading>Ian Wilson</Heading>
     <h2 className="text-3xl mb-8">

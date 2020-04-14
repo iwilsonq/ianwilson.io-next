@@ -1145,22 +1145,39 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
         lineNumber: 16
       },
       __self: this
-    })), __jsx("body", {
+    }), __jsx("script", {
+      type: "text/javascript",
+      src: "https://cdn.onesignal.com/sdks/OneSignalSDK.js",
+      async: true,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 28
+      },
+      __self: this
+    }), __jsx("script", {
+      type: "text/javascript",
+      src: "/onesignal.js",
       __source: {
         fileName: _jsxFileName,
         lineNumber: 29
       },
       __self: this
+    })), __jsx("body", {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 31
+      },
+      __self: this
     }, __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["Main"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 30
+        lineNumber: 32
       },
       __self: this
     }), __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["NextScript"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 31
+        lineNumber: 33
       },
       __self: this
     })));

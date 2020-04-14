@@ -25,6 +25,8 @@ export default class extends Document {
           `,
             }}
           />
+          <script type="text/javascript" src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
+          <script type="text/javascript" src="/onesignal.js" />
         </Head>
         <body>
           <Main />
