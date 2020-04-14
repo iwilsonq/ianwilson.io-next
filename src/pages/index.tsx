@@ -1,6 +1,7 @@
 import sort from 'fast-sort';
 import matter, { GrayMatterFile } from 'gray-matter';
 import { NextPage } from 'next';
+import Head from 'next/head';
 
 import Layout from '../components/Layout';
 import Meta from '../components/Meta';
@@ -19,6 +20,10 @@ interface Props {
 
 const Index: NextPage<Props> = props => (
   <Layout>
+    <Head>
+      <script type="text/javascript" src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
+      <script type="text/javascript" src="/static/onesignal.js" />
+    </Head>
     <Meta description="Ian Wilson's Personal Developer Blog & Site" />
     <Heading>Ian Wilson</Heading>
     <h2 className="text-3xl mb-8">
@@ -63,11 +68,11 @@ const Index: NextPage<Props> = props => (
   </Layout>
 );
 
-Index.getInitialProps = async function() {
+Index.getInitialProps = async function () {
   const siteConfig = await import(`../data/config.json`);
   const context = require.context('../articles', true, /\.md$/);
   const keys = context.keys();
-  const values = keys.map<{ default: string }>(context);
+  const values = keys.map<{ default: string; }>(context);
   const articles = keys.map(
     (key: string, index: number): Article => {
       const slug = key
