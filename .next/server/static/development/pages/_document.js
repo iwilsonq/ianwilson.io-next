@@ -1102,7 +1102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_document__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/document */ "./node_modules/next/document.js");
 /* harmony import */ var next_document__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_document__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
-var _jsxFileName = "/Users/ianwilson/personal/ianwilson.io-next/src/pages/_document.tsx";
+var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_document.tsx";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
@@ -1146,7 +1146,6 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       },
       __self: this
     }), __jsx("script", {
-      type: "text/javascript",
       src: "https://cdn.onesignal.com/sdks/OneSignalSDK.js",
       async: true,
       __source: {
@@ -1155,8 +1154,16 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
       },
       __self: this
     }), __jsx("script", {
-      type: "text/javascript",
-      src: "/onesignal.js",
+      dangerouslySetInnerHTML: {
+        __html: `
+            window.OneSignal = window.OneSignal || [];
+            OneSignal.push(function() {
+              window.OneSignal.init({
+                appId: "06474275-f248-41e3-8e68-06922287853b",
+              });
+            });
+          `
+      },
       __source: {
         fileName: _jsxFileName,
         lineNumber: 29
@@ -1165,19 +1172,19 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     })), __jsx("body", {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 31
+        lineNumber: 41
       },
       __self: this
     }, __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["Main"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 32
+        lineNumber: 42
       },
       __self: this
     }), __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["NextScript"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 33
+        lineNumber: 43
       },
       __self: this
     })));

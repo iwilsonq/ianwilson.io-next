@@ -25,8 +25,24 @@ export default class extends Document {
           `,
             }}
           />
-          <script type="text/javascript" src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
-          <script type="text/javascript" src="/onesignal.js" />
+          <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            var safari_web_id = "d0eea73a-1e8c-400a-bf98-adb7577f2d1e";
+            var appId = "06474275-f248-41e3-8e68-06922287853b";
+            window.OneSignal = window.OneSignal || [];
+            OneSignal.push(function() {
+              window.OneSignal.init({
+                safari_web_id: safari_web_id,
+                appId: appId,
+                notifyButton: {
+                  enable: true,
+                },
+              });
+            });
+          `}}
+          />
         </Head>
         <body>
           <Main />

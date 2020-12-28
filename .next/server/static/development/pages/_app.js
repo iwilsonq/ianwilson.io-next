@@ -175,7 +175,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../css/tailwind.css */ "./src/css/tailwind.css");
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_css_tailwind_css__WEBPACK_IMPORTED_MODULE_13__);
-var _jsxFileName = "/Users/ianwilson/personal/ianwilson.io-next/src/pages/_app.tsx";
+var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_app.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 

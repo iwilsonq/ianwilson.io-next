@@ -9954,7 +9954,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../css/tailwind.css */ "./src/css/tailwind.css");
 /* harmony import */ var _css_tailwind_css__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_css_tailwind_css__WEBPACK_IMPORTED_MODULE_14__);
 
-var _jsxFileName = "/Users/ianwilson/personal/ianwilson.io-next/src/pages/_app.tsx";
+var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_app.tsx";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
@@ -10003,7 +10003,7 @@ var App = function App(_ref) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! next-client-pages-loader?page=%2F_app&absolutePagePath=private-next-pages%2F_app.tsx! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_app&absolutePagePath=private-next-pages%2F_app.tsx!./");
-module.exports = __webpack_require__(/*! /Users/ianwilson/personal/ianwilson.io-next/node_modules/next/dist/client/router.js */"./node_modules/next/dist/client/router.js");
+module.exports = __webpack_require__(/*! /Users/ianwilson/projects/ianwilson.io-next/node_modules/next/dist/client/router.js */"./node_modules/next/dist/client/router.js");
 
 
 /***/ }),
