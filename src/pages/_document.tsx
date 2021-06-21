@@ -29,8 +29,8 @@ export default class extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            // var safari_web_id = "d0eea73a-1e8c-400a-bf98-adb7577f2d1e";
-            var appId = "e93cefa8-1b00-45c4-be89-c58ff6e2e373";
+            // var safari_web_id = "8af55483-8d4a-4fda-b22a-93b8813dfa26";
+            var appId = "8af55483-8d4a-4fda-b22a-93b8813dfa26";
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
