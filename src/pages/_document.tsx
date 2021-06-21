@@ -29,12 +29,12 @@ export default class extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            var safari_web_id = "d0eea73a-1e8c-400a-bf98-adb7577f2d1e";
-            var appId = "aac963f5-e4f7-4b54-9952-4ef6bc2578f0";
+            // var safari_web_id = "d0eea73a-1e8c-400a-bf98-adb7577f2d1e";
+            var appId = "e93cefa8-1b00-45c4-be89-c58ff6e2e373";
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
-                safari_web_id: safari_web_id,
+                // safari_web_id: safari_web_id,
                 appId: appId,
                 notifyButton: {
                   enable: true,
