@@ -29,7 +29,7 @@ export default class extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            var appId = "8af55483-8d4a-4fda-b22a-93b8813dfa26";
+            var appId = "cd7f316c-ed68-4fd9-8c06-b617f8f4d0d4";
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
