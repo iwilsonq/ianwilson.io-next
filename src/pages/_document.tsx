@@ -34,7 +34,7 @@ export default class extends Document {
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
-                safari_web_id: safari_web_id,
+                // safari_web_id: safari_web_id,
                 appId: appId,
                 notifyButton: {
                   enable: true,
