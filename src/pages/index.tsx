@@ -51,16 +51,6 @@ const Index: NextPage<Props> = props => (
         @iwilsonq
       </a>
     </p>
-    <img className="" src="/rubens_wedding.jpg" alt="ruben's wedding" />
-
-    <hr className="my-8" />
-    <h2 className="text-2xl font-bold">Sign Up for the Newsletter</h2>
-    <p className="mb-4">
-      If you'd like to be in the loop when I write a new post, sign up for my
-      newsletter.
-    </p>
-    <NewsletterForm />
-    <p className="mb-4">By my honor, I won't send you spam. </p>
   </Layout>
 );
 

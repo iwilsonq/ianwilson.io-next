@@ -29,11 +29,10 @@ export default class extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-            var appId = "aea2d136-bca5-4e12-bb68-3fce54ac4354";
+            var appId = "18d730e7-8d92-41cc-b267-60cc76e921fc";
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
-                // safari_web_id: safari_web_id,
                 appId: appId,
                 notifyButton: {
                   enable: true,

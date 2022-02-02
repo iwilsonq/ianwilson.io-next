@@ -1102,7 +1102,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_document__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/document */ "./node_modules/next/document.js");
 /* harmony import */ var next_document__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_document__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _data_gtag__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../data/gtag */ "./src/data/gtag.ts");
-var _jsxFileName = "/Users/ianwilson/projects/ianwilson.io-next/src/pages/_document.tsx";
+var _jsxFileName = "/Users/ianwilson/personal/ianwilson.io-next/src/pages/_document.tsx";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
@@ -1156,10 +1156,14 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     }), __jsx("script", {
       dangerouslySetInnerHTML: {
         __html: `
+            var appId = "18d730e7-8d92-41cc-b267-60cc76e921fc";
             window.OneSignal = window.OneSignal || [];
             OneSignal.push(function() {
               window.OneSignal.init({
-                appId: "06474275-f248-41e3-8e68-06922287853b",
+                appId: appId,
+                notifyButton: {
+                  enable: true,
+                },
               });
             });
           `
@@ -1172,19 +1176,19 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
     })), __jsx("body", {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41
+        lineNumber: 45
       },
       __self: this
     }, __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["Main"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 42
+        lineNumber: 46
       },
       __self: this
     }), __jsx(next_document__WEBPACK_IMPORTED_MODULE_1__["NextScript"], {
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 43
+        lineNumber: 47
       },
       __self: this
     })));
